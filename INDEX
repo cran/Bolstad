@@ -1,0 +1,14 @@
+binobp                  Binomial sampling with a beta prior
+binodp                  Binomial sampling with a discrete prior
+binogcp                 Binomial sampling with a general continuous
+                        prior
+normdp                  Bayesian inference on a normal mean with a
+                        discrete prior
+normgcp                 Bayesian inference on a normal mean with a
+                        general continuous prior
+normnp                  Bayesian inference on a normal mean with a
+                        normal prior
+sintegral               Numerical integration using Simpson's Rule
+sscsample               Simple, Stratified and Cluster Sampling
+sscsample.data          A stratified and clustered data set
+xdesign                 Monte Carlo simulation of randomized and blocked designs
