@@ -5,7 +5,7 @@
 	Samples from a fixed population using either simple random sampling, stratitified sampling or cluster sampling.
 }
 \usage{
-sscsample(size, n.samples, sample.type="simple", x = NULL, strata = NULL, cluster = NULL, cl.size = NULL, ret=FALSE)
+sscsample(size, n.samples, sample.type="simple", x = NULL, strata = NULL, cluster = NULL, ret=FALSE)
 }
 \arguments{
 	\item{size}{the desired size of the sample}
@@ -15,7 +15,6 @@ sscsample(size, n.samples, sample.type="simple", x = NULL, strata = NULL, cluste
 	\item{x}{a vector of measurements for each unit in the population. By default x is not used, and the builtin data set sscsample.data is used}
 	\item{strata}{a corresponding vector for each unit in the population indicating membership to a stratum}
 	\item{cluster}{a corresponding vector for each unit in the population indicating membership to a cluster}
-	\item{cl.size}{the number of clusters to sample when using cluster sampling}
 	\item{ret}{if true then the samples, their means, and the numbers of observations from each stratum are returned as a list.}
 }
 \seealso{
@@ -27,6 +26,9 @@ sscsample(size, n.samples, sample.type="simple", x = NULL, strata = NULL, cluste
 	\item{s.strata}{a matrix showing how many units from each stratum were included in the sample} 	
 	\item{means}{a vector containing the mean of each sample drawn}
 }
+\author{James M. Curran, Dept. of Statistics, University of Waikato, Hamilton, New Zealand.
+Janko Dietzsch, Proteomics Algorithm and Simulation,Zentrum f. Bioinformatik Tuebingen
+Fakultaet f. Informations- und Kognitionswissenschaften, Universitaet Tuebingen}
 \examples{
 ## Draw 200 samples of size 20 using simple random sampling
 sscsample(20,200)
