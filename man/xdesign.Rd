@@ -2,7 +2,7 @@
 \alias{xdesign}
 \title{Monte Carlo study of randomized and blocked designs}
 \description{
-	 Simulates completely randomized design and randomized block designs from a population of experimental units with underlying response values y and underlying other variable values x (possibly lurking)
+	 Simulates completely randomized design and randomized block designs from a population of experimental units with underlying response values \eqn{y} and underlying other variable values \eqn{x} (possibly lurking)
 }
 \usage{
 	xdesign(x = NULL, y = NULL, corr = 0.8, size = 20, n.treatments = 4

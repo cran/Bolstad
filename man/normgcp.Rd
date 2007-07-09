@@ -2,32 +2,35 @@
 \alias{normgcp}
 \title{Bayesian inference on a normal mean with a general continuous prior}
 \description{
-	Evaluates and plots the posterior density for mu, the mean of a normal distribution, with a general continuous prior on mu
+	Evaluates and plots the posterior density for \eqn{\mu}{mu}, the mean of a normal distribution, with a general continuous prior on \eqn{\mu}{mu}
 }
 \usage{
-normgcp(x, sigma.x, density = "uniform" , params = NULL, n.mu = 50, mu = NULL, mu.prior = NULL, ret = FALSE)
+normgcp(x, sigma.x, density = "uniform" , params = NULL, n.mu = 50, mu =
+NULL,mu.prior = NULL, ret = FALSE)
 }
 \arguments{
-	\item{x}{a vector of observations from a normal distribution with unknown mean and known std. deviation.}
-	\item{sigma.x}{the population std. deviation of the normal distribution}
-	\item{density}{distributional form of the prior density can be one of:
-			 "normal", "unform", or "user".}
-	\item{params}{if density = "normal" then params must contain at least a mean and possible a std. deviation. If a std. deviation is not specified then sigma.x will be used as the std. deviation of the prior. If density = "uniform" then params must contain a minimum and a maximum value for the uniform prior. If a maximum and minimum are not specified then a U[0,1] prior is used}
-	\item{n.mu}{the number of possible mu values in the prior}
-	\item{mu}{a vector of possibilities for the probability of success in a single trial. Must be set if density="user"}
-	\item{mu.prior}{the associated prior probability mass. Must be set if density="user"}
-	\item{ret}{if true then the likelihood and posterior are returned as a list.}
+  \item{x}{a vector of observations from a normal distribution with unknown mean and known std. deviation.}
+  \item{sigma.x}{the population std. deviation of the normal distribution}
+  \item{density}{distributional form of the prior density can be one of:
+    "normal", "unform", or "user".}
+  \item{params}{if density = "normal" then params must contain at least a mean and possible a std. deviation. If a std. deviation is not specified then sigma.x will be used as the std. deviation of the prior. If density = "uniform" then params must contain a minimum and a maximum value for the uniform prior. If a maximum and minimum are not specified then a \eqn{U[0,1]} prior is used}
+  \item{n.mu}{the number of possible \eqn{\mu}{mu} values in the prior}
+  \item{mu}{a vector of possibilities for the probability of success in a single trial. Must be set if density="user"}
+  \item{mu.prior}{the associated prior probability mass. Must be set if density="user"}
+  \item{ret}{if true then the likelihood and posterior are returned as a list.}
 }
 \seealso{
-	\code{\link{normdp}}
-	\code{\link{normnp}}
+  \code{\link{normdp}}
+  \code{\link{normnp}}
 }
 \value{
-	If ret is true, then a list will be returned with the following components:
-	\item{likelihood}{the scaled likelihood function of x given mu and sigma.x}
-	\item{posterior}{the posterior probability of mu given x and sigma.x}
-	\item{mu}{the vector of possible mu values used in the prior}
-	\item{mu.prior}{the associated probability mass for the values in mu}
+  If ret is true, then a list will be returned with the following components:
+  \item{likelihood}{the scaled likelihood function for \eqn{\mu}{mu}
+    given \eqn{x} and \eqn{\sigma_x}{sigma.x}}
+  \item{posterior}{the posterior probability of \eqn{\mu}{mu} given
+    \eqn{x} and \eqn{\sigma}{sigma.x}}
+  \item{mu}{the vector of possible \eqn{\mu}{mu} values used in the prior}
+  \item{mu.prior}{the associated probability mass for the values in \eqn{\mu}{mu}}
 }
 \examples{
 ## generate a sample of 20 observations from a N(-0.5,1) population
