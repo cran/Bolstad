@@ -2,37 +2,38 @@
 \alias{binogcp}
 \title{Binomial sampling with a general continuous prior}
 \description{
-	Evaluates and plots the posterior density for theta, the probability of a success in a Bernoulli trial, with binomial sampling and a general continuous prior on theta
+	Evaluates and plots the posterior density for \eqn{\pi}{pi}, the probability of a success in a Bernoulli trial, with binomial sampling and a general continuous prior on \eqn{\pi}{pi}
 }
 \usage{
-binogcp(x, n, density = "uniform", params = c(0,1), n.theta = 1000,
-	theta = NULL, theta.prior = NULL, ret = FALSE)
+binogcp(x, n, density = "uniform", params = c(0,1), n.pi = 1000,
+	pi = NULL, pi.prior = NULL, ret = FALSE)
 }
 \arguments{
-	\item{x}{the number of observed successes in the binomial experiment.}
-	\item{n}{the number of trials in the binomial experiment.}
-	\item{density}{may be one of "beta", "exp", "normal", "student", "uniform" or "user"}
-	\item{params}{if density is one of the parameteric forms then 
-		then a vector of parameters  must be supplied. 
-		beta:		a,b
-		exp:		rate
-		normal: 	mean,sd
-		uniform: 	min,max}
-	\item{n.theta}{the number of possible theta values in the prior}
-	\item{theta}{a vector of possibilities for the probability of success in a single trial. This must be set if density="user".}
-	\item{theta.prior}{the associated prior probability mass. This must be set if density="user".}
-	\item{ret}{if true then the likelihood and posterior are returned as a list.}
+  \item{x}{the number of observed successes in the binomial experiment.}
+  \item{n}{the number of trials in the binomial experiment.}
+  \item{density}{may be one of "beta", "exp", "normal", "student", "uniform" or "user"}
+  \item{params}{if density is one of the parameteric forms then 
+    then a vector of parameters  must be supplied. 
+    beta:		a,b
+    exp:		rate
+    normal: 	mean,sd
+    uniform: 	min,max}
+  \item{n.pi}{the number of possible \eqn{\pi}{pi} values in the prior}
+  \item{pi}{a vector of possibilities for the probability of success in a single trial. This must be set if density="user".}
+  \item{pi.prior}{the associated prior probability mass. This must be set if density="user".}
+  \item{ret}{if true then the likelihood and posterior are returned as a list.}
 }
 \seealso{
 	\code{\link{binobp}}
 	\code{\link{binodp}}
 }
 \value{
-	If ret is true, then a list will be returned with the following components:
-	\item{likelihood}{the scaled likelihood function of x given theta and n}
-	\item{posterior}{the posterior probability of theta given x and n}
-	\item{theta}{the vector of possible theta values used in the prior}
-	\item{theta.prior}{the associated probability mass for the values in theta}
+  If ret is true, then a list will be returned with the following components:
+  \item{likelihood}{the scaled likelihood function for
+    \eqn{\pi}{pi} given \eqn{x} and \eqn{n}}
+  \item{posterior}{the posterior probability of \eqn{\pi}{pi} given \eqn{x} and \eqn{n}}
+  \item{pi}{the vector of possible \eqn{\pi}{pi} values used in the prior}
+  \item{pi.prior}{the associated probability mass for the values in \eqn{\pi}{pi}}
 }
 \examples{
 ## simplest call with 6 successes observed in 8 trials and a continuous 
@@ -46,16 +47,16 @@ binogcp(6,8,density="beta",params=c(2,2))
 binogcp(5,10,density="normal",params=c(0.5,0.25))
 
 ## 4 successes, 12 trials with a user specified triangular continuous prior
-theta<-seq(0,1,by=0.001)
-theta.prior<-rep(0,length(theta))
-theta.prior[theta<=0.5]<-4*theta[theta<=0.5]
-theta.prior[theta>0.5]<-4-4*theta[theta>0.5]
-results<-binogcp(4,12,"user",theta=theta,theta.prior=theta.prior,ret=TRUE)
+pi<-seq(0,1,by=0.001)
+pi.prior<-rep(0,length(pi))
+pi.prior[pi<=0.5]<-4*pi[pi<=0.5]
+pi.prior[pi>0.5]<-4-4*pi[pi>0.5]
+results<-binogcp(4,12,"user",pi=pi,pi.prior=pi.prior,ret=TRUE)
 
 ## find the posterior CDF using the previous example and Simpson's rule
-cdf<-sintegral(theta,results$posterior,n.pts=length(theta),ret=TRUE)
-plot(cdf,type="l",xlab=expression(theta[0])
-	,ylab=expression(Pr(theta<=theta[0])))
+cdf<-sintegral(pi,results$posterior,n.pts=length(pi),ret=TRUE)
+plot(cdf,type="l",xlab=expression(pi[0])
+	,ylab=expression(Pr(pi<=pi[0])))
 
 ## use the cdf to find the 95\% credible region. Thanks to John Wilkinson for this simplified code.
 lcb<-cdf$x[with(cdf,which.max(x[y<=0.025]))]
@@ -65,11 +66,11 @@ cat(paste("Approximate 95\% credible interval : ["
 
 ## find the posterior mean, variance and std. deviation
 ## using Simpson's rule and the output from the previous example
-dens<-theta*results$posterior # calculate theta*f(theta | x, n)
-post.mean<-sintegral(theta,dens)
+dens<-pi*results$posterior # calculate pi*f(pi | x, n)
+post.mean<-sintegral(pi,dens)
 
-dens<-(theta-post.mean)^2*results$posterior
-post.var<-sintegral(theta,dens)
+dens<-(pi-post.mean)^2*results$posterior
+post.var<-sintegral(pi,dens)
 post.sd<-sqrt(post.var)
 
 # calculate an approximate 95\% credible region using the posterior mean and 

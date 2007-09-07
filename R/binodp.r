@@ -1,88 +1,80 @@
-binodp<-function(x,n,uniform = TRUE, n.theta = 10, theta = NULL, theta.prior = NULL, ret = FALSE){
+binodp<-function(x,n,pi = NULL, pi.prior = NULL, n.pi = 10, ret = FALSE){
 
-	# n - the number of trials in the binomial
-	# x - the number of observed successes
-	# theta - the probability of success 
-	# theta.prior - the associated prior probability mass
-	# ret - if true then the likelihood and posterior are returned as a 
-	# list
+  ## n - the number of trials in the binomial
+  ## x - the number of observed successes
+  ## pi - the probability of success 
+  ## pi.prior - the associated prior probability mass
+  ## ret - if true then the likelihood and posterior are returned as a 
+  ## list
 	
-	if(x>n)
-		stop("The number of observed successes (x) must be smaller than the number of trials (n)") 
-	if(n.theta<3)
-		stop("Number of prior values of theta must be greater than 2")
+  if(x>n)
+    stop("The number of observed successes (x) must be smaller than the number of trials (n)") 
+  if(n.pi<3)
+    stop("Number of prior values of pi must be greater than 2")
 
-	if(is.null(theta)&is.null(theta.prior)&uniform){
-		theta<-seq(0,1, length = n.theta)
-		theta.prior<-rep(1/n.theta,n.theta)
-	}
+  if(is.null(pi) | is.null(pi.prior)){
+    pi<-seq(0,1, length = n.pi)
+    pi.prior<-rep(1/n.pi,n.pi)
+  }
 
-	if(sum(theta<0) > 0 | sum(theta > 1) > 0) # check that probabilities lie on [0,1]
-		stop("Values of theta must be between 0 and 1 inclusive")
+  if(any(pi<0) | any(pi > 1))   ## check that probabilities lie on [0,1]
+    stop("Values of pi must be between 0 and 1 inclusive")
 
-	if(sum(theta.prior<0)>0|sum(theta.prior>1)>1)
-		stop("Prior probabilities must be between 0 and 1 inclusive")
+  if(any(pi.prior<0)|any(pi.prior>1))
+    stop("Prior probabilities must be between 0 and 1 inclusive")
 
-	if(round(sum(theta.prior),7)!=1){
-		warning("The prior probabilities did not sum to 1, therefore the prior has been normalized")
-		theta.prior<-theta.prior/sum(theta.prior)
-	}
+  if(round(sum(pi.prior),7)!=1){
+    warning("The prior probabilities did not sum to 1, therefore the prior has been normalized")
+    pi.prior<-pi.prior/sum(pi.prior)
+  }
 
-	if(!uniform&(is.null(theta)|is.null(theta.prior)))
-		stop("If you wish to use a non-uniform discrete prior then you must supply a theta vector and an associated probability vector theta.prior")
+  n.pi<-length(pi)
 
+  likelihood<-dbinom(x,n,pi)*pi.prior
+  posterior<-likelihood/sum(likelihood)
 
-	n.theta<-length(theta)
-	likelihood<-dbinom(x,n,theta)*theta.prior
+  plot(pi,posterior,ylim=c(0,1.1*max(posterior,pi.prior)),pch=20
+       ,col="blue",
+       xlab=expression(pi),ylab=expression(Probabilty(pi)))
+  points(pi,pi.prior,pch=20,col="red")
 
+  legend(max(c(0.05,min(pi))),max(posterior,pi.prior),pch=20,legend=c("Posterior","Prior"),col=c("blue","red"))
 
-	posterior<-likelihood/sum(likelihood)
+  ## calculate the Conditional distribution
 
-	plot(theta,posterior,ylim=c(0,1.1*max(posterior,theta.prior)),pch="o",
-		xlab=expression(theta),ylab=expression(Probabilty(theta)))
-	points(theta,theta.prior,pch="+")
+  f.cond<-matrix(0,nrow=n.pi,ncol=n+1)
+  rownames(f.cond)<-as.character(round(pi,3))
+  colnames(f.cond)<-as.character(0:n)
 
-	legend(max(c(0.05,min(theta))),max(posterior,theta.prior),pch=c("o","+"),legend=c("Posterior","Prior"))
+  for(i in 1:n.pi)
+    f.cond[i,]<-dbinom(0:n,n,pi[i])
 
-	# calculate the Conditional distribution
+  cat("Conditional distribution of x given pi and  n:\n\n")
+  print(round(f.cond,4))	
 
-	f.cond<-matrix(0,nrow=n.theta,ncol=n+1)
-	rownames(f.cond)<-as.character(round(theta,3))
-	colnames(f.cond)<-as.character(0:n)
+  ## caculate the joint distribution of pi and x given n
 
-	for(i in 1:n.theta)
-		f.cond[i,]<-dbinom(0:n,n,theta[i])
+  f.joint<-diag(pi.prior)%*%f.cond
+  cat("\nJoint distribution:\n\n")
+  print(round(f.joint,4))	
 
-	cat("Conditional distribution of x given theta and  n:\n\n")
-	print(round(f.cond,4))	
+  ## calculate the marginal distribtion
 
-	# caculate the joint distribution of theta and x given n
+  f.marg<-matrix(1,nrow=1,ncol=n.pi)%*%f.joint
+  cat("\nMarginal distribution of x:\n\n")
+  print(round(f.marg,4))
+  cat("\n\n")	
 
-	f.joint<-diag(theta.prior)%*%f.cond
-	cat("\nJoint distribution:\n\n")
-	print(round(f.joint,4))	
+  ## finally display the prior, likelihood, and posterior
 
-	# calculate the marginal distribtion
+  results<-cbind(pi.prior,likelihood,posterior)
+  rownames(results)<-as.character(round(pi,3))
+  colnames(results)<-c("Prior","Likelihood","Posterior")
 
-	f.marg<-matrix(1,nrow=1,ncol=n.theta)%*%f.joint
-	cat("\nMarginal distribution of x:\n\n")
-	print(round(f.marg,4))
-	cat("\n\n")	
+  print(results)
 
-	# finally display the prior, likelihood, and posterior
-
-	results<-cbind(theta.prior,likelihood,posterior)
-	rownames(results)<-as.character(round(theta,3))
-	colnames(results)<-c("Prior","Likelihood","Posterior")
-
-	print(results)
-
-
-
-
-
-
-	if(ret)
-		return(list(f.cond=f.cond,f.joint=f.joint,f.marg=f.marg,likelihood=likelihood,posterior=posterior,theta=theta,theta.prior=theta.prior))
-	
+  if(ret)
+    return(list(pi=pi,pi.prior=pi.prior,likelihood=likelihood,
+                posterior=posterior,
+                f.cond=f.cond,f.joint=f.joint,f.marg=f.marg))
 }
