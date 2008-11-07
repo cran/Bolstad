@@ -51,7 +51,7 @@ xdesign<-function(x=NULL,y=NULL,corr=0.8,size=20,n.treatments=4,n.rep=500)
 
   cat("\n\n")
 
-  cat("The Pearson correlation between Y and Y is: ");
+  cat("The Pearson correlation between X and Y is: ");
   cat(paste(round(cor(x,y),3),"\n\n"))
 
   plot(x,y)
@@ -65,7 +65,7 @@ xdesign<-function(x=NULL,y=NULL,corr=0.8,size=20,n.treatments=4,n.rep=500)
   for(block in c(FALSE,TRUE))
     {
       ## block is indicator for blocking
-      ## FALSE =  completely randomized design, 
+      ## FALSE =  completely randomized design,
       ## TRUE = randomized block design
 
       for(i in 1:n.rep)
@@ -87,7 +87,7 @@ xdesign<-function(x=NULL,y=NULL,corr=0.8,size=20,n.treatments=4,n.rep=500)
               o<-order(x)
               x2<-x[o]
               y2<-y[o]
-				
+
               group<-NULL
 
               for(j in 1:size)
@@ -114,7 +114,7 @@ xdesign<-function(x=NULL,y=NULL,corr=0.8,size=20,n.treatments=4,n.rep=500)
           treat.groupmean[i,]<-y.bar
           block.groupmean[i,]<-x.bar
         }
-		
+
       if(!block)
         {
           treat.var0<-as.vector(treat.groupmean)
@@ -137,7 +137,7 @@ xdesign<-function(x=NULL,y=NULL,corr=0.8,size=20,n.treatments=4,n.rep=500)
   ind<-n.treatments*(ind-1)+index
 
   par(ask=interactive())
-	
+
   rng<-range(block.var)
   y.lims<-max(abs(c(rng[1]-0.1*diff(rng),rng[2]+0.1*diff(rng))))
   y.lims<-c(-y.lims,y.lims)
@@ -147,7 +147,7 @@ xdesign<-function(x=NULL,y=NULL,corr=0.8,size=20,n.treatments=4,n.rep=500)
           ,sub="Lurking variable in completely randomized design\nBlocking variable in randomized block design",col=rep(c("blue","red"),rep(n.treatments,2))
           ,ylim=y.lims)
   legend(n.treatments+0.5,rng[2],legend=c("Completely randomized design","Randomized block design"),fill=c("blue","red"))
-	
+
   rng<-range(treat.var)
   y.lims<-max(abs(c(rng[1]-0.1*diff(rng),rng[2]+0.1*diff(rng))))
   y.lims<-c(-y.lims,y.lims)
