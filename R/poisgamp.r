@@ -51,6 +51,8 @@ poisgamp<-function(y, r, v, ret=FALSE){
     k4<-k3[2]/1000
     mu<-seq(0,k3[2],by=k4)
 
+    mu[1]<-mu[2] ## fixes infinite upper bound problem
+
     cat("Summary statistics for posterior\n")
     cat("--------------------------------\n")
     cat(paste("Shape parameter r:\t", r1,"\n"))
@@ -59,7 +61,7 @@ poisgamp<-function(y, r, v, ret=FALSE){
 
     prior<-mu^(r-1)
     kint<-(2*sum(prior)-prior[1001])*k4/2
-    prior<-prior/kint    
+    prior<-prior/kint
     posterior<-dgamma(mu, r1, v1)
 
     y.max<-max(prior,posterior)
@@ -75,6 +77,6 @@ poisgamp<-function(y, r, v, ret=FALSE){
   if(ret)
     return(list(r=r1,v=v1,mu=mu,prior=prior,posterior=posterior))
 }
-  
-  
-	
+
+
+

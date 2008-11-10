@@ -34,7 +34,7 @@ nvaricp(y, mu, S0, kappa, cred.int = FALSE, alpha = 0.05, ret = FALSE)
   \item{posterior}{the posterior density of \eqn{\mu}{sigma} given
     \eqn{y}{y}}
   \item{S1}{the posterior scaling constant}
-  \item{kappa1}{the posterior degrees of freedom}}
+  \item{kappa1}{the posterior degrees of freedom}
 }
 \examples{
 ## Suppose we have five observations from a normal(mu, sigma^2)
