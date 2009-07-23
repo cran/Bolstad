@@ -6,7 +6,7 @@ bayes.lin.reg<-function(y,x, slope.prior = "flat"
 
   if(sum(is.na(y))>0 || sum(is.na(x))>0)
     stop("Error: x and y may not contain missing values")
-  
+
   if(length(y)!=length(x))
     stop("Error: x and y are unequal lengths")
 
@@ -27,7 +27,7 @@ bayes.lin.reg<-function(y,x, slope.prior = "flat"
     intcpt.prior<-"normal"
   else if(sum(intcpt.prior==c("flat","f"))==1)
     intcpt.prior<-"flat"
-  
+
   if(slope.prior=="normal" && sb0<=0)
     stop("Error: the prior std. devation sb0 must be greater than zero")
 
@@ -39,7 +39,7 @@ bayes.lin.reg<-function(y,x, slope.prior = "flat"
 
   if(length(y)<=2)
     stop("Error: you really should have more than 2 points for a regression!")
-  
+
   n<-length(y)
   x.bar<-mean(x)
   y.bar<-mean(y)
@@ -50,14 +50,14 @@ bayes.lin.reg<-function(y,x, slope.prior = "flat"
   b.ls<-(xy.bar-x.bar*y.bar)/(x2.bar-x.bar^2)
   fitted<-y.bar + b.ls*(x-x.bar)
   residuals<-y-fitted
-  
+
   A0<-y.bar-b.ls*x.bar
   Ax.bar<-y.bar
 
   sigma.known<-TRUE
   if(is.null(sigma)){
     sigma.known<-FALSE
-    sigma<-sum((y-(Ax.bar+b.ls*(x-x.bar)))^2)/(n-2)
+    sigma<-sqrt(sum((y-(Ax.bar+b.ls*(x-x.bar)))^2)/(n-2))
     cat(paste("Standard deviation of residuals: ",signif(sigma,3),"\n"))
   }else{
     cat(paste("Known standard deviation: ",signif(sigma,3),"\n"))
@@ -81,7 +81,7 @@ bayes.lin.reg<-function(y,x, slope.prior = "flat"
     post.var.b<-1/post.prec.b
     post.sd.b<-sqrt(post.var.b)
     post.mean.b<-prior.prec.b/post.prec.b*mb0+prec.ls/post.prec.b*b.ls
-    
+
     lb<-post.mean.b-4*post.sd.b
     ub<-post.mean.b+4*post.sd.b
     beta<-seq(lb,ub,length=1001)
@@ -92,7 +92,7 @@ bayes.lin.reg<-function(y,x, slope.prior = "flat"
     posterior.b<-dnorm(beta,post.mean.b,post.sd.b)
   }else{
     prior.prec.b<-1/sb0^2
-    prec.ls<-SSx/sigma^2 
+    prec.ls<-SSx/sigma^2
     sd.ls<-sqrt(1/prec.ls)
     post.prec.b<-prior.prec.b+prec.ls
     post.var.b<-1/post.prec.b
@@ -125,7 +125,7 @@ bayes.lin.reg<-function(y,x, slope.prior = "flat"
   prior.a<-alpha.xbar
   likelihood.a<-alpha.xbar
   posterior.a<-alpha.xbar
-  
+
   if(intcpt.prior=="flat"){
     prior.prec.a<-0
     ##should be zero by default but make sure
@@ -209,7 +209,7 @@ bayes.lin.reg<-function(y,x, slope.prior = "flat"
   y.min<-min(pred.lb)
 
   print(c(y.min,y.max))
-  
+
 
   if(plot.data){
     plot(y~x,main=paste("Predicitions with ",round(100*(1-alpha))
@@ -246,7 +246,7 @@ bayes.lin.reg<-function(y,x, slope.prior = "flat"
       cat(paste(signif(predicted.values[i,3],5),"\n",sep=""))
     }
   }
-  
+
   par(old.par)
   if(ret){
     if(!is.null(pred.x)){
