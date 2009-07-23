@@ -11,7 +11,7 @@ binodp(x,n, pi = NULL, pi.prior = NULL, n.pi = 10, ret = FALSE)
   \item{x}{the number of observed successes in the binomial experiment.}
   \item{n}{the number of trials in the binomial experiment.}
   \item{pi}{a vector of possibilities for the probability of
-    success in a single trial. if {\tt pi} is {\tt NULL} then a discrete
+    success in a single trial. if \code{pi} is \code{NULL} then a discrete
     uniform prior for \eqn{\pi}{pi} will be used.}
   \item{pi.prior}{the associated prior probability mass.}
   \item{n.pi}{the number of possible \eqn{\pi}{pi} values in the prior}
