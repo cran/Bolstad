@@ -14,7 +14,7 @@
 }
 \usage{
 bayes.lin.reg(y, x, slope.prior = "flat",intcpt.prior = "flat",
-              mb0 = 0, sb0 = 0, ma0 = 0, sa0 = 0, sigma = NULL, 
+              mb0 = 0, sb0 = 0, ma0 = 0, sa0 = 0, sigma = NULL,
               alpha = 0.05, plot.data = FALSE, pred.x = NULL,
               ret = FALSE)
 }
@@ -45,10 +45,10 @@ bayes.lin.reg(y, x, slope.prior = "flat",intcpt.prior = "flat",
     regression line superimposed on the data.}
   \item{pred.x}{a vector of x values for which the predicted y values
     are obtained and the std. errors of prediction}
-  \item{ret}{if true then the prior and posterior are returned as a list.}
+  \item{ret}{this argument is deprecated.}
 }
 \value{
-	If ret is true, then a list will be returned with the following components:
+	A list will be returned with the following components:
 	\item{post.coef}{the posterior mean of the intecept and the slope}
 	\item{post.coef}{the posterior standard deviation of the intercept the slope}
 	\item{pred.x}{the vector of values for which predictions have
@@ -62,8 +62,8 @@ bayes.lin.reg(y, x, slope.prior = "flat",intcpt.prior = "flat",
 ## generate some data from a known model, where the true value of the
 ## intercept alpha is 2, the true value of the slope beta is 3, and the
 ## errors come from a normal(0,1) distribution
-x<-rnorm(50)
-y<-22+3*x+rnorm(50)
+x = rnorm(50)
+y = 22+3*x+rnorm(50)
 
 ## use the function with a flat prior for the slope beta and a
 ## flat prior for the intercept, alpha_xbar.
@@ -80,8 +80,8 @@ bayes.lin.reg(y,x,"n","n",0,3,30,10)
 bayes.lin.reg(y,x,"n","n",0,3,30,10,plot.data = TRUE)
 
 ## The heart rate vs. O2 uptake example 14.1
-O2<-c(0.47,0.75,0.83,0.98,1.18,1.29,1.40,1.60,1.75,1.90,2.23)
-HR<-c(94,96,94,95,104,106,108,113,115,121,131)
+O2 = c(0.47,0.75,0.83,0.98,1.18,1.29,1.40,1.60,1.75,1.90,2.23)
+HR = c(94,96,94,95,104,106,108,113,115,121,131)
 plot(HR,O2,xlab="Heart Rate",ylab="Oxygen uptake (Percent)")
 
 bayes.lin.reg(y,x,"n","f",0,1,sigma=0.13)

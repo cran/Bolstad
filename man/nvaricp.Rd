@@ -19,12 +19,10 @@ nvaricp(y, mu, S0, kappa, cred.int = FALSE, alpha = 0.05, ret = FALSE)
 	  interval will be calculated for \eqn{\sigma}{sigma}}
 	\item{alpha}{controls the width of the credible
 	  interval. Ignored if cred.int is FALSE}
-	\item{ret}{if true then the likelihood and posterior are returned as a list.}
-}
-\seealso{
+	\item{ret}{this argument is deprecated.}
 }
 \value{
-  If ret is true, then a list will be returned with the following components:
+  A list will be returned with the following components:
 
   \item{sigma}{the vaules of \eqn{\sigma}{sigma} for which the prior,
     likelihood and posterior have been calculated}
@@ -39,7 +37,7 @@ nvaricp(y, mu, S0, kappa, cred.int = FALSE, alpha = 0.05, ret = FALSE)
 \examples{
 ## Suppose we have five observations from a normal(mu, sigma^2)
 ## distribution mu = 200 which are 206.4, 197.4, 212.7, 208.5.
-y<-c(206.4, 197.4, 212.7, 208.5, 203.4)
+y = c(206.4, 197.4, 212.7, 208.5, 203.4)
 
 ## We wish to choose a prior that has a median of 8. This happens when
 ## S0 = 29.11 and kappa = 1
@@ -51,12 +49,12 @@ nvaricp(y,200,29.11,1,cred.int=TRUE)
 
 ##  Same as the previous example but a calculate a 95\% credible
 ## interval for sigma by hand
-results<-nvaricp(y,200,29.11,1,cred.int=TRUE,ret=TRUE)
+results = nvaricp(y,200,29.11,1,cred.int=TRUE)
 attach(results)
-cdf<-sintegral(sigma,posterior,ret=TRUE)
-Finv<-approxfun(cdf$y,cdf$x)
-lb<-Finv(0.025)
-ub<-Finv(0.975)
+cdf = sintegral(sigma,posterior,ret=TRUE)
+Finv = approxfun(cdf$y,cdf$x)
+lb = Finv(0.025)
+ub = Finv(0.975)
 cat(paste("95\% credible interval for sigma: [",
               signif(lb,4),", ", signif(ub,4),"]\n",sep=""))
 

@@ -24,7 +24,7 @@ binomixp(x, n, alpha0=c(1,1), alpha1=c(1,1), p=0.5, ret = FALSE)
   \item{p}{The prior mixing proportion for the two component beta
     priors. That is the prior is
     \eqn{p\times beta(a_0,b_0)+(1-p)\times beta(a_1,b_1)}{p*beta(a0,b0)+(1-p)*beta(a1,b1)}. \eqn{p} is set to 0.5 by default}
-  \item{ret}{if TRUE then the prior, the likelihood and posterior are returned as a list.}
+  \item{ret}{this argument is deprecated.}
 }
 \seealso{
 	\code{\link{binodp}}
@@ -32,7 +32,7 @@ binomixp(x, n, alpha0=c(1,1), alpha1=c(1,1), p=0.5, ret = FALSE)
 	\code{\link{normmixp}}
 }
 \value{
-	If ret is true, then a list will be returned with the following components:
+	A list will be returned with the following components:
 	\item{pi}{the values of \eqn{\pi}{pi} for which the posterior density was evaluated}	\item{posterior}{the posterior density of \eqn{\pi}{pi} given \eqn{n} and \eqn{x}}
 	\item{likelihood}{the likelihood function for \eqn{\pi}{pi}
 	  given \eqn{x} and \eqn{n}, i.e. the \eqn{binomial(n,\pi)}{binomial(n,pi)} density}
@@ -51,10 +51,10 @@ binomixp(6,8,alpha0=c(0.5,6),alpha1=c(1,1),p=0.2)
 ## 4 successes observed in 12 trials with a 90:10 non uniform beta(3,3) prior
 ## and a non uniform beta(4,12).
 ## Plot the stored prior, likelihood and posterior
-results<-binomixp(4,12,c(3,3),c(4,12),0.9,ret=TRUE)
+results = binomixp(4,12,c(3,3),c(4,12),0.9)
 
 par(mfrow=c(3,1))
-y.lims<-c(0,1.1*max(results$posterior,results$prior))
+y.lims = c(0,1.1*max(results$posterior,results$prior))
 
 plot(results$pi,results$prior,ylim=y.lims,type="l"
 	,xlab=expression(pi),ylab="Density",main="Prior")

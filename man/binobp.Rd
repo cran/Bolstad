@@ -12,14 +12,14 @@ binobp(x, n, a = 1, b = 1, ret = FALSE)
 	\item{n}{the number of trials in the binomial experiment.}
 	\item{a}{parameter for the beta prior - must be greater than zero}
 	\item{b}{parameter for the beta prior - must be greater than zero}
-	\item{ret}{if true then the prior and posterior are returned as a list.}
+	\item{ret}{this argument is deprecated.}
 }
 \seealso{
 	\code{\link{binodp}}
 	\code{\link{binogcp}}
 }
 \value{
-  If ret is true, then a list will be returned with the following components:
+  A list will be returned with the following components:
   \item{posterior}{the posterior density of \eqn{\pi}{pi} given \eqn{x}
   and \eqn{n} - i.e. the \eqn{beta(a+x,b+n-x)} density}
 \item{likelihood}{the likelihood of \eqn{x} given \eqn{\pi}{pi} and
@@ -33,7 +33,7 @@ binobp(x, n, a = 1, b = 1, ret = FALSE)
   \item{quantiles}{a set of quantiles from the posterior}
 }
 \examples{
-## simplest call with 6 successes observed in 8 trials and a beta(1,1) uniform 
+## simplest call with 6 successes observed in 8 trials and a beta(1,1) uniform
 ## prior
 binobp(6,8)
 
@@ -42,10 +42,10 @@ binobp(6,8,0.5,6)
 
 ## 4 successes observed in 12 trials with a non uniform beta(3,3) prior
 ## plot the stored prior, likelihood and posterior
-results<-binobp(4,12,3,3,ret=TRUE)
+results = binobp(4,12,3,3)
 
 par(mfrow=c(3,1))
-y.lims<-c(0,1.1*max(results$posterior,results$prior))
+y.lims = c(0,1.1*max(results$posterior,results$prior))
 
 plot(results$pi,results$prior,ylim=y.lims,type="l"
 	,xlab=expression(pi),ylab="Density",main="Prior")

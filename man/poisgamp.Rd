@@ -13,16 +13,15 @@ poisgamp(y, r, v, ret = FALSE)
 	\item{r}{the shape parameter of the \eqn{gamma} prior.}
 	\item{v}{the rate parameter of the \eqn{gamma} prior. Note that the
 	  scale is \eqn{1/v}}
-	\item{ret}{if true then the prior, likelihood, posterior as well
-	  as the posterior values of \eqn{r} and \eqn{v} are returned as a list.}
-}
+	\item{ret}{This argument is deprecated and has no effect}
+      }
 \seealso{
 	\code{\link{poisdp}}
 	\code{\link{poisgcp}}
 }
 \value{
-  If ret is true, then a list will be returned with the following components:
-  
+  A list will be returned with the following components:
+
   \item{prior}{the prior density assigned to \eqn{\mu}{mu}}
   \item{likelihood}{the scaled likelihood function for \eqn{\mu}{mu}
     given \eqn{y}}
@@ -43,17 +42,17 @@ poisgamp(4,1,0)
 
 ## A random sample of 50 observations from a Poisson distribution with
 ## parameter mu = 3 and  gamma(6,3) prior
-y<-rpois(50,3)
+y = rpois(50,3)
 poisgamp(y,6,3)
 
 ## In this example we have a random sample from a Poisson distribution
 ## with an unknown mean. We will use a gamma(6,3) prior to obtain the
 ## posterior gamma distribution, and use the R function qgamma to get a
 ## 95\% credible interval for mu
-y<-c(3,4,4,3,3,4,2,3,1,7)
-retval<-poisgamp(y,6,3,ret=TRUE)
-c.i.<-qgamma(c(0.025,0.975),retval$r, retval$v)
-cat(paste("95\% credible interval for mu: [",round(c.i.[1],3), ",", round(c.i.[2],3)),"]\n") 
+y = c(3,4,4,3,3,4,2,3,1,7)
+results = poisgamp(y,6,3)
+ci = qgamma(c(0.025,0.975),results$r, results$v)
+cat(paste("95\% credible interval for mu: [",round(ci[1],3), ",", round(ci[2],3)),"]\n")
 
 }
 \keyword{misc}
