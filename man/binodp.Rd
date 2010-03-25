@@ -15,14 +15,14 @@ binodp(x,n, pi = NULL, pi.prior = NULL, n.pi = 10, ret = FALSE)
     uniform prior for \eqn{\pi}{pi} will be used.}
   \item{pi.prior}{the associated prior probability mass.}
   \item{n.pi}{the number of possible \eqn{\pi}{pi} values in the prior}
-  \item{ret}{if true then the likelihood and posterior are returned as a list.}
+  \item{ret}{this argument is deprecated.}
 }
 \seealso{
 	\code{\link{binobp}}
 	\code{\link{binogcp}}
 }
 \value{
-  If ret is true, then a list will be returned with the following components:
+  A list will be returned with the following components:
   \item{pi}{the vector of possible \eqn{\pi}{pi} values used in the prior}
    \item{pi.prior}{the associated probability mass for the values in
      \eqn{\pi}{pi}}
@@ -44,19 +44,19 @@ binodp(6,8)
 binodp(6,8,n.pi=100)
 
 ## 6 successes, 8 trials and a non-uniform discrete prior
-pi<-seq(0,1,by=0.01)
-pi.prior<-runif(101)
-pi.prior<-sort(pi.prior/sum(pi.prior))
+pi = seq(0,1,by=0.01)
+pi.prior = runif(101)
+pi.prior = sort(pi.prior/sum(pi.prior))
 binodp(6,8,pi,pi.prior)
 
 ## 5 successes, 6 trials, non-uniform prior
-pi<-c(0.3,0.4,0.5)
-pi.prior<-c(0.2,0.3,0.5)
-results<-binodp(5,6,pi,pi.prior,ret=TRUE)
+pi = c(0.3,0.4,0.5)
+pi.prior = c(0.2,0.3,0.5)
+results = binodp(5,6,pi,pi.prior)
 
 ## plot the results from the previous example using a side-by-side barplot
-results.matrix<-rbind(results$pi.prior,results$posterior)
-colnames(results.matrix)<-pi
+results.matrix = rbind(results$pi.prior,results$posterior)
+colnames(results.matrix) = pi
 barplot(results.matrix,col=c("red","blue"),beside=TRUE
 	,xlab=expression(pi),ylab=expression(Probability(pin)))
 box()

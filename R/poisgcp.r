@@ -13,23 +13,23 @@ poisgcp<-function(y, density = "normal", params=c(0,1), n.mu = 100
 
   if(n.mu<100)
     stop("Error: there must be at least 100 points in the prior")
-  
+
   if(density=="user"){
     if(is.null(mu) || is.null(mu.prior))
       stop("Error: a vector of possibilities (mu) and associated densities must be specified for a user prior")
-    
+
     if(length(mu)!=length(mu.prior))
       stop("Error: There must be an equal number of values in mu and mu prior")
-    
+
   }else if(density=="normal"){
     if(length(params)!=2)
       stop("Error: A mean and a std. deviation must be specified for a normal prior")
     mx<-params[1]
     sx<-params[2]
- 
+
     if(sx<=0)
       stop("Error: the std. deviation of a normal prior must be greater than zero")
-    
+
     lb<-mx-3.5*sx
     ub<-mx+3.5*sx
 
@@ -56,11 +56,11 @@ poisgcp<-function(y, density = "normal", params=c(0,1), n.mu = 100
     mu.prior<-dgamma(mu,a0,b0)
   }else{
     stop(paste("Error: unrecognized density: ",density,". The options are normal, gamma or user."))
-  }                     
+  }
 
   if(sum(mu<0)>0)
     stop("Error: mu cannot contain negative values")
-  
+
   cat("Summary statistics for data\n")
   cat("---------------------------\n")
   cat(paste("Number of observations:\t", n,"\n"))
@@ -85,7 +85,7 @@ poisgcp<-function(y, density = "normal", params=c(0,1), n.mu = 100
     cat(paste("Post. var.:\t", round(posterior.var,4), "\n"))
 
     mu.int<-seq(min(mu),max(mu),length=256)
-    f.mu<-fx.posterior(mu.int)    
+    f.mu<-fx.posterior(mu.int)
     cdf<-sintegral(mu.int,f.mu,ret=TRUE)
 
     suppressMessages(fx.posterior.invcdf<-approxfun(cdf$y,cdf$x))
@@ -94,7 +94,7 @@ poisgcp<-function(y, density = "normal", params=c(0,1), n.mu = 100
     cat(paste(round(100*(1-alpha)),"% cred. int.: ["
               , round(lb,3), ",", round(ub,3),"]\n\n"))
   }
-  
+
   y.max<-max(mu.prior,posterior)
   plot(mu,mu.prior,ylim=c(0,1.1*y.max),xlab=expression(mu)
        ,ylab="Density",
@@ -103,9 +103,12 @@ poisgcp<-function(y, density = "normal", params=c(0,1), n.mu = 100
   lines(mu,posterior,lty=3,col="blue")
   legend(mu[1],y.max,lty=2:3,col=c("red","blue"),legend=c("Prior","Posterior"))
 
-  if(ret==TRUE)
-    return(list(mu=mu, mu.prior=mu.prior,likelihood=likelihood,posterior=posterior))
+  if(ret){
+      cat("This option is deprecated,\n")
+      cat("The results of the function are always returned invisibly\\n")
+  }
+  invisible(list(mu=mu, mu.prior=mu.prior,likelihood=likelihood,posterior=posterior))
 }
-  
-  
-	
+
+
+

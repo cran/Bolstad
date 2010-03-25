@@ -17,14 +17,14 @@ NULL,mu.prior = NULL, ret = FALSE)
   \item{n.mu}{the number of possible \eqn{\mu}{mu} values in the prior}
   \item{mu}{a vector of possibilities for the probability of success in a single trial. Must be set if density="user"}
   \item{mu.prior}{the associated prior probability mass. Must be set if density="user"}
-  \item{ret}{if true then the likelihood and posterior are returned as a list.}
+  \item{ret}{this argument is deprecated.}
 }
 \seealso{
   \code{\link{normdp}}
   \code{\link{normnp}}
 }
 \value{
-  If ret is true, then a list will be returned with the following components:
+  A list will be returned with the following components:
   \item{likelihood}{the scaled likelihood function for \eqn{\mu}{mu}
     given \eqn{x} and \eqn{\sigma_x}{sigma.x}}
   \item{posterior}{the posterior probability of \eqn{\mu}{mu} given
@@ -34,45 +34,45 @@ NULL,mu.prior = NULL, ret = FALSE)
 }
 \examples{
 ## generate a sample of 20 observations from a N(-0.5,1) population
-x<-rnorm(20,-0.5,1)
+x = rnorm(20,-0.5,1)
 
 ## find the posterior density with a uniform U[-3,3] prior on mu
 normgcp(x,1,params=c(-3,3))
 
 ## find the posterior density with a non-uniform prior on mu
-mu<-seq(-3,3,by=0.1)
-mu.prior<-rep(0,length(mu))
-mu.prior[mu<=0]<-1/3+mu[mu<=0]/9
-mu.prior[mu>0]<-1/3-mu[mu>0]/9
+mu = seq(-3,3,by=0.1)
+mu.prior = rep(0,length(mu))
+mu.prior[mu<=0] = 1/3+mu[mu<=0]/9
+mu.prior[mu>0] = 1/3-mu[mu>0]/9
 normgcp(x,1,density="user",mu=mu,mu.prior=mu.prior)
 
 ## find the CDF for the previous example and plot it
-results<-normgcp(x,1,density="user",mu=mu,mu.prior=mu.prior,ret=TRUE)
-cdf<-sintegral(mu,results$posterior,n.pts=length(mu),ret=TRUE)
+results = normgcp(x,1,density="user",mu=mu,mu.prior=mu.prior)
+cdf = sintegral(mu,results$posterior,n.pts=length(mu),ret=TRUE)
 plot(cdf,type="l",xlab=expression(mu[0])
              ,ylab=expression(Pr(mu<=mu[0])))
 
 ## use the CDF for the previous example to find a 95\%
 ## credible interval for mu. Thanks to John Wilkinson for this simplified code
 
-lcb<-cdf$x[with(cdf,which.max(x[y<=0.025]))]
-ucb<-cdf$x[with(cdf,which.max(x[y<=0.975]))]
+lcb = cdf$x[with(cdf,which.max(x[y<=0.025]))]
+ucb = cdf$x[with(cdf,which.max(x[y<=0.975]))]
 cat(paste("Approximate 95\% credible interval : ["
            ,round(lcb,4)," ",round(ucb,4),"]\n",sep=""))
 
 ## use the CDF from the previous example to find the posterior mean
 ## and std. deviation
-dens<-mu*results$posterior 
-post.mean<-sintegral(mu,dens)
+dens = mu*results$posterior 
+post.mean = sintegral(mu,dens)
 
-dens<-(mu-post.mean)^2*results$posterior
-post.var<-sintegral(mu,dens)
-post.sd<-sqrt(post.var)
+dens = (mu-post.mean)^2*results$posterior
+post.var = sintegral(mu,dens)
+post.sd = sqrt(post.var)
 
 ## use the mean and std. deviation from the previous example to find
 ## an approximate 95\% credible interval
-lb<-post.mean-qnorm(0.975)*post.sd
-ub<-post.mean+qnorm(0.975)*post.sd
+lb = post.mean-qnorm(0.975)*post.sd
+ub = post.mean+qnorm(0.975)*post.sd
 
 
 cat(paste("Approximate 95\% credible interval : ["

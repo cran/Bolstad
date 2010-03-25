@@ -2,13 +2,13 @@ binodp<-function(x,n,pi = NULL, pi.prior = NULL, n.pi = 10, ret = FALSE){
 
   ## n - the number of trials in the binomial
   ## x - the number of observed successes
-  ## pi - the probability of success 
+  ## pi - the probability of success
   ## pi.prior - the associated prior probability mass
-  ## ret - if true then the likelihood and posterior are returned as a 
+  ## ret - if true then the likelihood and posterior are returned as a
   ## list
-	
+
   if(x>n)
-    stop("The number of observed successes (x) must be smaller than the number of trials (n)") 
+    stop("The number of observed successes (x) must be smaller than the number of trials (n)")
   if(n.pi<3)
     stop("Number of prior values of pi must be greater than 2")
 
@@ -50,20 +50,20 @@ binodp<-function(x,n,pi = NULL, pi.prior = NULL, n.pi = 10, ret = FALSE){
     f.cond[i,]<-dbinom(0:n,n,pi[i])
 
   cat("Conditional distribution of x given pi and  n:\n\n")
-  print(round(f.cond,4))	
+  print(round(f.cond,4))
 
   ## caculate the joint distribution of pi and x given n
 
   f.joint<-diag(pi.prior)%*%f.cond
   cat("\nJoint distribution:\n\n")
-  print(round(f.joint,4))	
+  print(round(f.joint,4))
 
   ## calculate the marginal distribtion
 
   f.marg<-matrix(1,nrow=1,ncol=n.pi)%*%f.joint
   cat("\nMarginal distribution of x:\n\n")
   print(round(f.marg,4))
-  cat("\n\n")	
+  cat("\n\n")
 
   ## finally display the prior, likelihood, and posterior
 
@@ -73,8 +73,11 @@ binodp<-function(x,n,pi = NULL, pi.prior = NULL, n.pi = 10, ret = FALSE){
 
   print(results)
 
-  if(ret)
-    return(list(pi=pi,pi.prior=pi.prior,likelihood=likelihood,
+  if(ret){
+      cat("The argument ret is deprecated.\n")
+      cat("The results are now always returned invisibly\n")
+  }
+  invisible(list(pi=pi,pi.prior=pi.prior,likelihood=likelihood,
                 posterior=posterior,
                 f.cond=f.cond,f.joint=f.joint,f.marg=f.marg))
 }

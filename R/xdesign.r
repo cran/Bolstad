@@ -1,14 +1,14 @@
-xdesign<-function(x=NULL,y=NULL,corr=0.8,size=20,n.treatments=4,n.rep=500)
+xdesign = function(x=NULL,y=NULL,corr=0.8,size=20,n.treatments=4,n.rep=500)
 {
   if(is.null(x))                        ## simulate some data
     {
-      nx<-size*n.treatments
-      x<-rnorm(nx)
-      y<-rnorm(nx)
+      nx = size*n.treatments
+      x = rnorm(nx)
+      y = rnorm(nx)
 
-      y<-sqrt(1-corr^2)*y+corr*x
+      y = sqrt(1-corr^2)*y+corr*x
     }
-  nx<-size*n.treatments
+  nx = size*n.treatments
   if(length(x)!=length(y))
     stop("x and y must be of equal length")
   if(length(x)!=size*n.treatments)
@@ -35,8 +35,8 @@ xdesign<-function(x=NULL,y=NULL,corr=0.8,size=20,n.treatments=4,n.rep=500)
             round(sd(y)/sqrt(length(y)),3),sep="\t"))
   cat("\n\n")
 
-  qx<-quantile(x,c(0.25,0.75))
-  qy<-quantile(y,c(0.25,0.75))
+  qx = quantile(x,c(0.25,0.75))
+  qy = quantile(y,c(0.25,0.75))
 
   cat("Variable\tMinimum\tMaximum\tQ1\tQ3\n")
   cat(paste("X\t",round(min(x),3)
@@ -56,11 +56,11 @@ xdesign<-function(x=NULL,y=NULL,corr=0.8,size=20,n.treatments=4,n.rep=500)
 
   plot(x,y)
 
-  ssx<-rep(0,n.rep)
-  ssy<-rep(0,n.rep)
+  ssx = rep(0,n.rep)
+  ssy = rep(0,n.rep)
 
-  treat.groupmean<-matrix(0,ncol=n.treatments,nrow=n.rep)
-  block.groupmean<-matrix(0,ncol=n.treatments,nrow=n.rep)
+  treat.groupmean = matrix(0,ncol=n.treatments,nrow=n.rep)
+  block.groupmean = matrix(0,ncol=n.treatments,nrow=n.rep)
 
   for(block in c(FALSE,TRUE))
     {
@@ -72,75 +72,75 @@ xdesign<-function(x=NULL,y=NULL,corr=0.8,size=20,n.treatments=4,n.rep=500)
         {
           if(!block)
             {
-              group<-rep(1:n.treatments,size)
+              group = rep(1:n.treatments,size)
 
-              z<-rnorm(nx)
-              o<-order(z)
-              z<-z[o]
-              group<-group[o]
+              z = rnorm(nx)
+              o = order(z)
+              z = z[o]
+              group = group[o]
 
-              x2<-x
-              y2<-y
+              x2 = x
+              y2 = y
             }
           else
             {
-              o<-order(x)
-              x2<-x[o]
-              y2<-y[o]
+              o = order(x)
+              x2 = x[o]
+              y2 = y[o]
 
-              group<-NULL
+              group = NULL
 
               for(j in 1:size)
                 {
-                  gp<-1:n.treatments
-                  z<-rnorm(n.treatments)
-                  gp<-gp[order(z)]
-                  group<-c(group,gp)
+                  gp = 1:n.treatments
+                  z = rnorm(n.treatments)
+                  gp = gp[order(z)]
+                  group = c(group,gp)
                 }
             }
 
-          split.x<-split(x2,group)
-          split.y<-split(y2,group)
+          split.x = split(x2,group)
+          split.y = split(y2,group)
 
-          x.bar<-sapply(split.x,mean)
-          y.bar<-sapply(split.y,mean)
+          x.bar = sapply(split.x,mean)
+          y.bar = sapply(split.y,mean)
 
-          x.mean<-mean(x.bar)
-          y.mean<-mean(y.bar)
+          x.mean = mean(x.bar)
+          y.mean = mean(y.bar)
 
-          ssx[i]<-sum((x.bar-x.mean)^2)
-          ssy[i]<-sum((y.bar-y.mean)^2)
+          ssx[i] = sum((x.bar-x.mean)^2)
+          ssy[i] = sum((y.bar-y.mean)^2)
 
-          treat.groupmean[i,]<-y.bar
-          block.groupmean[i,]<-x.bar
+          treat.groupmean[i,] = y.bar
+          block.groupmean[i,] = x.bar
         }
 
       if(!block)
         {
-          treat.var0<-as.vector(treat.groupmean)
-          block.var0<-as.vector(block.groupmean)
-          index0<-rep(1:n.treatments,rep(n.rep,n.treatments))
+          treat.var0 = as.vector(treat.groupmean)
+          block.var0 = as.vector(block.groupmean)
+          index0 = rep(1:n.treatments,rep(n.rep,n.treatments))
         }
       else
         {
-          treat.var1<-as.vector(treat.groupmean)
-          block.var1<-as.vector(block.groupmean)
-          index1<-rep(1:n.treatments,rep(n.rep,n.treatments))
+          treat.var1 = as.vector(treat.groupmean)
+          block.var1 = as.vector(block.groupmean)
+          index1 = rep(1:n.treatments,rep(n.rep,n.treatments))
         }
     }
 
-  treat.var<-c(treat.var0,treat.var1)
-  block.var<-c(block.var0,block.var1)
-  index<-c(index0,index1)
+  treat.var = c(treat.var0,treat.var1)
+  block.var = c(block.var0,block.var1)
+  index = c(index0,index1)
 
-  ind<-rep(1:2,c(length(treat.var0),length(treat.var1)))
-  ind<-n.treatments*(ind-1)+index
+  ind = rep(1:2,c(length(treat.var0),length(treat.var1)))
+  ind = n.treatments*(ind-1)+index
 
   par(ask=interactive())
 
-  rng<-range(block.var)
-  y.lims<-max(abs(c(rng[1]-0.1*diff(rng),rng[2]+0.1*diff(rng))))
-  y.lims<-c(-y.lims,y.lims)
+  rng = range(block.var)
+  y.lims = max(abs(c(rng[1]-0.1*diff(rng),rng[2]+0.1*diff(rng))))
+  y.lims = c(-y.lims,y.lims)
 
   boxplot(block.var~ind
           ,main="Boxplots of Lurking/Blocking variable group means"
@@ -148,17 +148,17 @@ xdesign<-function(x=NULL,y=NULL,corr=0.8,size=20,n.treatments=4,n.rep=500)
           ,ylim=y.lims)
   legend(n.treatments+0.5,rng[2],legend=c("Completely randomized design","Randomized block design"),fill=c("blue","red"))
 
-  rng<-range(treat.var)
-  y.lims<-max(abs(c(rng[1]-0.1*diff(rng),rng[2]+0.1*diff(rng))))
-  y.lims<-c(-y.lims,y.lims)
+  rng = range(treat.var)
+  y.lims = max(abs(c(rng[1]-0.1*diff(rng),rng[2]+0.1*diff(rng))))
+  y.lims = c(-y.lims,y.lims)
   boxplot(treat.var~ind
           ,main="Boxplots of treatment group means"
           ,col=rep(c("blue","red"),rep(n.treatments,2))
           ,ylim=y.lims)
   legend(n.treatments+0.5,rng[2],legend=c("Completely randomized design","Randomized block design"),fill=c("blue","red"))
 
-  x<-treat.var[ind<=n.treatments]
-  y<-treat.var[ind>n.treatments]
+  x = treat.var[ind<=n.treatments]
+  y = treat.var[ind>n.treatments]
   cat("Variable\tN\tMean\tMedian\tTrMean\tStDev\tSE Mean\n")
   cat(paste("Randomized",length(x),
             round(mean(x),3),
@@ -175,8 +175,8 @@ xdesign<-function(x=NULL,y=NULL,corr=0.8,size=20,n.treatments=4,n.rep=500)
             round(sd(y)/sqrt(length(y)),3),sep="\t"))
   cat("\n\n")
 
-  qx<-quantile(x,c(0.25,0.75))
-  qy<-quantile(y,c(0.25,0.75))
+  qx = quantile(x,c(0.25,0.75))
+  qy = quantile(y,c(0.25,0.75))
 
   cat("Variable\tMinimum\tMaximum\tQ1\tQ3\n")
   cat(paste("Randomized",round(min(x),3)
@@ -191,5 +191,5 @@ xdesign<-function(x=NULL,y=NULL,corr=0.8,size=20,n.treatments=4,n.rep=500)
 
   cat("\n\n")
 
-  return(invisible(list(block.means=block.var,treat.means=treat.var,ind=ind)))
+  invisible(list(block.means=block.var,treat.means=treat.var,ind=ind))
 }
