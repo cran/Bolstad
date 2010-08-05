@@ -47,8 +47,9 @@ mu.prior[mu>0] = 1/3-mu[mu>0]/9
 normgcp(x,1,density="user",mu=mu,mu.prior=mu.prior)
 
 ## find the CDF for the previous example and plot it
+## Note the syntax for sintegral has changed
 results = normgcp(x,1,density="user",mu=mu,mu.prior=mu.prior)
-cdf = sintegral(mu,results$posterior,n.pts=length(mu),ret=TRUE)
+cdf = sintegral(mu,results$posterior,n.pts=length(mu))$cdf
 plot(cdf,type="l",xlab=expression(mu[0])
              ,ylab=expression(Pr(mu<=mu[0])))
 
@@ -62,11 +63,11 @@ cat(paste("Approximate 95\% credible interval : ["
 
 ## use the CDF from the previous example to find the posterior mean
 ## and std. deviation
-dens = mu*results$posterior 
-post.mean = sintegral(mu,dens)
+dens = mu*results$posterior
+post.mean = sintegral(mu,dens)$value
 
 dens = (mu-post.mean)^2*results$posterior
-post.var = sintegral(mu,dens)
+post.var = sintegral(mu,dens)$value
 post.sd = sqrt(post.var)
 
 ## use the mean and std. deviation from the previous example to find

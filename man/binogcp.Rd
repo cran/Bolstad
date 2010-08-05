@@ -12,8 +12,8 @@ binogcp(x, n, density = "uniform", params = c(0,1), n.pi = 1000,
   \item{x}{the number of observed successes in the binomial experiment.}
   \item{n}{the number of trials in the binomial experiment.}
   \item{density}{may be one of "beta", "exp", "normal", "student", "uniform" or "user"}
-  \item{params}{if density is one of the parameteric forms then 
-    then a vector of parameters  must be supplied. 
+  \item{params}{if density is one of the parameteric forms then
+    then a vector of parameters  must be supplied.
     beta:		a,b
     exp:		rate
     normal: 	mean,sd
@@ -36,7 +36,7 @@ binogcp(x, n, density = "uniform", params = c(0,1), n.pi = 1000,
   \item{pi.prior}{the associated probability mass for the values in \eqn{\pi}{pi}}
 }
 \examples{
-## simplest call with 6 successes observed in 8 trials and a continuous 
+## simplest call with 6 successes observed in 8 trials and a continuous
 ## uniform prior
 binogcp(6,8)
 
@@ -54,11 +54,14 @@ pi.prior[pi>0.5] = 4-4*pi[pi>0.5]
 results = binogcp(4,12,"user",pi=pi,pi.prior=pi.prior)
 
 ## find the posterior CDF using the previous example and Simpson's rule
-cdf = sintegral(pi,results$posterior,n.pts=length(pi), ret = TRUE)
+## Please note that the syntax of sintegral has changed since the
+## second edition of the book
+cdf = sintegral(pi,results$posterior,n.pts=length(pi))$cdf
 plot(cdf,type="l",xlab=expression(pi[0])
 	,ylab=expression(Pr(pi<=pi[0])))
 
-## use the cdf to find the 95\% credible region. Thanks to John Wilkinson for this simplified code.
+## use the cdf to find the 95\% credible region.
+## Thanks to John Wilkinson for this simplified code.
 lcb = cdf$x[with(cdf,which.max(x[y<=0.025]))]
 ucb = cdf$x[with(cdf,which.max(x[y<=0.975]))]
 cat(paste("Approximate 95\% credible interval : ["
@@ -67,13 +70,13 @@ cat(paste("Approximate 95\% credible interval : ["
 ## find the posterior mean, variance and std. deviation
 ## using Simpson's rule and the output from the previous example
 dens = pi*results$posterior # calculate pi*f(pi | x, n)
-post.mean = sintegral(pi,dens)
+post.mean = sintegral(pi,dens)$value
 
 dens = (pi-post.mean)^2*results$posterior
-post.var = sintegral(pi,dens)
+post.var = sintegral(pi,dens)$value
 post.sd = sqrt(post.var)
 
-# calculate an approximate 95\% credible region using the posterior mean and 
+# calculate an approximate 95\% credible region using the posterior mean and
 # std. deviation
 lb = post.mean-qnorm(0.975)*post.sd
 ub = post.mean+qnorm(0.975)*post.sd

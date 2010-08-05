@@ -48,10 +48,11 @@ nvaricp(y,200,29.11,1)
 nvaricp(y,200,29.11,1,cred.int=TRUE)
 
 ##  Same as the previous example but a calculate a 95\% credible
-## interval for sigma by hand
+## interval for sigma by hand. Note that the syntax of sintegral has
+## changed
 results = nvaricp(y,200,29.11,1,cred.int=TRUE)
 attach(results)
-cdf = sintegral(sigma,posterior,ret=TRUE)
+cdf = sintegral(sigma,posterior)$cdf
 Finv = approxfun(cdf$y,cdf$x)
 lb = Finv(0.025)
 ub = Finv(0.975)
