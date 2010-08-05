@@ -130,7 +130,7 @@ nvaricp = function(y,mu,S0,kappa,cred.int=FALSE, alpha = 0.05, ret=FALSE){
     cat(paste("Estimate of sigma using posterior median: ",
               signif(sigmahat.post.median,4),"\n",sep=""))
 
-    cdf = sintegral(sigma,posterior,ret=TRUE)
+    cdf = sintegral(sigma,posterior)$cdf
     Finv = approxfun(cdf$y,cdf$x)
     lb = Finv(alpha/2)
     ub = Finv(1-alpha/2)
