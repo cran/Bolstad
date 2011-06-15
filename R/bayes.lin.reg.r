@@ -235,7 +235,7 @@ bayes.lin.reg = function(y,x, slope.prior = "flat"
   pred.se = NULL
   if(!is.null(pred.x)){
     pred.y = post.mean.a+post.mean.b*(pred.x-x.bar)
-    pred.se = sqrt(post.var.a+(pred.x-x.bar)^2*post.var.b^2+sigma^2)
+    pred.se = sqrt(post.var.a + (pred.x - x.bar)^2 * post.var.b + sigma^2)
     predicted.values = cbind(pred.x,pred.y,pred.se)
     cat("x\tPredicted.y\tSE\n")
     cat("----\t----------\t-----\n")
