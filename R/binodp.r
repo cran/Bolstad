@@ -30,8 +30,8 @@ binodp<-function(x,n,pi = NULL, pi.prior = NULL, n.pi = 10, ret = FALSE){
 
   n.pi<-length(pi)
 
-  likelihood<-dbinom(x,n,pi)*pi.prior
-  posterior<-likelihood/sum(likelihood)
+  likelihood<-dbinom(x,n,pi)
+  posterior<-likelihood*pi.prior/sum(likelihood*pi.prior)
 
   plot(pi,posterior,ylim=c(0,1.1*max(posterior,pi.prior)),pch=20
        ,col="blue",
