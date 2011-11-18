@@ -1,5 +1,6 @@
-b0b985eef345bb30177e0736a516839b *DESCRIPTION
+fd58caff246236cf287bb88f0efb217d *DESCRIPTION
 625da3af19fd9b59d80b5b899cea9288 *INDEX
+8641fb4078a5fa26c3845eeabc26b90e *NAMESPACE
 8635f0b360e12bc6c12cc4699335fb18 *R/bayes.lin.reg.r
 30c81622f562f63f1a709f52bcde0889 *R/binobp.r
 dc46e316495de5188e07235a0555f512 *R/binodp.r
@@ -16,7 +17,7 @@ adc2bc30ce6169e23cf176924d6ca261 *R/poisgcp.r
 d9f4f5fda4c3f280f8153cc7fc5bd393 *R/sintegral.r
 a0397b252040772771f39b27dbd51a21 *R/sscsample.r
 95d468561a6fa95247d935f0ea7ae5ac *R/xdesign.r
-0045006c9d7c6215c0692ed2ad227a48 *data/sscsample.data.csv.gz
+0aa6b17a67ce62f0a3a825027090bcc8 *data/sscsample.data.txt.gz
 e6bf4c90e3a0d9770d878d0843db5086 *man/bayes.lin.reg.Rd
 ba93e7b4076c2e87ba6256f6b2f97ed3 *man/binobp.Rd
 755ae7a8ef4bfbf13b2df539df58028a *man/binodp.Rd
