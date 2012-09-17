@@ -1,4 +1,6 @@
-binogcp = function(x,n,density="uniform", params = c(0,1), n.pi = 1000, pi = NULL, pi.prior = NULL, ret = FALSE){
+binogcp = function(x, n, density = "uniform",
+                   params = c(0,1), n.pi = 1000,
+                   pi = NULL, pi.prior = NULL){
 
   ## n - the number of trials in the binomial
   ## x - the number of observed successes
@@ -16,19 +18,19 @@ binogcp = function(x,n,density="uniform", params = c(0,1), n.pi = 1000, pi = NUL
   ## ret - if true then the likelihood and posterior are returned as a
   ## list
 
-  if(x>n)
+  if(x > n)
     stop("The number of observed successes (x) must be smaller than the number of trials")
-  if(n.pi<100)
+  if(n.pi < 100)
     stop("Number of prior values of pi must be greater than 100")
 
-  if(is.null(pi)||is.null(pi.prior))
-    pi = seq(0+1/n.pi,1-1/n.pi,length=n.pi)
+  if(is.null(pi) || is.null(pi.prior))
+    pi = seq(0 + 1 / n.pi, 1 - 1 / n.pi, length = n.pi)
   else{
-    if(length(pi)!=length(pi.prior))
+    if(length(pi) != length(pi.prior))
       stop("pi and pi.prior must have same length")
 
-    if(sum(pi<0|pi>1)>0)                ## check that probabilities lie on [0,1]
-      stop("Values of pi must be between 0 and 1 inclusive")
+    if(any(pi < 0))    ## check that the density values are greater than 0
+      stop("Values of pi must be >= 0")
   }
 
   if(density=="beta"){
@@ -95,12 +97,11 @@ binogcp = function(x,n,density="uniform", params = c(0,1), n.pi = 1000, pi = NUL
        xlab=expression(pi),ylab="Density")
   lines(pi,pi.prior,lty=2,col="red")
 
-  left = min(pi)+diff(range(pi))*0.05
-  legend(left,max(posterior,pi.prior),lty=1:2,col=c("blue","red"),legend=c("Posterior","Prior"))
-  if(ret){
-      cat("The argument ret is deprecated.\n")
-      cat("The results are now always returned invisibly\n")
-  }
-  invisible(list(likelihood=likelihood,posterior=posterior,pi=pi,pi.prior=pi.prior))
+  left = min(pi) + diff(range(pi)) * 0.05
+  legend(left,max(posterior, pi.prior), lty = 1:2, col = c("blue","red"),
+         legend = c("Posterior","Prior"))
+
+  invisible(list(likelihood = likelihood, posterior = posterior,
+                 pi = pi, pi.prior = pi.prior))
 
 }

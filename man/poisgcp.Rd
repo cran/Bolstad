@@ -9,7 +9,7 @@
 \usage{
 poisgcp(y, density = "normal", params=c(0,1), n.mu = 100
        ,mu = NULL, mu.prior = NULL,
-       print.sum.stat=FALSE, alpha=0.05, ret=FALSE)
+       print.sum.stat=FALSE, alpha=0.05)
 }
 \arguments{
 	\item{y}{A random sample of one or more observations from a
@@ -30,7 +30,6 @@ poisgcp(y, density = "normal", params=c(0,1), n.mu = 100
 	  the parameter alpha.}
 	\item{alpha}{The width of the credible interval is controlled by
 	  the parameter alpha.}
-	\item{ret}{this arguement is deprecated.}
 }
 \seealso{
 	\code{\link{poisdp}}

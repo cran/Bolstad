@@ -1,4 +1,4 @@
-nvaricp = function(y,mu,S0,kappa,cred.int=FALSE, alpha = 0.05, ret=FALSE){
+nvaricp = function(y, mu, S0, kappa, cred.int=FALSE, alpha = 0.05){
   n = length(y)
   SST = sum((y-mu)^2)
 
@@ -141,10 +141,7 @@ nvaricp = function(y,mu,S0,kappa,cred.int=FALSE, alpha = 0.05, ret=FALSE){
   }
 
 
-  if(ret){
-      cat("The argument ret is deprecated.\n")
-      cat("The results are now always returned invisibly\n")
-  }
-  invisible(list(sigma=sigma,prior=prior,likelihood=likelihood,posterior=posterior,S1=S1,kappa1=kappa1))
+  invisible(list(sigma = sigma, prior = prior, likelihood = likelihood,
+                 posterior = posterior, S1 = S1, kappa1 = kappa1))
 }
 

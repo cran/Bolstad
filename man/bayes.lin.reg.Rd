@@ -15,8 +15,7 @@
 \usage{
 bayes.lin.reg(y, x, slope.prior = "flat",intcpt.prior = "flat",
               mb0 = 0, sb0 = 0, ma0 = 0, sa0 = 0, sigma = NULL,
-              alpha = 0.05, plot.data = FALSE, pred.x = NULL,
-              ret = FALSE)
+              alpha = 0.05, plot.data = FALSE, pred.x = NULL)
 }
 \arguments{
   \item{y}{the vector of responses.}
@@ -45,7 +44,6 @@ bayes.lin.reg(y, x, slope.prior = "flat",intcpt.prior = "flat",
     regression line superimposed on the data.}
   \item{pred.x}{a vector of x values for which the predicted y values
     are obtained and the std. errors of prediction}
-  \item{ret}{this argument is deprecated.}
 }
 \value{
 	A list will be returned with the following components:

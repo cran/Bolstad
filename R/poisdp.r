@@ -1,8 +1,8 @@
-poisdp = function(y.obs, mu, mu.prior, ret=FALSE){
+poisdp = function(y.obs, mu, mu.prior){
   if(length(y.obs)==0 || is.null(y.obs))
     stop("Error: y.obs must contain at least one value")
 
-  if(sum(y.obs<0)>0)
+  if(any(y.obs < 0))
     stop("Error: y.obs cannot contain negative values")
 
   if(length(mu)!=length(mu.prior))
@@ -115,10 +115,6 @@ poisdp = function(y.obs, mu, mu.prior, ret=FALSE){
     legend(mu[2],y.max,lty=c(2,1),col=c("red","blue"),
            legend=c("Prior","Posterior"))
 
-  }
-  if(ret){
-      cat("The argument ret is deprecated.\n")
-      cat("The results are now always returned invisibly\n")
   }
   invisible(list(mu=mu,mu.prior=mu.prior,likelihood=likelihood,posterior=posterior))
 }

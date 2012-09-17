@@ -9,13 +9,14 @@
     }.
 }
 \usage{
-	sintegral(x, fx, n.pts = 256, ret = FALSE)
+	sintegral(x, fx, n.pts = max(256, length(n.x)))
 }
 \arguments{
 	\item{x}{a sequence of \eqn{x} values.}
 	\item{fx}{the value of the function to be integrated at \eqn{x}  or a function}
-	\item{n.pts}{the number of points to be used in the integration.}
-	\item{ret}{this argument is deprecated (and ignored)}
+	\item{n.pts}{the number of points to be used in the
+	  integration. If \code{x} contains more than n.pts then n.pts will be
+	  set to \code{length(x)}}
       }
       \value{
 	A list containing two elements, \code{value} - the value of the

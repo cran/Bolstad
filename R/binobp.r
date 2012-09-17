@@ -1,9 +1,9 @@
-binobp = function(x,n,a = 1, b = 1 , ret = FALSE){
+binobp = function(x,n,a = 1, b = 1){
 
   ## n - the number of trials in the binomial
   ## x - the number of observed successes
   ## a,b  - the parameters of the Beta prior density (must be > 0)
-  ## ret - if true then the prior, likelihood, posterior, mean, variance and
+  ## the prior, likelihood, posterior, mean, variance and
   ## std. deviation are returned as a list
 
   if(x>n)
@@ -45,11 +45,8 @@ binobp = function(x,n,a = 1, b = 1 , ret = FALSE){
     cat(paste(round(probs[i],3),"\t",round(qtls[i],7),"\n",sep=""))
 
 
-  if(ret){
-      cat("The argument ret is deprecated.\n")
-      cat("The results are now always returned invisibly\n")
-  }
-
-  invisible(list(posterior=posterior,likelihood=likelihood,prior=prior,pi=pi,mean=m1,var=v1,sd=s1,quantiles=qtls))
+  invisible(list(posterior = posterior, likelihood = likelihood,
+                 prior = prior, pi = pi, mean = m1, var = v1, sd = s1,
+                 quantiles = qtls))
 
 }

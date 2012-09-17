@@ -5,14 +5,13 @@
 	Evaluates and plots the posterior density for \eqn{\pi}{pi}, the probability of a success in a Bernoulli trial, with binomial sampling and a continous \eqn{beta(a,b)} prior.
 }
 \usage{
-binobp(x, n, a = 1, b = 1, ret = FALSE)
+binobp(x, n, a = 1, b = 1)
 }
 \arguments{
 	\item{x}{the number of observed successes in the binomial experiment.}
 	\item{n}{the number of trials in the binomial experiment.}
 	\item{a}{parameter for the beta prior - must be greater than zero}
 	\item{b}{parameter for the beta prior - must be greater than zero}
-	\item{ret}{this argument is deprecated.}
 }
 \seealso{
 	\code{\link{binodp}}

@@ -1,15 +1,15 @@
-binomixp = function(x,n,alpha0=c(1,1),alpha1=c(1,1),p=0.5,ret=FALSE){
+binomixp = function(x, n, alpha0 = c(1,1), alpha1 = c(1,1), p = 0.5){
 
-  if(n<x)
+  if(n < x)
     stop("Error: n must be greater than or equal to x")
 
-  if(length(alpha0)!=2 || length(alpha1)!=2)
+  if(length(alpha0) != 2 || length(alpha1) != 2)
     stop("Error: the parameters for the beta priors, alpha0 and alpha1, must have two elements each")
 
-  if(sum(alpha0<0)>0 || sum(alpha1<0)>0)
+  if(any(alpha0 < 0) || any(alpha1 < 0))
     stop("Error: the parameters for the beta priors, alpha0 and alpha1, must be greater than zero")
 
-  if(p<=0 || p>=1)
+  if(p <= 0 || p >= 1)
     stop("Error: the mixing proportion p must be in the interval (0,1) exclusive")
 
 
@@ -33,7 +33,7 @@ binomixp = function(x,n,alpha0=c(1,1),alpha1=c(1,1),p=0.5,ret=FALSE){
 
 
   q0 = p
-  q1 = 1-q0
+  q1 = 1 - q0
   qp0 = q0*f0/(q0*f0+q1*f1)
   qp1 = 1-qp0
 
@@ -103,10 +103,6 @@ binomixp = function(x,n,alpha0=c(1,1),alpha1=c(1,1),p=0.5,ret=FALSE){
 
   par(o.par)
 
-  if(ret){
-      cat("The argument ret is deprecated.\n")
-      cat("The results are now always returned invisibly\n")
-  }
   invisible(list(pi=pi,prior=prior,likelihood=likelihood,posterior=posterior))
 }
 

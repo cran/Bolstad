@@ -1,10 +1,10 @@
-normnp = function(x, m.x = 0 , s.x = 1, sigma.x = NULL, n.mu = 100, ret = FALSE){
+normnp = function(x, m.x = 0 , s.x = 1, sigma.x = NULL, n.mu = 100){
 
   ## x - the vector of observations
   ## m.x - the mean of the normal prior
   ## s.x - the standard deviation of the normal prior
   ## sigma.x - the population standard deviation
-  ## ret - if true then the prior, likelihood, posterior, mean, variance, and
+  ## the prior, likelihood, posterior, mean, variance, and
   ## quantiles are returned as a list
 
   mean.x = mean(x)
@@ -72,10 +72,6 @@ normnp = function(x, m.x = 0 , s.x = 1, sigma.x = NULL, n.mu = 100, ret = FALSE)
   for(i in 1:length(probs))
     cat(paste(round(probs[i],3),"\t",round(qtls[i],7),"\n",sep=""))
 
-  if(ret){
-      cat("The argument ret is deprecated.\n")
-      cat("The results are now always returned invisibly\n")
-  }
   invisible(list(mu=mu,prior=mu.prior,likelihood=likelihood,posterior=posterior,mean=post.mean,sd=post.sd,quantiles=qtls))
 
 }

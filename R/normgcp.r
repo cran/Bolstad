@@ -1,4 +1,6 @@
-normgcp = function(x, sigma.x = NULL, density="uniform" , params = NULL, n.mu = 50, mu = NULL, mu.prior = NULL, ret = FALSE){
+normgcp = function(x, sigma.x = NULL, density = "uniform" ,
+                   params = NULL, n.mu = 50, mu = NULL,
+                   mu.prior = NULL){
 
   ## x - the vector of observations
   ## sigma.x - the population standard deviation
@@ -12,54 +14,57 @@ normgcp = function(x, sigma.x = NULL, density="uniform" , params = NULL, n.mu = 
 
   mean.x = mean(x)
 
-  if(n.mu<3)
+  if(n.mu < 3)
     stop("Number of prior values of mu must be greater than 2")
 
   if(is.null(sigma.x)){
-    sigma.x = sd(x-mean.x)
-    cat(paste("Standard deviation of the residuals :",signif(sigma.x,4),"\n",sep=""))
+    sigma.x = sd(x - mean.x)
+    cat(paste("Standard deviation of the residuals :",
+              signif(sigma.x,4),"\n", sep = ""))
   }else{
-    cat(paste("Known standard deviation :",signif(sigma.x,4),"\n",sep=""))
+    cat(paste("Known standard deviation :", signif(sigma.x, 4),"\n",sep=""))
   }
 
-  if(density=="normal" || density=="norm" || density=="n"){
-    if(is.null(params)|length(params)<1)
+  density = tolower(density)
+
+  if(grepl('^n(orm(al)*)*$', density)){
+    if(is.null(params) | length(params) < 1)
       stop("You must supply a mean for a normal prior")
     mx = params[1]
 
-    if(length(params)==2)  ## user has supplied sd as well
+    if(length(params) == 2)  ## user has supplied sd as well
       s.x = params[2]
     else
       s.x = sigma.x
 
-    mu = seq(mx-3.5*s.x,mx+3.5*s.x,length = n.mu)
+    mu = seq(mx - 3.5 * s.x, mx + 3.5 * s.x, length = n.mu)
     mu.prior = dnorm(mu,mx,s.x)
-  } else if(density=="uniform" || density=="unif"){
+  }else if(grepl('^u(nif(orm)*)*$', density)){
     if(is.null(params)){
       ## set params to mean+/-3.5sd by default
-      params = c(mean.x-3.5*sigma.x,mean.x+3.5*sigma.x)
+      params = c(mean.x - 3.5 * sigma.x, mean.x + 3.5 * sigma.x)
     }
     if(length(params)<2)
       stop("You must supply a minimum and a maximum to use a uniform prior")
     minx = params[1]
     maxx = params[2]
-    if(maxx<=minx)
+    if(maxx <= minx)
       stop("The maximum must be greater than the minimum for a uniform prior")
-    mu = seq(minx,maxx,length = n.mu)
-    mu.prior = dunif(mu,minx,maxx)
+    mu = seq(minx, maxx, length = n.mu)
+    mu.prior = dunif(mu, minx, maxx)
   }else{
     ## user specified prior
-    if(is.null(mu)|is.null(mu.prior))
+    if(is.null(mu) | is.null(mu.prior))
       stop("If you wish to use a non-uniform continuous prior then you must supply a mean vector, mu, and an associated density vector, mu.prior")
   }
 
-  if(any(mu.prior<0) | any(mu.prior>1))
-    stop("Prior probabilities must be between 0 and 1 inclusive")
+  if(any(mu.prior < 0))
+    stop("Prior densities must be >=0")
 
-  crude.int = sum(diff(mu)*mu.prior[-1])
-  if(round(crude.int,3)!=1){
+  crude.int = sum(diff(mu) * mu.prior[-1])
+  if(round(crude.int, 3) != 1){
     warning("The prior probabilities did not sum to 1, therefore the prior has been normalized")
-    mu.prior = mu.prior/crude.int
+    mu.prior = mu.prior / crude.int
     print(crude.int)
   }
 
@@ -91,10 +96,6 @@ normgcp = function(x, sigma.x = NULL, density="uniform" , params = NULL, n.mu = 
   left = min(mu)+diff(range(mu))*0.05
   legend(left,max(posterior,mu.prior),lty=1:2,col=c("blue","red"),legend=c("Posterior","Prior"))
 
-  if(ret){
-      cat("The argument ret is deprecated.\n")
-      cat("The results are now always returned invisibly\n")
-  }
   invisible(list(likelihood=likelihood,posterior=posterior,mu=mu,mu.prior=mu.prior))
 
 }

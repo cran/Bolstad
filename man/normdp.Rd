@@ -5,8 +5,7 @@
 	Evaluates and plots the posterior density for \eqn{\mu}{mu}, the mean of a normal distribution, with a discrete prior on \eqn{\mu}{mu}
 }
 \usage{
-normdp(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50,
-	ret = FALSE)
+normdp(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50)
 }
 \arguments{
   \item{x}{a vector of observations from a normal distribution with unknown mean and known std. deviation.}
@@ -15,7 +14,6 @@ normdp(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50,
     a single trial. If mu is NULL then a uniform prior is used.}
   \item{mu.prior}{the associated prior probability mass.}
   \item{n.mu}{the number of possible \eqn{\mu}{mu} values in the prior}
-  \item{ret}{this argument is deprecated.}
 }
 \seealso{
   \code{\link{normnp}}
@@ -44,8 +42,8 @@ normdp(x,1,mu,mu.prior)
 
 ## Let mu have the discrete distribution with 5 possible
 ## values, 2, 2.5, 3, 3.5 and 4, and associated prior probability of
-## 0.1, 0.2, 0.4, 0.2, 0.1 respectively. Find the posterior 
-## distribution after a drawing random sample of n = 5 observations 
+## 0.1, 0.2, 0.4, 0.2, 0.1 respectively. Find the posterior
+## distribution after a drawing random sample of n = 5 observations
 ## from a N(mu,1) distribution y = [1.52, 0.02, 3.35, 3.49, 1.82]
 mu = seq(2,4,by=0.5)
 mu.prior = c(0.1,0.2,0.4,0.2,0.1)

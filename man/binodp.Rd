@@ -5,7 +5,7 @@
   Evaluates and plots the posterior density for \eqn{\pi}{pi}, the probability of a success in a Bernoulli trial, with binomial sampling and a discrete prior on \eqn{\pi}{pi}
 }
 \usage{
-binodp(x,n, pi = NULL, pi.prior = NULL, n.pi = 10, ret = FALSE)
+binodp(x,n, pi = NULL, pi.prior = NULL, n.pi = 10)
 }
 \arguments{
   \item{x}{the number of observed successes in the binomial experiment.}
@@ -15,7 +15,6 @@ binodp(x,n, pi = NULL, pi.prior = NULL, n.pi = 10, ret = FALSE)
     uniform prior for \eqn{\pi}{pi} will be used.}
   \item{pi.prior}{the associated prior probability mass.}
   \item{n.pi}{the number of possible \eqn{\pi}{pi} values in the prior}
-  \item{ret}{this argument is deprecated.}
 }
 \seealso{
 	\code{\link{binobp}}

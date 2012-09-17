@@ -1,5 +1,6 @@
-sscsample  =  function (size, n.samples, sample.type = "simple", x = NULL, strata = NULL
-                       , cluster = NULL, ret = FALSE, print = TRUE)
+sscsample  =  function (size, n.samples, sample.type = "simple",
+                        x = NULL, strata = NULL,
+                        cluster = NULL, print = TRUE)
 {
     ## Written initially by:
     ## James M. Curran,
@@ -146,10 +147,7 @@ sscsample  =  function (size, n.samples, sample.type = "simple", x = NULL, strat
                      "\n", sep = ""))
        }
     }
-    if (ret){
-        cat("The argument ret is deprecated.\n")
-        cat("The results are now always returned invisibly\n")
-    }
+
 
     invisible(list(samples = samples, s.strata = s.strata, means = means))
 }

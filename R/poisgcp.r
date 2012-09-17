@@ -1,14 +1,14 @@
-poisgcp<-function(y, density = "normal", params=c(0,1), n.mu = 100
-                  ,mu = NULL, mu.prior = NULL,
-                  print.sum.stat=FALSE, alpha=0.05, ret=FALSE){
-  n<-length(y)
+poisgcp = function(y, density = "normal", params=c(0,1), n.mu = 100,
+                  mu = NULL, mu.prior = NULL,
+                  print.sum.stat = FALSE, alpha=0.05){
+  n = length(y)
   y.sum = sum(y)
   y.bar = mean(y)
 
   if(is.null(y))
     stop("Error: y has no data")
 
-  if(sum(y<0)>0)
+  if(any(y < 0))
     stop("Error: data contains negative values")
 
   if(n.mu<100)
@@ -102,11 +102,8 @@ poisgcp<-function(y, density = "normal", params=c(0,1), n.mu = 100
   lines(mu,posterior,lty=3,col="blue")
   legend(mu[1],y.max,lty=2:3,col=c("red","blue"),legend=c("Prior","Posterior"))
 
-  if(ret){
-      cat("This option is deprecated,\n")
-      cat("The results of the function are always returned invisibly\\n")
-  }
-  invisible(list(mu=mu, mu.prior=mu.prior,likelihood=likelihood,posterior=posterior))
+  invisible(list(mu = mu, mu.prior = mu.prior, likelihood = likelihood,
+                 posterior = posterior))
 }
 
 
