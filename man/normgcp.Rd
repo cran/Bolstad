@@ -5,8 +5,8 @@
 	Evaluates and plots the posterior density for \eqn{\mu}{mu}, the mean of a normal distribution, with a general continuous prior on \eqn{\mu}{mu}
 }
 \usage{
-normgcp(x, sigma.x, density = "uniform" , params = NULL, n.mu = 50, mu =
-NULL,mu.prior = NULL, ret = FALSE)
+normgcp(x, sigma.x, density = "uniform" , params = NULL, n.mu = 50,
+        mu = NULL, mu.prior = NULL)
 }
 \arguments{
   \item{x}{a vector of observations from a normal distribution with unknown mean and known std. deviation.}
@@ -16,8 +16,7 @@ NULL,mu.prior = NULL, ret = FALSE)
   \item{params}{if density = "normal" then params must contain at least a mean and possible a std. deviation. If a std. deviation is not specified then sigma.x will be used as the std. deviation of the prior. If density = "uniform" then params must contain a minimum and a maximum value for the uniform prior. If a maximum and minimum are not specified then a \eqn{U[0,1]} prior is used}
   \item{n.mu}{the number of possible \eqn{\mu}{mu} values in the prior}
   \item{mu}{a vector of possibilities for the probability of success in a single trial. Must be set if density="user"}
-  \item{mu.prior}{the associated prior probability mass. Must be set if density="user"}
-  \item{ret}{this argument is deprecated.}
+  \item{mu.prior}{the associated prior density. Must be set if density="user"}
 }
 \seealso{
   \code{\link{normdp}}

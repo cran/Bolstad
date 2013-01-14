@@ -1,21 +1,21 @@
-normmixp = function(x,sigma.x,prior0,prior1,p=0.5,n.mu=100,ret=FALSE){
+normmixp = function(x, sigma.x, prior0, prior1, p = 0.5, n.mu = 100){
 
-  if(length(x)==0)
+  if(length(x) == 0)
     stop("Error: x must contain at least one observation")
 
-  if(sigma.x<=0)
+  if(sigma.x <= 0)
     stop("Error: sigma.x must be greater than zero")
 
-  if(length(prior0)!=2 || length(prior1)!=2)
+  if(length(prior0) != 2 || length(prior1) != 2)
     stop("Error: there must be 2 parameters for each prior, 2 means and 2 standard deviations")
 
   prior.means = c(prior0[1],prior1[1])
   prior.sds = c(prior0[2],prior1[2])
 
-  if(sum(prior.sds<=0)>0)
+  if(any(prior.sds <= 0))
     stop("Error: the prior standard deviations should be greater than zero")
 
-  if(p<=0 || p>=1)
+  if(p <= 0 || p >= 1)
     stop("Error: p should be between 0 and 1 exclusive")
 
   n = length(x)
@@ -141,10 +141,6 @@ normmixp = function(x,sigma.x,prior0,prior1,p=0.5,n.mu=100,ret=FALSE){
 
   par(o.par)
 
-  if(ret){
-      cat("The argument ret is deprecated.\n")
-      cat("The results are now always returned invisibly\n")
-  }
   invisible(list(mu=mu,prior=prior,likelihood=likelihood,posterior=posterior))
 }
 

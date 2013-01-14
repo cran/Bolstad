@@ -6,14 +6,13 @@
   of occurance in a Poisson process and a discrete prior on \eqn{\mu}{mu}
 }
 \usage{
-poisdp(y.obs, mu, mu.prior, ret = FALSE)
+poisdp(y.obs, mu, mu.prior)
 }
 \arguments{
 	\item{y.obs}{a random sample from a Poisson distribution.}
 	\item{mu}{a vector of possibilities for the mean rate of
 	  occurance of an event over a finite period of space or time.}
 	\item{mu.prior}{the associated prior probability mass.}
-	\item{ret}{this argument is deprecated.}
 }
 \seealso{
 	\code{\link{poisgamp}}
@@ -21,7 +20,7 @@ poisdp(y.obs, mu, mu.prior, ret = FALSE)
 }
 \value{
   A list will be returned with the following components:
-  
+
   \item{likelihood}{the scaled likelihood function for \eqn{\mu}{mu}
     given \eqn{y_{obs}}{y.obs}}
   \item{posterior}{the posterior probability of \eqn{\mu}{mu} given

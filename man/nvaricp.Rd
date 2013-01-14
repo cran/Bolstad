@@ -8,7 +8,7 @@
   \eqn{\mu}{mu} is known
 }
 \usage{
-nvaricp(y, mu, S0, kappa, cred.int = FALSE, alpha = 0.05, ret = FALSE)
+nvaricp(y, mu, S0, kappa, cred.int = FALSE, alpha = 0.05)
 }
 \arguments{
 	\item{y}{a random sample from a \eqn{normal(\mu,\sigma^2)}{normal(mu,sigma^2)} distribution.}
@@ -19,7 +19,6 @@ nvaricp(y, mu, S0, kappa, cred.int = FALSE, alpha = 0.05, ret = FALSE)
 	  interval will be calculated for \eqn{\sigma}{sigma}}
 	\item{alpha}{controls the width of the credible
 	  interval. Ignored if cred.int is FALSE}
-	\item{ret}{this argument is deprecated.}
 }
 \value{
   A list will be returned with the following components:

@@ -1,11 +1,11 @@
-poisgamp = function(y, r, v, ret=FALSE){
+poisgamp = function(y, r, v){
   n = length(y)
   y.sum = sum(y)
 
   if(is.null(y) || length(y)==0)
     stop("Error: y has no data")
 
-  if(sum(y<0)>0)
+  if(any(y < 0))
     stop("Error: y contains negative values")
 
   if(r<0 || v<0)
@@ -26,7 +26,7 @@ poisgamp = function(y, r, v, ret=FALSE){
     v1.inv = 1/v1
 
     prior = dgamma(mu,r, v)
-    like = matrix(0, nc = length(mu), nr = length(y))
+    like = matrix(0, ncol = length(mu), nrow = length(y))
     for(i in 1:length(mu)){
         like[,i] = dpois(y,mu[i])
     }
@@ -68,7 +68,7 @@ poisgamp = function(y, r, v, ret=FALSE){
     kint = (2*sum(prior)-prior[1001])*k4/2
     prior = prior/kint
 
-    like = matrix(0, nc = length(mu), nr = length(y))
+    like = matrix(0, ncol = length(mu), nrow = length(y))
     for(i in 1:length(mu)){
         like[,i] = dpois(y,mu[i])
     }
@@ -87,12 +87,8 @@ poisgamp = function(y, r, v, ret=FALSE){
     stop("Error: v must be greater or equal to zero")
   }
 
-  if(ret){
-      cat("The argument ret is deprecated.\n")
-      cat("The results are now always returned invisibly\n")
-  }
-
-  invisible(list(r=r1,v=v1,mu=mu,prior=prior,likelihood = like, posterior=posterior))
+  invisible(list(r = r1,v = v1, mu = mu, prior = prior, likelihood = like,
+                 posterior=posterior))
 }
 
 

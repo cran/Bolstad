@@ -1,4 +1,4 @@
-sintegral = function(x, fx, n.pts = 256, ret = FALSE){
+sintegral = function(x, fx, n.pts = max(256, length(n.x))){
     ## numerically integrates fx over x using Simpsons rule
     ## x - a sequence of x values
     ## fx - the value of the function to be integrated at x
@@ -9,28 +9,29 @@ sintegral = function(x, fx, n.pts = 256, ret = FALSE){
 
     message("Note: sintegral's behavior has changed.\nTo get the value of the integral use sintegral(x,fx)$value.\nTo get the cdf use sintegral(x,fx)$cdf")
 
-    if(class(fx)=="function")
+    if(class(fx) == "function")
         fx = fx(x)
 
     n.x = length(x)
 
-    if(n.x!=length(fx))
+    if(n.x != length(fx))
         stop("Unequal input vector lengths")
 
-    if(n.pts<64)
+    if(n.pts < 64)
         n.pts = 64
 
     ## use linear approximation to get equally spaced x values
 
 
-    ap = approx(x,fx,n=2*n.pts+1)
+    ap = approx(x, fx, n = 2 * n.pts + 1)
 
     h = diff(ap$x)[1]
 
-    integral = h*(ap$y[2*(1:n.pts)-1] + 4*ap$y[2*(1:n.pts)] +
-                  ap$y[2*(1:n.pts)+1])/3
+    integral = h*(ap$y[2 * (1:n.pts) - 1] +
+                  4 * ap$y[2 * (1:n.pts)] +
+                  ap$y[2 * (1:n.pts) + 1]) / 3
 
 
     invisible(list(value = sum(integral),
-                   cdf = list(x=ap$x[2*(1:n.pts)],y=cumsum(integral))))
+                   cdf = list(x = ap$x[2*(1:n.pts)], y = cumsum(integral))))
 }

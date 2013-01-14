@@ -2,7 +2,7 @@ bayes.lin.reg = function(y,x, slope.prior = "flat"
                         ,intcpt.prior = "flat",
                         mb0 = 0, sb0 = 0, ma0 = 0, sa0 = 0,
                         sigma=NULL, alpha = 0.05, plot.data = FALSE,
-                        pred.x = NULL, ret = FALSE){
+                        pred.x = NULL){
 
   if(sum(is.na(y))>0 || sum(is.na(x))>0)
     stop("Error: x and y may not contain missing values")
@@ -248,10 +248,6 @@ bayes.lin.reg = function(y,x, slope.prior = "flat"
   }
 
   par(old.par)
-  if(ret){
-      cat("The argument ret is deprecated.\n")
-      cat("The results are now always returned invisibly\n")
-  }
   if(!is.null(pred.x)){
       invisible(list(post.coef=c(post.mean.a,post.mean.b),
                   post.coef.sd=c(post.sd.a,post.sd.b),

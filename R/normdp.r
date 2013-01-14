@@ -1,14 +1,14 @@
-normdp = function(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50, ret = FALSE){
+normdp = function(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50){
 
   ## x - the vector of observations
   ## sigma.x - the population standard deviation
   ## mu - vector of possible values of the population mean
   ## mu.prior - the associated prior probability mass
   ## n.mu - if mu is NULL then a uniform prior with n.mu points is used
-  ## ret - if true then the likelihood and posterior are returned as a
+  ## the likelihood and posterior are returned as a
   ## list
 
-  if(n.mu<3)
+  if(n.mu < 3)
     stop("Number of prior values of theta must be greater than 2")
 
   if(is.null(mu)){
@@ -50,11 +50,6 @@ normdp = function(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50, ret 
 
   left = min(mu)+diff(range(mu))*0.05
   legend(left,max(posterior,mu.prior),pch=20,col=c("red","blue"),legend=c("Posterior","Prior"))
-
-  if(ret){
-      cat("The argument ret is deprecated.\n")
-      cat("The results are now always returned invisibly\n")
-  }
 
   invisible(list(mu=mu,mu.prior=mu.prior,likelihood=likelihood,posterior=posterior))
 
