@@ -1,4 +1,4 @@
-normdp = function(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50){
+normdp = function(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50, plot = TRUE){
 
   ## x - the vector of observations
   ## sigma.x - the population standard deviation
@@ -44,13 +44,14 @@ normdp = function(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50){
   likelihood = exp(-0.5*(mx-mu)^2/snx)
   posterior = likelihood*mu.prior/sum(likelihood*mu.prior)
 
-  plot(mu,posterior,ylim=c(0,1.1*max(posterior,mu.prior)),pch=20, col="red",
-       xlab=expression(mu),ylab=expression(Probabilty(mu)))
-  points(mu,mu.prior,pch=20,col="blue")
-
-  left = min(mu)+diff(range(mu))*0.05
-  legend(left,max(posterior,mu.prior),pch=20,col=c("red","blue"),legend=c("Posterior","Prior"))
-
+  if(plot){
+    plot(mu,posterior,ylim=c(0,1.1*max(posterior,mu.prior)),pch = 20, col = "blue",
+         xlab=expression(mu),ylab=expression(Probabilty(mu)))
+    points(mu, mu.prior, pch=20,col="red")
+  
+    left = min(mu)+diff(range(mu))*0.05
+    legend(left,max(posterior,mu.prior),pch=20, col = c("blue","red"),legend=c("Posterior","Prior"))
+  }
   invisible(list(mu=mu,mu.prior=mu.prior,likelihood=likelihood,posterior=posterior))
 
 }

@@ -18,9 +18,6 @@ sscsample(size, n.samples, sample.type="simple", x = NULL,
 	\item{cluster}{a corresponding vector for each unit in the population indicating membership to a cluster}
 	\item{print}{if false then the screen output will be supressed.}
       }
-\seealso{
-	\code{\link{sscsample.data}}
-}
 \value{
 	A list will be returned with the following components:
 	\item{samples}{a matrix with the number of rows equal to size and the number of columns equal to n.samples. Each column corresponds to a sample drawn from the population}

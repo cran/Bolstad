@@ -1,11 +1,11 @@
-poisdp = function(y.obs, mu, mu.prior){
+poisdp = function(y.obs, mu, mu.prior, plot = TRUE){
   if(length(y.obs)==0 || is.null(y.obs))
     stop("Error: y.obs must contain at least one value")
 
   if(any(y.obs < 0))
     stop("Error: y.obs cannot contain negative values")
 
-  if(length(mu)!=length(mu.prior))
+  if(length(mu) != length(mu.prior))
     stop("Error: the lengths of mu and mu.prior are unequal.\nThere must be a corresponding probability for each value of mu")
 
   if(sum(mu<=0)>0)
@@ -20,7 +20,7 @@ poisdp = function(y.obs, mu, mu.prior){
   }
 
   n = length(y.obs)
-  if(n==1){
+  if(n == 1){
     k = y.obs
 
     m = length(mu)
@@ -89,32 +89,34 @@ poisdp = function(y.obs, mu, mu.prior){
     print(results)
   }
 
-  plot.data = rbind(mu.prior,posterior)
-  if(length(mu.prior)<=10){
-    colnames(plot.data) = mu
-    y.max = max(mu.prior,posterior)
-    midpoints = barplot(plot.data,beside=TRUE,col=c("red","blue")
-                       ,xlab=expression(mu)
-                       ,ylab=expression(paste("Pr(",mu,"|","y)"))
-                       ,ylim=c(0,y.max*1.1)
-                       ,main=expression(
-                           paste("Prior and posterior probability for ", mu
-                                 ," given the data y")))
-    legend(midpoints[1,1],y.max,legend=c("Prior","Posterior")
-           ,fill=c("red","blue"))
-    box()
-  }else{
-    y.max = max(mu.prior,posterior)
-    plot(mu,mu.prior,type="l",lty=2,col="red"
-         ,xlab=expression(mu)
-         ,ylab=expression(paste("Pr(",mu,"|","y)"))
-         ,ylim=c(0,y.max*1.1)
-         ,main=expression(paste("Prior and posterior probability for ", mu
-             ," given the data y")))
-    lines(mu,posterior,lty=1,col="blue")
-    legend(mu[2],y.max,lty=c(2,1),col=c("red","blue"),
-           legend=c("Prior","Posterior"))
-
+  if(plot){
+    plot.data = rbind(mu.prior,posterior)
+    if(length(mu.prior)<=10){
+      colnames(plot.data) = mu
+      y.max = max(mu.prior,posterior)
+      midpoints = barplot(plot.data,beside=TRUE,col=c("red","blue")
+                         ,xlab=expression(mu)
+                         ,ylab=expression(paste("Pr(",mu,"|","y)"))
+                         ,ylim=c(0,y.max*1.1)
+                         ,main=expression(
+                             paste("Prior and posterior probability for ", mu
+                                   ," given the data y")))
+      legend(midpoints[1,1],y.max,legend=c("Prior","Posterior")
+             ,fill=c("red","blue"))
+      box()
+    }else{
+      y.max = max(mu.prior,posterior)
+      plot(mu,mu.prior,type="l",lty=2,col="red"
+           ,xlab=expression(mu)
+           ,ylab=expression(paste("Pr(",mu,"|","y)"))
+           ,ylim=c(0,y.max*1.1)
+           ,main=expression(paste("Prior and posterior probability for ", mu
+               ," given the data y")))
+      lines(mu,posterior,lty=1,col="blue")
+      legend(mu[2],y.max,lty=c(2,1),col=c("red","blue"),
+             legend=c("Prior","Posterior"))
+  
+    }
   }
   invisible(list(mu=mu,mu.prior=mu.prior,likelihood=likelihood,posterior=posterior))
 }

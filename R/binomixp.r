@@ -1,4 +1,4 @@
-binomixp = function(x, n, alpha0 = c(1,1), alpha1 = c(1,1), p = 0.5){
+binomixp = function(x, n, alpha0 = c(1,1), alpha1 = c(1,1), p = 0.5, plot = TRUE){
 
   if(n < x)
     stop("Error: n must be greater than or equal to x")
@@ -60,50 +60,52 @@ binomixp = function(x, n, alpha0 = c(1,1), alpha1 = c(1,1), p = 0.5){
   normalizing.factor = sum(likelihood)/length(likelihood)
   likelihood = likelihood/normalizing.factor
 
-  o.par = par(mfrow=c(2,2))
-
-  ##plot the priors and the mixture prior
-
-  y.max = max(prior.0,prior.1,prior)
-
-  plot(pi,prior.0,ylim=c(0,y.max*1.1),
-       xlab=expression(pi),ylab="Density"
-       ,main="Mixture prior and it's components"
-       ,type="l",lty=2,col="black")
-  lines(pi,prior.1,lty=3,col="red")
-  lines(pi,prior,lty=1,col="green")
-  legend(0,y.max,legend=c(expression(prior[0]),expression(prior[1])
-                   ,expression(prior[mix])),lty=c(2,3,1),col=c("black","red","green"))
-
-  ##plot the posteriors and the mixture posterior
-
-  y.max = max(posterior.0,posterior.1,posterior)
-
-  plot(pi,posterior.0,ylim=c(0,y.max*1.1),
-       xlab=expression(pi),ylab="Density"
-       ,main="Mixture posterior and it's components"
-       ,type="l",lty=2,col="black")
-  lines(pi,posterior.1,lty=3,col="red")
-  lines(pi,posterior,lty=1,col="green")
-  legend(0,y.max,legend=c(expression(posterior[0]),expression(posterior[1])
-                   ,expression(posterior[mix])),lty=c(2,3,1),col=c("black","red","green"))
-
-  ##plot the mixture posterior likelihood and mixture posterior
-
-  y.max = max(prior,posterior,likelihood)
-
-  plot(pi,prior,ylim=c(0,y.max*1.1),
-       xlab=expression(pi),ylab="Density"
-       ,main="Mixture prior, likelihood and mixture posterior"
-       ,type="l",lty=2,col="black")
-  lines(pi,likelihood,lty=3,col="red")
-  lines(pi,posterior,lty=1,col="green")
-  legend(0,y.max,legend=c(expression(prior[mix]),expression(likelihood)
-                   ,expression(posterior[mix])),lty=c(2,3,1),col=c("black","red","green"))
-
-  par(o.par)
-
-  invisible(list(pi=pi,prior=prior,likelihood=likelihood,posterior=posterior))
+  if(plot){
+    o.par = par(mfrow=c(2,2))
+  
+    ##plot the priors and the mixture prior
+  
+    y.max = max(prior.0,prior.1,prior)
+  
+    plot(pi,prior.0,ylim=c(0,y.max*1.1),
+         xlab=expression(pi),ylab="Density"
+         ,main="Mixture prior and it's components"
+         ,type="l",lty=2,col="black")
+    lines(pi,prior.1,lty=3,col="red")
+    lines(pi,prior,lty=1,col="green")
+    legend(0,y.max,legend=c(expression(prior[0]),expression(prior[1])
+                     ,expression(prior[mix])),lty=c(2,3,1),col=c("black","red","green"))
+  
+    ##plot the posteriors and the mixture posterior
+  
+    y.max = max(posterior.0,posterior.1,posterior)
+  
+    plot(pi,posterior.0,ylim=c(0,y.max*1.1),
+         xlab=expression(pi),ylab="Density"
+         ,main="Mixture posterior and it's components"
+         ,type="l",lty=2,col="black")
+    lines(pi,posterior.1,lty=3,col="red")
+    lines(pi,posterior,lty=1,col="green")
+    legend(0,y.max,legend=c(expression(posterior[0]),expression(posterior[1])
+                     ,expression(posterior[mix])),lty=c(2,3,1),col=c("black","red","green"))
+  
+    ##plot the mixture posterior likelihood and mixture posterior
+  
+    y.max = max(prior,posterior,likelihood)
+  
+    plot(pi,prior,ylim=c(0,y.max*1.1),
+         xlab=expression(pi),ylab="Density"
+         ,main="Mixture prior, likelihood and mixture posterior"
+         ,type="l",lty=2,col="black")
+    lines(pi,likelihood,lty=3,col="red")
+    lines(pi,posterior,lty=1,col="green")
+    legend(0,y.max,legend=c(expression(prior[mix]),expression(likelihood)
+                     ,expression(posterior[mix])),lty=c(2,3,1),col=c("black","red","green"))
+  
+    par(o.par)
+  }
+  
+  invisible(list(pi = pi,prior = prior,likelihood = likelihood, posterior = posterior))
 }
 
 

@@ -5,7 +5,7 @@
 	Evaluates and plots the posterior density for \eqn{\mu}{mu}, the mean of a normal distribution, with a discrete prior on \eqn{\mu}{mu}
 }
 \usage{
-normdp(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50)
+normdp(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50, plot = TRUE)
 }
 \arguments{
   \item{x}{a vector of observations from a normal distribution with unknown mean and known std. deviation.}
@@ -14,6 +14,7 @@ normdp(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50)
     a single trial. If mu is NULL then a uniform prior is used.}
   \item{mu.prior}{the associated prior probability mass.}
   \item{n.mu}{the number of possible \eqn{\mu}{mu} values in the prior}
+  \item{plot}{if \code{TRUE} then a plot showing the prior and the posterior will be produced.}
 }
 \seealso{
   \code{\link{normnp}}

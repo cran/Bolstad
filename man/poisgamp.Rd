@@ -6,13 +6,14 @@
 	of occurance in a Poisson process and a \eqn{gamma} prior on \eqn{\mu}{mu}
 }
 \usage{
-poisgamp(y, r, v)
+poisgamp(y, r, v, plot = TRUE)
 }
 \arguments{
 	\item{y}{a random sample from a Poisson distribution.}
 	\item{r}{the shape parameter of the \eqn{gamma} prior.}
 	\item{v}{the rate parameter of the \eqn{gamma} prior. Note that the
 	  scale is \eqn{1/v}}
+  \item{plot}{if \code{TRUE} then a plot showing the prior and the posterior will be produced.}
       }
 \seealso{
 	\code{\link{poisdp}}

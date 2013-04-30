@@ -6,13 +6,14 @@
   of occurance in a Poisson process and a discrete prior on \eqn{\mu}{mu}
 }
 \usage{
-poisdp(y.obs, mu, mu.prior)
+poisdp(y.obs, mu, mu.prior, plot = TRUE)
 }
 \arguments{
 	\item{y.obs}{a random sample from a Poisson distribution.}
 	\item{mu}{a vector of possibilities for the mean rate of
 	  occurance of an event over a finite period of space or time.}
 	\item{mu.prior}{the associated prior probability mass.}
+  \item{plot}{if \code{TRUE} then a plot showing the prior and the posterior will be produced.}
 }
 \seealso{
 	\code{\link{poisgamp}}

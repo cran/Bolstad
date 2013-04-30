@@ -6,17 +6,18 @@
   distribution, with a mixture of normal priors on \eqn{\mu}{mu}
 }
 \usage{
-normmixp(x, sigma.x, prior0, prior1, p = 0.5, n.mu = 100)
+normmixp(x, sigma.x, prior0, prior1, p = 0.5, n.mu = 100, plot = TRUE)
 }
 \arguments{
 	\item{x}{a vector of observations from a normal distribution with unknown mean and known std. deviation.}
-	\item{sigma.x}{the population std. deviation of the observations}
+	\item{sigma.x}{the population std. deviation of the observations.}
 	\item{prior0}{the vector of length 2 which contains the means
-	  and standard deviation of your precise prior}
+	  and standard deviation of your precise prior.}
 	\item{prior1}{the vector of length 2 which contains the means
-	  and standard deviation of your vague prior}
-	\item{n.mu}{the number of possible \eqn{\mu}{mu} values in the prior}
-	\item{p}{the mixing proportion for the two component normal priors}
+	  and standard deviation of your vague prior.}
+	\item{n.mu}{the number of possible \eqn{\mu}{mu} values in the prior.}
+	\item{p}{the mixing proportion for the two component normal priors.}
+  \item{plot}{if \code{TRUE} then a plot showing the prior and the posterior will be produced.}
 }
 \seealso{
   \code{\link{binomixp}}

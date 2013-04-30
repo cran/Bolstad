@@ -30,8 +30,8 @@ sscsample  =  function (size, n.samples, sample.type = "simple",
         return(stratum)
     }
 
-    data(sscsample.data)
-    sscsample.data = sscsample.data
+    #data(sscsample.data)
+    #sscsample.data = sscsample.data
 
     if (is.null(x))
         x  =  sscsample.data$value

@@ -8,7 +8,7 @@
 	  beta distributions, \eqn{beta(a_0,b_0)} and \eqn{beta(a_1,b_1)}.
 }
 \usage{
-binomixp(x, n, alpha0 = c(1,1), alpha1=c(1,1), p = 0.5)
+binomixp(x, n, alpha0 = c(1,1), alpha1=c(1,1), p = 0.5, plot = TRUE)
 }
 \arguments{
   \item{x}{the number of observed successes in the binomial experiment.}
@@ -24,6 +24,7 @@ binomixp(x, n, alpha0 = c(1,1), alpha1=c(1,1), p = 0.5)
   \item{p}{The prior mixing proportion for the two component beta
     priors. That is the prior is
     \eqn{p\times beta(a_0,b_0)+(1-p)\times beta(a_1,b_1)}{p*beta(a0,b0)+(1-p)*beta(a1,b1)}. \eqn{p} is set to 0.5 by default}
+  \item{plot}{if \code{TRUE} then a plot showing the prior and the posterior will be produced}
 }
 \seealso{
 	\code{\link{binodp}}
