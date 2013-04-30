@@ -1,4 +1,4 @@
-binobp = function(x,n,a = 1, b = 1){
+binobp = function(x, n, a = 1, b = 1, pi = seq(0.01, 0.999, by = 0.001), plot = TRUE){
 
   ## n - the number of trials in the binomial
   ## x - the number of observed successes
@@ -6,26 +6,28 @@ binobp = function(x,n,a = 1, b = 1){
   ## the prior, likelihood, posterior, mean, variance and
   ## std. deviation are returned as a list
 
-  if(x>n)
+  if(x > n)
     stop("The number of observed successes (x) must be smaller than the number of trials (n)")
-  if(a<=0||b<=0)
+  
+  if(a <= 0 || b <= 0)
     stop("The parameters of the prior must be greater than zero")
 
-  pi = seq(0.01,0.999,by=0.001)
-  prior = dbeta(pi,a,b)
-  likelihood = dbinom(x,n,prob=pi)
-  posterior = dbeta(pi,a+x,b+n-x)
+  
+  prior = dbeta(pi, a, b)
+  likelihood = dbinom(x, n, prob = pi)
+  posterior = dbeta(pi, a + x, b + n - x)
 
-  plot(pi,posterior,ylim=c(0,1.1*max(posterior,prior)),type="l"
+  if(plot){
+    plot(pi,posterior,ylim=c(0,1.1*max(posterior,prior)),type="l"
        ,lty=1
        ,xlab=expression(pi)
        ,ylab="Density"
        ,col="blue")
-  lines(pi,prior,lty=2,col="red")
-
+    lines(pi,prior,lty=2,col="red")
   left = min(pi)+diff(range(pi))*0.05
-  legend(left,max(posterior,prior),lty=1:2,legend=c("Posterior","Prior")
-         ,col=c("blue","red"))
+  legend(left, max(posterior,prior), lty = 1:2, legend = c("Posterior","Prior")
+         ,col = c("blue","red"))
+  }
 
   m1 = (a+x)/(a+b+n)
   v1 = m1*(1-m1)/(a+b+n+1)

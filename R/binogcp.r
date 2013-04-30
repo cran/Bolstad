@@ -1,6 +1,6 @@
 binogcp = function(x, n, density = "uniform",
                    params = c(0,1), n.pi = 1000,
-                   pi = NULL, pi.prior = NULL){
+                   pi = NULL, pi.prior = NULL, plot = TRUE){
 
   ## n - the number of trials in the binomial
   ## x - the number of observed successes
@@ -15,7 +15,7 @@ binogcp = function(x, n, density = "uniform",
   ## pi and pi.prior are only specified if density == "user"
   ## pi - the probability of success
   ## pi.prior - the associated prior probability mass
-  ## ret - if true then the likelihood and posterior are returned as a
+  ## plot - if true then the likelihood and posterior are returned as a
   ## list
 
   if(x > n)
@@ -93,14 +93,15 @@ binogcp = function(x, n, density = "uniform",
 
   posterior = likelihood*pi.prior/integral
 
-  plot(pi,posterior,ylim=c(0,1.1*max(posterior,pi.prior)),lty=1,type="l",col="blue",
-       xlab=expression(pi),ylab="Density")
-  lines(pi,pi.prior,lty=2,col="red")
-
-  left = min(pi) + diff(range(pi)) * 0.05
-  legend(left,max(posterior, pi.prior), lty = 1:2, col = c("blue","red"),
-         legend = c("Posterior","Prior"))
-
+  if(plot){
+    plot(pi, posterior, ylim = c(0,1.1*max(posterior,pi.prior)),lty=1,type="l",col="blue",
+         xlab=expression(pi),ylab="Density")
+    lines(pi,pi.prior,lty=2,col="red")
+  
+    left = min(pi) + diff(range(pi)) * 0.05
+    legend(left,max(posterior, pi.prior), lty = 1:2, col = c("blue", "red"),
+           legend = c("Posterior","Prior"))
+  }
   invisible(list(likelihood = likelihood, posterior = posterior,
                  pi = pi, pi.prior = pi.prior))
 

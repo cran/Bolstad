@@ -1,6 +1,6 @@
 poisgcp = function(y, density = "normal", params=c(0,1), n.mu = 100,
                   mu = NULL, mu.prior = NULL,
-                  print.sum.stat = FALSE, alpha=0.05){
+                  print.sum.stat = FALSE, alpha = 0.05, plot = TRUE){
   n = length(y)
   y.sum = sum(y)
   y.bar = mean(y)
@@ -94,14 +94,15 @@ poisgcp = function(y, density = "normal", params=c(0,1), n.mu = 100,
               , round(lb,3), ",", round(ub,3),"]\n\n"))
   }
 
-  y.max = max(mu.prior,posterior)
-  plot(mu,mu.prior,ylim=c(0,1.1*y.max),xlab=expression(mu)
-       ,ylab="Density",
-       ,main="Shape of continuous prior and posterior for Poisson mean"
-       ,type="l",lty=2,col="red")
-  lines(mu,posterior,lty=3,col="blue")
-  legend(mu[1],y.max,lty=2:3,col=c("red","blue"),legend=c("Prior","Posterior"))
-
+  if(plot){
+    y.max = max(mu.prior,posterior)
+    plot(mu,mu.prior,ylim=c(0,1.1*y.max),xlab=expression(mu)
+         ,ylab="Density",
+         ,main="Shape of continuous prior and posterior for Poisson mean"
+         ,type="l",lty=2,col="red")
+    lines(mu,posterior,lty=3,col="blue")
+    legend(mu[1],y.max,lty=2:3,col=c("red","blue"),legend=c("Prior","Posterior"))
+  }
   invisible(list(mu = mu, mu.prior = mu.prior, likelihood = likelihood,
                  posterior = posterior))
 }

@@ -7,9 +7,9 @@
   general continuous prior on \eqn{\mu}{mu}
 }
 \usage{
-poisgcp(y, density = "normal", params=c(0,1), n.mu = 100
+poisgcp(y, density = "normal", params = c(0,1), n.mu = 100
        ,mu = NULL, mu.prior = NULL,
-       print.sum.stat=FALSE, alpha=0.05)
+       print.sum.stat = FALSE, alpha=0.05, plot = TRUE)
 }
 \arguments{
 	\item{y}{A random sample of one or more observations from a
@@ -30,6 +30,7 @@ poisgcp(y, density = "normal", params=c(0,1), n.mu = 100
 	  the parameter alpha.}
 	\item{alpha}{The width of the credible interval is controlled by
 	  the parameter alpha.}
+  \item{plot}{if \code{TRUE} then a plot showing the prior and the posterior will be produced.}
 }
 \seealso{
 	\code{\link{poisdp}}

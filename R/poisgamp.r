@@ -1,4 +1,4 @@
-poisgamp = function(y, r, v){
+poisgamp = function(y, r, v, plot = TRUE){
   n = length(y)
   y.sum = sum(y)
 
@@ -20,7 +20,7 @@ poisgamp = function(y, r, v){
     v.inv = 1/v
     k1 = qgamma(0.9999,r,v)
     k2 = k1/1000
-    mu = seq(0,k1, by=k2)
+    mu = seq(0,k1, by = k2)
     r1 = r+y.sum
     v1 = v+n
     v1.inv = 1/v1
@@ -41,20 +41,22 @@ poisgamp = function(y, r, v){
     cat(paste("Rate parameter v:\t",v1,"\n"))
     cat(paste("99% credible interval for mu:\t[",round(k3[1],2), ",",round(k3[2],2), "]\n"))
 
-    y.max = max(prior,posterior)
-    plot(mu,prior,ylim=c(0,1.1*y.max),xlab=expression(mu)
-         ,ylab="Density",
-         ,main="Shape of gamma prior and posterior for Poisson mean"
-         ,type="l",lty=2,col="red")
-    lines(mu,posterior,lty=3,col="blue")
-    legend(mu[1],y.max,lty=2:3,col=c("red","blue"),legend=c("Prior","Posterior"))
-  }else if(v==0){
+    if(plot){
+      y.max = max(prior,posterior)
+      plot(mu,prior,ylim = c(0,1.1*y.max),xlab = expression(mu)
+           ,ylab = "Density",
+           ,main = "Shape of gamma prior and posterior for Poisson mean"
+           ,type = "l",lty = 2,col = "red")
+      lines(mu,posterior,lty = 3,col = "blue")
+      legend(mu[1],y.max,lty = 2:3,col = c("red","blue"),legend = c("Prior","Posterior"))
+    }
+  }else if(v == 0){
     r1 = r+y.sum
     v1 = v+n
     v1.inv = 1/v1
     k3 = qgamma(c(0.005,0.995),r1,v1)
     k4 = k3[2]/1000
-    mu = seq(0,k3[2],by=k4)
+    mu = seq(0,k3[2],by = k4)
 
     mu[1] = mu[2] ## fixes infinite upper bound problem
 
@@ -75,20 +77,22 @@ poisgamp = function(y, r, v){
     like = apply(like, 2, prod)
 
     posterior = dgamma(mu, r1, v1)
-
-    y.max = max(prior,posterior)
-    plot(mu,prior,ylim=c(0,1.1*y.max),xlab=expression(mu)
-         ,ylab="Density",
-         ,main="Shape of gamma prior and posterior for Poisson mean"
-         ,type="l",lty=2,col="red")
-    lines(mu,posterior,lty=3,col="blue")
-    legend(mu[1],y.max,lty=2:3,col=c("red","blue"),legend=c("Prior","Posterior"))
+    
+    if(plot){
+      y.max = max(prior,posterior)
+      plot(mu,prior,ylim = c(0,1.1*y.max),xlab = expression(mu)
+           ,ylab = "Density",
+           ,main = "Shape of gamma prior and posterior for Poisson mean"
+           ,type = "l",lty = 2,col = "red")
+      lines(mu,posterior,lty = 3,col = "blue")
+      legend(mu[1],y.max,lty = 2:3,col = c("red","blue"),legend = c("Prior","Posterior"))
+    }
   }else{
     stop("Error: v must be greater or equal to zero")
   }
 
   invisible(list(r = r1,v = v1, mu = mu, prior = prior, likelihood = like,
-                 posterior=posterior))
+                 posterior = posterior))
 }
 
 

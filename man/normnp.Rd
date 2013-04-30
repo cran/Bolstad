@@ -5,7 +5,7 @@
 	Evaluates and plots the posterior density for \eqn{\mu}{mu}, the mean of a normal distribution, with a normal prior on \eqn{\mu}{mu}
 }
 \usage{
-normnp(x, m.x = 0, s.x = 1, sigma.x = NULL, n.mu = 100)
+normnp(x, m.x = 0, s.x = 1, sigma.x = NULL, n.mu = 100, plot = TRUE)
 }
 \arguments{
 	\item{x}{a vector of observations from a normal distribution with unknown mean and known std. deviation.}
@@ -15,6 +15,7 @@ normnp(x, m.x = 0, s.x = 1, sigma.x = NULL, n.mu = 100)
 	  distribution. If this value is NULL, which is is by default,
 	  then a flat prior is used and m.x and s.x are ignored}
 	\item{n.mu}{the number of possible \eqn{\mu}{mu} values in the prior}
+  \item{plot}{if \code{TRUE} then a plot showing the prior and the posterior will be produced.}
 }
 \seealso{
 	\code{\link{normdp}}

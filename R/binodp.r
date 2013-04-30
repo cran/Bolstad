@@ -1,4 +1,4 @@
-binodp = function(x, n, pi = NULL, pi.prior = NULL, n.pi = 10){
+binodp = function(x, n, pi = NULL, pi.prior = NULL, n.pi = 10, plot = TRUE){
 
   ## n - the number of trials in the binomial
   ## x - the number of observed successes
@@ -31,15 +31,17 @@ binodp = function(x, n, pi = NULL, pi.prior = NULL, n.pi = 10){
   n.pi = length(pi)
 
   likelihood = dbinom(x,n,pi)
-  posterior = likelihood*pi.prior/sum(likelihood*pi.prior)
+  lp = likelihood * pi.prior
+  posterior = lp / sum(lp)
 
-  plot(pi,posterior,ylim=c(0,1.1*max(posterior,pi.prior)),pch=20
+  if(plot){
+    plot(pi,posterior,ylim = c(0, 1.1 * max(posterior, pi.prior)),pch=20
        ,col="blue",
        xlab=expression(pi),ylab=expression(Probabilty(pi)))
-  points(pi,pi.prior,pch=20,col="red")
+    points(pi,pi.prior,pch=20,col="red")
 
-  legend(max(c(0.05,min(pi))),max(posterior,pi.prior),pch=20,legend=c("Posterior","Prior"),col=c("blue","red"))
-
+    legend(max(c(0.05,min(pi))),max(posterior,pi.prior),pch=20,legend = c("Posterior", "Prior"), col = c("blue", "red"))
+  }
   ## calculate the Conditional distribution
 
   f.cond = matrix(0,nrow=n.pi,ncol=n+1)

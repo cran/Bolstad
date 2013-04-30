@@ -6,7 +6,7 @@
 }
 \usage{
 normgcp(x, sigma.x, density = "uniform" , params = NULL, n.mu = 50,
-        mu = NULL, mu.prior = NULL)
+        mu = NULL, mu.prior = NULL, plot = TRUE)
 }
 \arguments{
   \item{x}{a vector of observations from a normal distribution with unknown mean and known std. deviation.}
@@ -17,6 +17,7 @@ normgcp(x, sigma.x, density = "uniform" , params = NULL, n.mu = 50,
   \item{n.mu}{the number of possible \eqn{\mu}{mu} values in the prior}
   \item{mu}{a vector of possibilities for the probability of success in a single trial. Must be set if density="user"}
   \item{mu.prior}{the associated prior density. Must be set if density="user"}
+  \item{plot}{if \code{TRUE} then a plot showing the prior and the posterior will be produced.}
 }
 \seealso{
   \code{\link{normdp}}

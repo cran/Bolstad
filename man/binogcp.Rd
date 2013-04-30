@@ -6,7 +6,7 @@
 }
 \usage{
 binogcp(x, n, density = "uniform", params = c(0,1), n.pi = 1000,
-	pi = NULL, pi.prior = NULL)
+	      pi = NULL, pi.prior = NULL, plot = TRUE)
 }
 \arguments{
   \item{x}{the number of observed successes in the binomial experiment.}
@@ -21,6 +21,7 @@ binogcp(x, n, density = "uniform", params = c(0,1), n.pi = 1000,
   \item{n.pi}{the number of possible \eqn{\pi}{pi} values in the prior}
   \item{pi}{a vector of possibilities for the probability of success in a single trial. This must be set if density="user".}
   \item{pi.prior}{the associated prior probability mass. This must be set if density="user".}
+  \item{plot}{if \code{TRUE} then a plot showing the prior and the posterior will be produced.}
 }
 \seealso{
 	\code{\link{binobp}}

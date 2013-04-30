@@ -1,6 +1,6 @@
 normgcp = function(x, sigma.x = NULL, density = "uniform" ,
                    params = NULL, n.mu = 50, mu = NULL,
-                   mu.prior = NULL){
+                   mu.prior = NULL, plot = TRUE){
 
   ## x - the vector of observations
   ## sigma.x - the population standard deviation
@@ -88,14 +88,15 @@ normgcp = function(x, sigma.x = NULL, density = "uniform" ,
 
   posterior = likelihood*mu.prior/integral
 
-  plot(mu,posterior,ylim=c(0,1.1*max(posterior,mu.prior)),type="l",
-       lty=1,col="blue",
-       xlab=expression(mu),ylab=expression(Probabilty(mu)))
-  lines(mu,mu.prior,lty=2,col="red")
-
-  left = min(mu)+diff(range(mu))*0.05
-  legend(left,max(posterior,mu.prior),lty=1:2,col=c("blue","red"),legend=c("Posterior","Prior"))
-
+  if(plot){
+    plot(mu,posterior,ylim=c(0,1.1*max(posterior,mu.prior)),type="l",
+         lty=1,col="blue",
+         xlab=expression(mu),ylab=expression(Probabilty(mu)))
+    lines(mu,mu.prior,lty=2,col="red")
+  
+    left = min(mu)+diff(range(mu))*0.05
+    legend(left,max(posterior,mu.prior),lty=1:2,col=c("blue","red"),legend=c("Posterior","Prior"))
+  }
   invisible(list(likelihood=likelihood,posterior=posterior,mu=mu,mu.prior=mu.prior))
 
 }

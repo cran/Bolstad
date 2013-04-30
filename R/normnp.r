@@ -1,4 +1,4 @@
-normnp = function(x, m.x = 0 , s.x = 1, sigma.x = NULL, n.mu = 100){
+normnp = function(x, m.x = 0 , s.x = 1, sigma.x = NULL, n.mu = 100, plot = TRUE){
 
   ## x - the vector of observations
   ## m.x - the mean of the normal prior
@@ -21,13 +21,12 @@ normnp = function(x, m.x = 0 , s.x = 1, sigma.x = NULL, n.mu = 100){
     }
   }
 
-  if(n.mu<100)
-    {
+  if(n.mu < 100){
       warning("Number of prior values of mu must be greater than 100")
       n.mu = 100
     }
 
-  if(s.x<=0){
+  if(s.x <= 0){
     lb = mean.x-3.5*sigma.x/sqrt(n.x)
     ub = mean.x+3.5*sigma.x/sqrt(n.x)
     prior.precision = 0
@@ -54,15 +53,16 @@ normnp = function(x, m.x = 0 , s.x = 1, sigma.x = NULL, n.mu = 100){
 
   posterior = dnorm(mu,post.mean,post.sd)
 
-  plot(mu,posterior,ylim=c(0,1.1*max(posterior,mu.prior)),type="l",
-       lty=1,col="blue",
-       xlab=expression(mu),ylab=expression(Probabilty(mu)),
-       main="Shape of prior and posterior")
-  lines(mu,mu.prior,lty=2,col="red")
-
-  left = min(mu)+diff(range(mu))*0.05
-  legend(left,max(posterior,mu.prior),lty=1:2,col=c("blue","red"),legend=c("Posterior","Prior"))
-
+  if(plot){
+    plot(mu,posterior,ylim=c(0,1.1*max(posterior,mu.prior)),type="l",
+         lty=1,col="blue",
+         xlab=expression(mu),ylab=expression(Probabilty(mu)),
+         main="Shape of prior and posterior")
+    lines(mu,mu.prior,lty=2,col="red")
+  
+    left = min(mu)+diff(range(mu))*0.05
+    legend(left,max(posterior,mu.prior),lty=1:2,col=c("blue","red"),legend=c("Posterior","Prior"))
+  }
   probs = c(0.005,0.01,0.025,0.05,0.5,0.95,0.975,0.99,0.995)
   qtls = qnorm(probs,post.mean,post.sd)
   names(qtls) = probs
