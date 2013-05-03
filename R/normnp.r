@@ -71,7 +71,10 @@ normnp = function(x, m.x = 0 , s.x = 1, sigma.x = NULL, n.mu = 100, plot = TRUE)
   cat("------\t---------\n")
   for(i in 1:length(probs))
     cat(paste(round(probs[i],3),"\t",round(qtls[i],7),"\n",sep=""))
-
-  invisible(list(mu=mu,prior=mu.prior,likelihood=likelihood,posterior=posterior,mean=post.mean,sd=post.sd,quantiles=qtls))
-
+  
+  results = list(name = 'mu', param.x = mu, prior = mu.prior, likelihood = likelihood, posterior = posterior,
+                 mean = post.mean, sd = post.sd, quantiles = qtls)
+  class(results) = 'Bolstad'
+  
+  invisible(results)
 }

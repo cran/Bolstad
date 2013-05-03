@@ -52,6 +52,9 @@ normdp = function(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50, plot
     left = min(mu)+diff(range(mu))*0.05
     legend(left,max(posterior,mu.prior),pch=20, col = c("blue","red"),legend=c("Posterior","Prior"))
   }
-  invisible(list(mu=mu,mu.prior=mu.prior,likelihood=likelihood,posterior=posterior))
-
+  
+  results = list(name = 'mu', param.x = mu.prior, prior = mu.prior, likelihood = likelihood, posterior = posterior)
+  class(results) = 'Bolstad'
+  
+  invisible(results)
 }

@@ -1,6 +1,7 @@
-poisgcp = function(y, density = "normal", params=c(0,1), n.mu = 100,
+poisgcp = function(y, density = "normal", params = c(0, 1), n.mu = 100,
                   mu = NULL, mu.prior = NULL,
-                  print.sum.stat = FALSE, alpha = 0.05, plot = TRUE){
+                  print.sum.stat = FALSE, alpha = 0.05, plot = TRUE,
+                  suppressOutput = FALSE){
   n = length(y)
   y.sum = sum(y)
   y.bar = mean(y)
@@ -61,11 +62,12 @@ poisgcp = function(y, density = "normal", params=c(0,1), n.mu = 100,
   if(sum(mu<0)>0)
     stop("Error: mu cannot contain negative values")
 
-  cat("Summary statistics for data\n")
-  cat("---------------------------\n")
-  cat(paste("Number of observations:\t", n,"\n"))
-  cat(paste("Sum of observations:\t", y.sum,"\n"))
-
+  if(!suppressOutput){
+    cat("Summary statistics for data\n")
+    cat("---------------------------\n")
+    cat(paste("Number of observations:\t", n,"\n"))
+    cat(paste("Sum of observations:\t", y.sum,"\n"))
+  }
 
   log.lik = y.sum*log(mu)-n*mu
   likelihood = exp(log.lik)
@@ -95,7 +97,7 @@ poisgcp = function(y, density = "normal", params=c(0,1), n.mu = 100,
   }
 
   if(plot){
-    y.max = max(mu.prior,posterior)
+    y.max = max(mu.prior, posterior)
     plot(mu,mu.prior,ylim=c(0,1.1*y.max),xlab=expression(mu)
          ,ylab="Density",
          ,main="Shape of continuous prior and posterior for Poisson mean"
@@ -103,8 +105,12 @@ poisgcp = function(y, density = "normal", params=c(0,1), n.mu = 100,
     lines(mu,posterior,lty=3,col="blue")
     legend(mu[1],y.max,lty=2:3,col=c("red","blue"),legend=c("Prior","Posterior"))
   }
-  invisible(list(mu = mu, mu.prior = mu.prior, likelihood = likelihood,
-                 posterior = posterior))
+  
+  results = list(name =  'mu', param.x = mu, prior = mu.prior, likelihood = likelihood, posterior = posterior,
+                 mu = mu, mu.prior = mu.prior # for backwards compatibility only
+                 )
+  class(results) = 'Bolstad'
+  invisible(results)
 }
 
 

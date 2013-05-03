@@ -97,6 +97,10 @@ normgcp = function(x, sigma.x = NULL, density = "uniform" ,
     left = min(mu)+diff(range(mu))*0.05
     legend(left,max(posterior,mu.prior),lty=1:2,col=c("blue","red"),legend=c("Posterior","Prior"))
   }
-  invisible(list(likelihood=likelihood,posterior=posterior,mu=mu,mu.prior=mu.prior))
-
+  
+  results = list(name = 'mu', param.x = mu, prior = mu.prior, likelihood = likelihood, posterior = posterior,
+                 mu = mu, mu.prior = mu.prior #for backwards compat. only
+  )
+  class(results) = 'Bolstad'
+  invisible(results)
 }

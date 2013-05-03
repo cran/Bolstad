@@ -47,8 +47,10 @@ binobp = function(x, n, a = 1, b = 1, pi = seq(0.01, 0.999, by = 0.001), plot = 
     cat(paste(round(probs[i],3),"\t",round(qtls[i],7),"\n",sep=""))
 
 
-  invisible(list(posterior = posterior, likelihood = likelihood,
-                 prior = prior, pi = pi, mean = m1, var = v1, sd = s1,
-                 quantiles = qtls))
+  results = list(name = 'pi', param.x = pi, prior = prior, likelihood = likelihood, posterior = posterior,
+                 pi = pi, # for backwards compat. only
+                 mean = m1, var = v1, sd = s1, quantiles = qtls)
 
+  class(results) = 'Bolstad'
+  invisible(results)
 }

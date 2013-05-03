@@ -6,7 +6,7 @@
 	of occurance in a Poisson process and a \eqn{gamma} prior on \eqn{\mu}{mu}
 }
 \usage{
-poisgamp(y, r, v, plot = TRUE)
+poisgamp(y, r, v, plot = TRUE, suppressOutput = FALSE)
 }
 \arguments{
 	\item{y}{a random sample from a Poisson distribution.}
@@ -14,13 +14,14 @@ poisgamp(y, r, v, plot = TRUE)
 	\item{v}{the rate parameter of the \eqn{gamma} prior. Note that the
 	  scale is \eqn{1/v}}
   \item{plot}{if \code{TRUE} then a plot showing the prior and the posterior will be produced.}
-      }
+  \item{suppressOutput}{if \code{TRUE} then none of the output is printed to console}
+    }
 \seealso{
 	\code{\link{poisdp}}
 	\code{\link{poisgcp}}
 }
 \value{
-  A list will be returned with the following components:
+  An object of class 'Bolstad' is returned. This is a  list with the following components:
 
   \item{prior}{the prior density assigned to \eqn{\mu}{mu}}
   \item{likelihood}{the scaled likelihood function for \eqn{\mu}{mu}

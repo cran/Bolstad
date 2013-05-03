@@ -102,7 +102,9 @@ binogcp = function(x, n, density = "uniform",
     legend(left,max(posterior, pi.prior), lty = 1:2, col = c("blue", "red"),
            legend = c("Posterior","Prior"))
   }
-  invisible(list(likelihood = likelihood, posterior = posterior,
-                 pi = pi, pi.prior = pi.prior))
-
+  
+  results = list(name = 'pi', param.x = pi, prior = pi.prior, likelihood = likelihood, posterior = posterior,
+                 pi = pi, pi.prior = pi.prior)
+  class(results) = 'Bolstad'
+  invisible(results)
 }

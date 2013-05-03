@@ -1,4 +1,4 @@
-poisgamp = function(y, r, v, plot = TRUE){
+poisgamp = function(y, r, v, plot = TRUE, suppressOutput = FALSE){
   n = length(y)
   y.sum = sum(y)
 
@@ -11,11 +11,13 @@ poisgamp = function(y, r, v, plot = TRUE){
   if(r<0 || v<0)
     stop("Shape parameter r and rate parameter v must be greater than or equal to zero")
 
-  cat("Summary statistics for data\n")
-  cat("---------------------------\n")
-  cat(paste("Number of observations:\t", n,"\n"))
-  cat(paste("Sum of observations:\t", y.sum,"\n\n"))
-
+  if(!suppressOutput){
+    cat("Summary statistics for data\n")
+    cat("---------------------------\n")
+    cat(paste("Number of observations:\t", n,"\n"))
+    cat(paste("Sum of observations:\t", y.sum,"\n\n"))
+  }
+  
   if(v>0){                              ##proper gamma prior
     v.inv = 1/v
     k1 = qgamma(0.9999,r,v)
@@ -26,21 +28,23 @@ poisgamp = function(y, r, v, plot = TRUE){
     v1.inv = 1/v1
 
     prior = dgamma(mu,r, v)
-    like = matrix(0, ncol = length(mu), nrow = length(y))
+    likelihood = matrix(0, ncol = length(mu), nrow = length(y))
     for(i in 1:length(mu)){
-        like[,i] = dpois(y,mu[i])
+        likelihood[,i] = dpois(y,mu[i])
     }
-    like = apply(like, 2, prod)
+    likelihood = apply(likelihood, 2, prod)
     posterior = dgamma(mu, r1, v1)
 
     k3 = qgamma(c(0.005,0.995),r1,v1)
 
-    cat("Summary statistics for posterior\n")
-    cat("--------------------------------\n")
-    cat(paste("Shape parameter r:\t", r1,"\n"))
-    cat(paste("Rate parameter v:\t",v1,"\n"))
-    cat(paste("99% credible interval for mu:\t[",round(k3[1],2), ",",round(k3[2],2), "]\n"))
-
+    if(!suppressOutput){
+      cat("Summary statistics for posterior\n")
+      cat("--------------------------------\n")
+      cat(paste("Shape parameter r:\t", r1,"\n"))
+      cat(paste("Rate parameter v:\t",v1,"\n"))
+      cat(paste("99% credible interval for mu:\t[",round(k3[1],2), ",",round(k3[2],2), "]\n"))
+    }
+    
     if(plot){
       y.max = max(prior,posterior)
       plot(mu,prior,ylim = c(0,1.1*y.max),xlab = expression(mu)
@@ -60,21 +64,23 @@ poisgamp = function(y, r, v, plot = TRUE){
 
     mu[1] = mu[2] ## fixes infinite upper bound problem
 
-    cat("Summary statistics for posterior\n")
-    cat("--------------------------------\n")
-    cat(paste("Shape parameter r:\t", r1,"\n"))
-    cat(paste("Rate parameter v:\t",v1,"\n"))
-    cat(paste("99% credible interval :\t[",round(k3[1],2),", ",round(k3[2],2), "]\n"))
-
+    if(!suppressOutput){
+      cat("Summary statistics for posterior\n")
+      cat("--------------------------------\n")
+      cat(paste("Shape parameter r:\t", r1,"\n"))
+      cat(paste("Rate parameter v:\t",v1,"\n"))
+      cat(paste("99% credible interval :\t[",round(k3[1],2),", ",round(k3[2],2), "]\n"))
+    }
+    
     prior = mu^(r-1)
     kint = (2*sum(prior)-prior[1001])*k4/2
     prior = prior/kint
 
-    like = matrix(0, ncol = length(mu), nrow = length(y))
+    likelihood = matrix(0, ncol = length(mu), nrow = length(y))
     for(i in 1:length(mu)){
-        like[,i] = dpois(y,mu[i])
+        likelihood[,i] = dpois(y,mu[i])
     }
-    like = apply(like, 2, prod)
+    likelihood = apply(likelihood, 2, prod)
 
     posterior = dgamma(mu, r1, v1)
     
@@ -91,8 +97,12 @@ poisgamp = function(y, r, v, plot = TRUE){
     stop("Error: v must be greater or equal to zero")
   }
 
-  invisible(list(r = r1,v = v1, mu = mu, prior = prior, likelihood = like,
-                 posterior = posterior))
+  results = list(name = 'mu', param.x = mu, prior = prior, likelihood = likelihood, posterior = posterior,
+                 mu = mu, # for backwards compatibility only
+                 r = r1,v = v1)
+  
+  class(results) = 'Bolstad'
+  invisible(results)
 }
 
 
