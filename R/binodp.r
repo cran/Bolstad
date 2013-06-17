@@ -1,4 +1,4 @@
-binodp = function(x, n, pi = NULL, pi.prior = NULL, n.pi = 10, plot = TRUE){
+binodp = function(x, n, pi = NULL, pi.prior = NULL, n.pi = 10, plot = TRUE, suppressOutput = FALSE){
 
   ## n - the number of trials in the binomial
   ## x - the number of observed successes
@@ -51,31 +51,41 @@ binodp = function(x, n, pi = NULL, pi.prior = NULL, n.pi = 10, plot = TRUE){
   for(i in 1:n.pi)
     f.cond[i,] = dbinom(0:n,n,pi[i])
 
-  cat("Conditional distribution of x given pi and  n:\n\n")
-  print(round(f.cond,4))
-
+ 
   ## caculate the joint distribution of pi and x given n
 
   f.joint = diag(pi.prior)%*%f.cond
-  cat("\nJoint distribution:\n\n")
-  print(round(f.joint,4))
-
+ 
   ## calculate the marginal distribtion
 
   f.marg = matrix(1,nrow=1,ncol=n.pi)%*%f.joint
-  cat("\nMarginal distribution of x:\n\n")
-  print(round(f.marg,4))
-  cat("\n\n")
+  
+  
+  if(!suppressOutput){
+    cat("Conditional distribution of x given pi and  n:\n\n")
+    print(round(f.cond,4))
+  
+    cat("\nJoint distribution:\n\n")
+    print(round(f.joint,4))
+    
+  
+    cat("\nMarginal distribution of x:\n\n")
+    print(round(f.marg,4))
+    cat("\n\n")
+  
+    ## finally display the prior, likelihood, and posterior
+  
+    results = cbind(pi.prior,likelihood,posterior)
+    rownames(results) = as.character(round(pi,3))
+    colnames(results) = c("Prior","Likelihood","Posterior")
+  
+    print(results)
+  }
 
-  ## finally display the prior, likelihood, and posterior
-
-  results = cbind(pi.prior,likelihood,posterior)
-  rownames(results) = as.character(round(pi,3))
-  colnames(results) = c("Prior","Likelihood","Posterior")
-
-  print(results)
-
-  invisible(list(pi = pi, pi.prior = pi.prior, likelihood = likelihood,
+  results = list(name = 'p ', param.x = pi, prior = pi.prior, likelihood = likelihood,
                 posterior = posterior,
-                f.cond = f.cond, f.joint = f.joint, f.marg = f.marg))
+                pi = pi, pi.prior = pi.prior, ## this duplication is for backward compatibility
+                f.cond = f.cond, f.joint = f.joint, f.marg = f.marg)
+  class(results) = 'Bolstad'
+  invisible(results)
 }

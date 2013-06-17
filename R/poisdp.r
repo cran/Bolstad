@@ -118,7 +118,11 @@ poisdp = function(y.obs, mu, mu.prior, plot = TRUE){
   
     }
   }
-  invisible(list(mu=mu,mu.prior=mu.prior,likelihood=likelihood,posterior=posterior))
+  results= list(name = 'mu', param.x = mu.prior, prior = mu.prior, likelihood = likelihood, posterior = posterior,
+                mu = mu, mu.prior = mu.prior #for backwards compat. only
+                )
+  class(results) = 'Bolstad'
+  invisible(results)
 }
 
 

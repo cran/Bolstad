@@ -105,7 +105,11 @@ binomixp = function(x, n, alpha0 = c(1,1), alpha1 = c(1,1), p = 0.5, plot = TRUE
     par(o.par)
   }
   
-  invisible(list(pi = pi,prior = prior,likelihood = likelihood, posterior = posterior))
+  results = list(name = 'p', param.x = pi ,prior = prior, likelihood = likelihood, posterior = posterior,
+                 pi = pi #for backwards compat. only
+                 )
+  class(results) = 'Bolstad'
+  invisible(results)
 }
 
 

@@ -9,15 +9,17 @@ xdesign = function(x = NULL, y = NULL, corr = 0.8, size = 20,
         y = sqrt(1-corr^2)*y+corr*x
     }
 
-    nx = size*n.treatments
-    if(length(x)!=length(y))
+    nx = size * n.treatments
+    if(length(x) != length(y))
         stop("x and y must be of equal length")
-    if(length(x)!=size*n.treatments)
+    
+    if(length(x) != size * n.treatments)
         stop("x and y must be equal to the same size times the number of treatments")
-    if(corr<(-1)|corr>1)
+    
+    if(corr < (-1) | corr > 1)
         stop("Correlation coeficient must be between -1 and 1")
 
-    if(n.rep<10)
+    if(n.rep < 10)
         stop("Must have at least 10 Monte Carlo replicates")
 
     cat("Variable\tN\tMean\tMedian\tTrMean\tStDev\tSE Mean\n")
@@ -55,7 +57,7 @@ xdesign = function(x = NULL, y = NULL, corr = 0.8, size = 20,
     cat("The Pearson correlation between X and Y is: ");
     cat(paste(round(cor(x,y),3),"\n\n"))
 
-    plot(x,y)
+    plot(x, y)
 
     ssx = rep(0,n.rep)
     ssy = rep(0,n.rep)
@@ -63,16 +65,13 @@ xdesign = function(x = NULL, y = NULL, corr = 0.8, size = 20,
     treat.groupmean = matrix(0,ncol=n.treatments,nrow=n.rep)
     block.groupmean = matrix(0,ncol=n.treatments,nrow=n.rep)
 
-    for(block in c(FALSE,TRUE))
-    {
+    for(block in c(FALSE,TRUE)){
         ## block is indicator for blocking
         ## FALSE =  completely randomized design,
         ## TRUE = randomized block design
 
-        for(i in 1:n.rep)
-        {
-            if(!block)
-            {
+        for(i in 1:n.rep){
+            if(!block){
                 group = rep(1:n.treatments,size)
 
                 z = rnorm(nx)
@@ -82,17 +81,14 @@ xdesign = function(x = NULL, y = NULL, corr = 0.8, size = 20,
 
                 x2 = x
                 y2 = y
-            }
-            else
-            {
+            }else{
                 o = order(x)
                 x2 = x[o]
                 y2 = y[o]
 
                 group = NULL
 
-                for(j in 1:size)
-                {
+                for(j in 1:size){
                     gp = 1:n.treatments
                     z = rnorm(n.treatments)
                     gp = gp[order(z)]
@@ -116,14 +112,11 @@ xdesign = function(x = NULL, y = NULL, corr = 0.8, size = 20,
             block.groupmean[i,] = x.bar
         }
 
-        if(!block)
-        {
+        if(!block){
             treat.var0 = as.vector(treat.groupmean)
             block.var0 = as.vector(block.groupmean)
             index0 = rep(1:n.treatments,rep(n.rep,n.treatments))
-        }
-        else
-        {
+        }else{
             treat.var1 = as.vector(treat.groupmean)
             block.var1 = as.vector(block.groupmean)
             index1 = rep(1:n.treatments,rep(n.rep,n.treatments))

@@ -146,7 +146,11 @@ nvaricp = function(y, mu, S0, kappa, cred.int = FALSE, alpha = 0.05, plot = TRUE
   }
 
 
-  invisible(list(sigma = sigma, prior = prior, likelihood = likelihood,
-                 posterior = posterior, S1 = S1, kappa1 = kappa1))
+  results = list(param.x = sigma, prior = prior, likelihood = likelihood,
+                 posterior = posterior, 
+                 sigma = sigma, # for backwards compat. only
+                 S1 = S1, kappa1 = kappa1)
+  class(results) = 'Bolstad'
+  invisible(results)
 }
 

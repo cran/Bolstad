@@ -9,7 +9,7 @@
 \usage{
 poisgcp(y, density = "normal", params = c(0,1), n.mu = 100
        ,mu = NULL, mu.prior = NULL,
-       print.sum.stat = FALSE, alpha=0.05, plot = TRUE)
+       print.sum.stat = FALSE, alpha=0.05, plot = TRUE, suppressOutput = FALSE)
 }
 \arguments{
 	\item{y}{A random sample of one or more observations from a
@@ -31,6 +31,7 @@ poisgcp(y, density = "normal", params = c(0,1), n.mu = 100
 	\item{alpha}{The width of the credible interval is controlled by
 	  the parameter alpha.}
   \item{plot}{if \code{TRUE} then a plot showing the prior and the posterior will be produced.}
+  \item{suppressOutput}{if \code{TRUE} then none of the output is printed to console}
 }
 \seealso{
 	\code{\link{poisdp}}

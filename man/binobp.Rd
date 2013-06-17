@@ -20,13 +20,13 @@ binobp(x, n, a = 1, b = 1, pi = seq(0.01, 0.999, by = 0.001), plot = TRUE)
 	\code{\link{binogcp}}
 }
 \value{
-  A list will be returned with the following components:
+  An object of class 'Bolstad' is returned. This is a  list with the following components:
+  \item{prior}{the prior density of \eqn{\pi}{pi}, i.e. the
+    \eqn{beta(a,b)} density}
+  \item{likelihood}{the likelihood of \eqn{x} given \eqn{\pi}{pi} and
+    \eqn{n}, i.e. the \eqn{binomial(n,\pi)}{binomial(n,pi)} density}
   \item{posterior}{the posterior density of \eqn{\pi}{pi} given \eqn{x}
   and \eqn{n} - i.e. the \eqn{beta(a+x,b+n-x)} density}
-\item{likelihood}{the likelihood of \eqn{x} given \eqn{\pi}{pi} and
-  \eqn{n}, i.e. the \eqn{binomial(n,\pi)}{binomial(n,pi)} density}
-\item{prior}{the prior density of \eqn{\pi}{pi}, i.e. the
-  \eqn{beta(a,b)} density}
   \item{pi}{the values of \eqn{\pi}{pi} for which the posterior density was evaluated}
   \item{mean}{the posterior mean}
   \item{var}{the posterior variance}

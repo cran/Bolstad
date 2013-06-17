@@ -5,8 +5,8 @@
 	 Simulates completely randomized design and randomized block designs from a population of experimental units with underlying response values \eqn{y} and underlying other variable values \eqn{x} (possibly lurking)
 }
 \usage{
-	xdesign(x = NULL, y = NULL, corr = 0.8, size = 20, n.treatments = 4
-					, n.rep = 500)
+	xdesign(x = NULL, y = NULL, corr = 0.8, size = 20, n.treatments = 4,
+					n.rep = 500)
 }
 \arguments{
 	\item{x}{a set of lurking values which are correlated with the response}
@@ -24,9 +24,14 @@
 }
 \examples{
 # Carry out simulations using the default parameters 
+
 xdesign()
-# Carry out simulations using a simulated response with 5 treaments, groups of size 25, and a correlation of -0.6 between the response and lurking variable
-xdesign(corr=-0.6,size=25,n.treatments=5)
+
+# Carry out simulations using a simulated response with 5 treaments, 
+# groups of size 25, and a correlation of -0.6 between the response 
+# and lurking variable
+
+xdesign(corr = -0.6, size = 25, n.treatments = 5)
 }
 \keyword{misc}
 
