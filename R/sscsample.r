@@ -1,11 +1,50 @@
+#' Simple, Stratified and Cluster Sampling
+#' 
+#' Samples from a fixed population using either simple random sampling,
+#' stratitified sampling or cluster sampling.
+#' 
+#' 
+#' @param size the desired size of the sample
+#' @param n.samples the number of repeat samples to take
+#' @param sample.type the sampling method. Can be one of "simple",
+#' "stratified", "cluser" or 1, 2, 3 where 1 corresponds to "simple", 2 to
+#' "stratified" and 3 to "cluster"
+#' @param x a vector of measurements for each unit in the population. By
+#' default x is not used, and the builtin data set sscsample.data is used
+#' @param strata a corresponding vector for each unit in the population
+#' indicating membership to a stratum
+#' @param cluster a corresponding vector for each unit in the population
+#' indicating membership to a cluster
+#' @return A list will be returned with the following components:
+#' \item{samples}{a matrix with the number of rows equal to size and the number
+#' of columns equal to n.samples. Each column corresponds to a sample drawn
+#' from the population} \item{s.strata}{a matrix showing how many units from
+#' each stratum were included in the sample} \item{means}{a vector containing
+#' the mean of each sample drawn}
+#' @author James M. Curran, Dept. of Statistics, University of Auckland. Janko
+#' Dietzsch, Proteomics Algorithm and Simulation,Zentrum f. Bioinformatik
+#' Tuebingen Fakultaet f. Informations- und Kognitionswissenschaften,
+#' Universitaet Tuebingen
+#' @keywords misc
+#' @examples
+#' 
+#' ## Draw 200 samples of size 20 using simple random sampling
+#' sscsample(20,200)
+#' 
+#' ## Draw 200 samples of size 20 using simple random sampling and store the
+#' ## results. Extract the means of all 200 samples, and the 50th sample
+#' res = sscsample(20,200)
+#' res$means
+#' res$samples[,50]
+#' 
+#' @export
 sscsample  =  function (size, n.samples, sample.type = "simple",
                         x = NULL, strata = NULL,
-                        cluster = NULL, print = TRUE)
-{
+                        cluster = NULL){
     ## Written initially by:
     ## James M. Curran,
-    ## Dept. of Statistics, University of Waikato
-    ## Hamilton, New Zealand
+    ## Dept. of Statistics, University of Auckland
+    ## Auckland, New Zealand
     ##
     ## Modified, corrected and improved by:
     ## Janko Dietzsch
@@ -30,11 +69,11 @@ sscsample  =  function (size, n.samples, sample.type = "simple",
         return(stratum)
     }
 
-    #data(sscsample.data)
+    # data(sscsample.data)
     #sscsample.data = sscsample.data
 
     if (is.null(x))
-        x  =  sscsample.data$value
+        x  =  sscsample.data$income
 
     nx  =  length(x)
 
@@ -42,7 +81,7 @@ sscsample  =  function (size, n.samples, sample.type = "simple",
         stop("Sample size must be less than population size")
 
     if (is.null(strata))
-        strata  =  sscsample.data$stratum
+        strata  =  sscsample.data$ethnicity
 
     strata.names  =  unique(strata)
     n.strata  =  length(strata.names)
@@ -51,7 +90,7 @@ sscsample  =  function (size, n.samples, sample.type = "simple",
         stop("The length of the strata and data vectors must be equal")
 
     if (is.null(cluster))
-        cluster  =  sscsample.data$cluster
+        cluster  =  sscsample.data$neighborhood
 
     n.clusters  =  length(unique(cluster))
 
@@ -130,10 +169,6 @@ sscsample  =  function (size, n.samples, sample.type = "simple",
     s.strata  =  matrix(0, nrow = n.samples, ncol = n.strata)
     sample.out  =  matrix(0, nrow = size, ncol = n.samples)
 
-    if(print){
-        cat("Sample\tMean   \tStratum 1\tStratum 2\tStratum 3\n")
-        cat("------\t-------\t---------\t---------\t---------\n")
-    }
 
     for (r in 1:n.samples) {
         idx  =  samples[, r]
@@ -141,13 +176,11 @@ sscsample  =  function (size, n.samples, sample.type = "simple",
         for (j in 1:n.strata)
             s.strata[r, j]  =  sum(strata[idx] == strata.names[j])
         sample.out[, r]  =  x[idx]
-       if(print){
-           cat(paste(r, "\t", round(means[r], 4), "\t",
-                     s.strata[r,1], "\t\t", s.strata[r, 2], "\t\t", s.strata[r, 3],
-                     "\n", sep = ""))
-       }
-    }
-
-
-    invisible(list(samples = samples, s.strata = s.strata, means = means))
+     }
+        
+    results = list(samples = samples, s.strata = s.strata, means = means)
+    class(results) = "sscsamp"
+    
+ 
+    return(results)
 }

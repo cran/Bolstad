@@ -1,3 +1,40 @@
+#' Monte Carlo study of randomized and blocked designs
+#' 
+#' Simulates completely randomized design and randomized block designs from a
+#' population of experimental units with underlying response values \eqn{y} and
+#' underlying other variable values \eqn{x} (possibly lurking)
+#' 
+#' 
+#' @param x a set of lurking values which are correlated with the response
+#' @param y a set of response values
+#' @param corr the correlation between the response and lurking variable
+#' @param size the size of the treatment groups
+#' @param n.treatments the number of treatments
+#' @param n.rep the number of Monte Carlo replicates
+#' @return If the ouput of xdesign is assigned to a variable, then a list is
+#' returned with the following components: \item{block.means}{a vector of the
+#' means of the lurking variable from each replicate of the simulation stored
+#' by treatment number within replicate number} \item{treat.means}{a vector of
+#' the means of the response variable from each replicate of the simulation
+#' stored by treatment number within replicate number} \item{ind}{a vector
+#' containing the treatment group numbers. Note that there will be twice as
+#' many group numbers as there are treatments corresponding to the simulations
+#' done using a completely randomized design and the simulations done using a
+#' randomized block design}
+#' @keywords misc
+#' @examples
+#' 
+#' # Carry out simulations using the default parameters 
+#' 
+#' xdesign()
+#' 
+#' # Carry out simulations using a simulated response with 5 treaments, 
+#' # groups of size 25, and a correlation of -0.6 between the response 
+#' # and lurking variable
+#' 
+#' xdesign(corr = -0.6, size = 25, n.treatments = 5)
+#' 
+#' @export xdesign
 xdesign = function(x = NULL, y = NULL, corr = 0.8, size = 20,
                    n.treatments = 4, n.rep = 500){
 
@@ -6,7 +43,7 @@ xdesign = function(x = NULL, y = NULL, corr = 0.8, size = 20,
         x = rnorm(nx)
         y = rnorm(nx)
 
-        y = sqrt(1-corr^2)*y+corr*x
+        y = sqrt(1 - corr^2) * y + corr * x
     }
 
     nx = size * n.treatments
@@ -136,11 +173,15 @@ xdesign = function(x = NULL, y = NULL, corr = 0.8, size = 20,
     y.lims = max(abs(c(rng[1]-0.1*diff(rng),rng[2]+0.1*diff(rng))))
     y.lims = c(-y.lims,y.lims)
 
-    boxplot(block.var~ind
-            ,main="Boxplots of Lurking/Blocking variable group means"
-            ,sub="Lurking variable in completely randomized design\nBlocking variable in randomized block design",col=rep(c("blue","red"),rep(n.treatments,2))
-            ,ylim=y.lims)
-    legend(n.treatments+0.5,rng[2],legend=c("Completely randomized design","Randomized block design"),fill=c("blue","red"))
+    boxplot(block.var~ind,
+            main="Boxplots of Lurking/Blocking variable group means",
+            sub="Lurking variable in completely randomized design\nBlocking variable in randomized block design",
+            col=rep(c("blue","red"), rep(n.treatments,2)),
+            ylim = y.lims)
+    legend("topright", bty = "n", cex = 0.7, 
+           legend = c("Completely randomized design",
+                      "Randomized block design"),
+           fill = c("blue","red"))
 
     rng = range(treat.var)
     y.lims = max(abs(c(rng[1]-0.1*diff(rng),rng[2]+0.1*diff(rng))))
@@ -149,7 +190,10 @@ xdesign = function(x = NULL, y = NULL, corr = 0.8, size = 20,
             ,main="Boxplots of treatment group means"
             ,col=rep(c("blue","red"),rep(n.treatments,2))
             ,ylim=y.lims)
-    legend(n.treatments+0.5,rng[2],legend=c("Completely randomized design","Randomized block design"),fill=c("blue","red"))
+    legend("topright", cex = 0.7, bty = "n",
+           legend=c("Completely randomized design",
+                    "Randomized block design"),
+           fill = c("blue","red"))
 
     x = treat.var[ind<=n.treatments]
     y = treat.var[ind>n.treatments]
