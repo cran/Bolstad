@@ -5,7 +5,7 @@
 \title{Bayesian inference for a normal standard deviation with a scaled inverse
 chi-squared distribution}
 \usage{
-nvaricp(y, mu, S0, kappa, cred.int = FALSE, alpha = 0.05, plot = TRUE)
+nvaricp(y, mu, S0, kappa, plot = TRUE, ...)
 }
 \arguments{
 \item{y}{a random sample from a
@@ -17,14 +17,13 @@ nvaricp(y, mu, S0, kappa, cred.int = FALSE, alpha = 0.05, plot = TRUE)
 
 \item{kappa}{the degrees of freedom of the prior.}
 
-\item{cred.int}{if TRUE then a 100(1-alpha) percent credible interval will
-be calculated for \eqn{\sigma}{sigma}}
-
-\item{alpha}{controls the width of the credible interval. Ignored if
-cred.int is FALSE}
-
 \item{plot}{if \code{TRUE} then a plot showing the prior and the posterior
 will be produced.}
+
+\item{\dots}{this allows the arguments \code{cred.int} (which is logical), and 
+\code{alpha} (numerical between 0 and 1 exclusive) to be specified for compatibility
+with previous versions. A warning will be issued about these arguments being 
+deprecated which is why there are no examples using them.}
 }
 \value{
 A list will be returned with the following components:
@@ -52,31 +51,9 @@ y = c(206.4, 197.4, 212.7, 208.5, 203.4)
 nvaricp(y,200,29.11,1)
 
 ##  Same as the previous example but a calculate a 95\% credible
-## interval for sigma
-nvaricp(y,200,29.11,1,cred.int=TRUE)
-
-##  Same as the previous example but a calculate a 95\% credible
-## interval for sigma by hand. Note that the syntax of sintegral has
-## changed
-results = nvaricp(y,200,29.11,1,cred.int=TRUE)
-attach(results)
-cdf = sintegral(sigma,posterior)$cdf
-Finv = approxfun(cdf$y,cdf$x)
-lb = Finv(0.025)
-ub = Finv(0.975)
-cat(paste("95\% credible interval for sigma: [",
-              signif(lb,4),", ", signif(ub,4),"]\\n",sep=""))
-
-##  Same as the previous example but a calculate a 95\% credible
-## interval for sigma by hand using the new quantile function
-results = nvaricp(y, 200, 29.11, 1)
-ci = quantile(results, c(0.025, 0.975))
-lb = ci[1]
-ub = ci[2]
-cat(paste("95\% credible interval for sigma: [",
-              signif(lb,4),", ", signif(ub,4),"]\\n",sep=""))
-
-
+## interval for sigma. NOTE this method has changed
+results = nvaricp(y,200,29.11,1)
+quantile(results, probs = c(0.025, 0.975))
 }
 \keyword{misc}
 

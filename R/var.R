@@ -2,7 +2,6 @@
 #'
 #' @param x an object for which we want to compute the variance
 #' @param \dots Any additional arguments to be passed to \code{var}.
-#' @importFrom stats var
 #' @export
 var = function(x, ...){
   UseMethod("var")

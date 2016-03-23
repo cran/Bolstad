@@ -6,7 +6,6 @@
 #' @details If \code{x} is of class \code{Bolstad} then this will find the
 #' quantiles of the posterior distribution using numerical integration and
 #' linear interpolation if necessary.
-#' @importFrom stats median quantile
 #' @method quantile Bolstad
 #' @export 
 quantile.Bolstad = function(x, probs = seq(0, 1, 0.25), ...){

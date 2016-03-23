@@ -2,11 +2,6 @@
 #' 
 #' @param x an object.
 #' @param \dots Any additional arguments to be passed to \code{sd}.
-#' @importFrom graphics abline barplot box boxplot legend lines par plot points
-#' @importFrom stats approx approxfun coef complete.cases contrasts cor cov dbeta dbinom dexp
-#' @importFrom stats dgamma dnorm dpois dt dunif integrate is.empty.model lm.fit model.matrix
-#' @importFrom stats model.response pgamma pnorm ppoints pt qbeta qchisq qgamma qnorm qpois qt 
-#' @importFrom stats rnorm runif setNames splinefun terms
 #' @export
 sd = function(x, ...){
   UseMethod("sd")

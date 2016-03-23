@@ -256,12 +256,10 @@ bayes.lin.reg = function(y, x, slope.prior = "flat",
   likelihood.a = dnorm(alpha.xbar, y.bar, sd.ls)
   posterior.a = dnorm(alpha.xbar, post.mean.a, post.sd.a)
 
-  cat("\t\tPosterior Mean\tPosterior Std. Deviation\n")
-  cat("\t\t - -- - -- - -- - -- - -\t - -- - -- - -- - -- - -- - -- - -- - --\n")
-  cat(paste("Intercept:\t", signif(post.mean.a, 4), "\t\t", 
-            signif(post.sd.a, 5), "\n", sep = ""))
-  cat(paste("Slope:\t\t", signif(post.mean.b, 4), "\t\t", 
-            signif(post.sd.b, 5), "\n\n", sep = ""))
+  cat(sprintf("%-11s %-14s %-24s\n", " ", "Posterior Mean", "Posterior Std. Deviation"))
+  cat(sprintf("%-11s %-14s %-24s\n", " ", "--------------", "------------------------"))
+  cat(sprintf("Intercept:  %-14.6g %-24.6g\n", signif(post.mean.a, 4), signif(post.sd.a, 5)))
+  cat(sprintf("Slope:      %-14.6g %-24.6g\n", signif(post.mean.b, 4), signif(post.sd.b, 5)))
 
   y.max = max(c(prior.a, likelihood.a, posterior.a))
   plot(alpha.xbar, prior.a, type = "l", col = "black", lty = 1, 
@@ -329,13 +327,16 @@ bayes.lin.reg = function(y, x, slope.prior = "flat",
     pred.y = post.mean.a + post.mean.b * (pred.x - x.bar)
     pred.se = sqrt(post.var.a + (pred.x - x.bar)^2 * post.var.b + sigma^2)
     predicted.values = cbind(pred.x, pred.y, pred.se)
-    cat("x\tPredicted.y\tSE\n")
-    cat(" - -- - \t - -- - -- - -- - \t - -- - -\n")
+    fmt = "%-8.4g  %-12.4g %-11.5g\n"
+    fmtS = "%-6s  %-12s %-11s\n"
+    
+    cat(sprintf(fmtS, "x", "Predicted y", "SE"))
+    cat(sprintf(fmtS, "------", "-----------", "-----------"))
     n.pred.x = length(pred.x)
     for(i in 1:n.pred.x){
-      cat(paste(signif(predicted.values[i, 1], 4), "\t", sep = ""))
-      cat(paste(signif(predicted.values[i, 2], 4), "\t\t", sep = ""))
-      cat(paste(signif(predicted.values[i, 3], 5), "\n", sep = ""))
+      cat(sprintf(fmt, signif(predicted.values[i, 1], 4), 
+                       signif(predicted.values[i, 2], 4), 
+                       signif(predicted.values[i, 3], 5)))
     }
   }
 
