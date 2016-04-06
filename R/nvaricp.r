@@ -207,10 +207,10 @@ nvaricp = function(y, mu, S0, kappa, plot = TRUE, ...){
                  var = ifelse(kappa1 > 4, 2 * S1^2 / ((kappa1 - 2)^2 * (kappa1 - 4)), NA),
                  sd = sqrt(ifelse(kappa1 > 4, 2 * S1^2 / ((kappa1 - 2)^2 * (kappa1 - 4)), NA)),
                  cdf = function(y, ...){
-                   pchisq(S1 / y^2, kappa1, ...)
+                   pchisq(S1 / y^2, df = kappa1, ...)
                  },
-                 quantile = function(probs, ...){
-                   sqrt(S1 / qchisq(p = 1 - probs, ...))
+                 quantileFun = function(probs, ...){
+                   sqrt(S1 / qchisq(p = 1 - probs, df = kappa1, ...))
                  }
                  )
   class(results) = 'Bolstad'

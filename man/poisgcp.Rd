@@ -4,9 +4,9 @@
 \alias{poisgcp}
 \title{Poisson sampling with a general continuous prior}
 \usage{
-poisgcp(y, density = "normal", params = c(0, 1), n.mu = 100, mu = NULL,
-  mu.prior = NULL, print.sum.stat = FALSE, alpha = 0.05, plot = TRUE,
-  suppressOutput = FALSE)
+poisgcp(y, density = c("normal", "gamma", "user"), params = c(0, 1),
+  n.mu = 100, mu = NULL, mu.prior = NULL, print.sum.stat = FALSE,
+  alpha = 0.05, plot = TRUE, suppressOutput = FALSE)
 }
 \arguments{
 \item{y}{A random sample of one or more observations from a Poisson

@@ -83,7 +83,7 @@
 #' 	,round(lb,4)," ",round(ub,4),"]\n",sep=""))
 #' 
 #' @export poisgcp
-poisgcp = function(y, density = "normal", params = c(0, 1), n.mu = 100,
+poisgcp = function(y, density = c("normal", "gamma", "user"), params = c(0, 1), n.mu = 100,
                   mu = NULL, mu.prior = NULL,
                   print.sum.stat = FALSE, alpha = 0.05, plot = TRUE,
                   suppressOutput = FALSE){
@@ -100,6 +100,8 @@ poisgcp = function(y, density = "normal", params = c(0, 1), n.mu = 100,
   if(n.mu<100)
     stop("Error: there must be at least 100 points in the prior")
 
+  density = match.arg(density)
+  
   if(density=="user"){
     if(is.null(mu) || is.null(mu.prior))
       stop("Error: a vector of possibilities (mu) and associated densities must be specified for a user prior")

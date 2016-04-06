@@ -1,4 +1,4 @@
-#' Bayesian t-Test
+#' Bayesian t-test
 #' 
 #' @description Performs one and two sample t-tests (in the Bayesian hypothesis testing framework) on vectors of data
 #' @param x a (non-empty) numeric vector of data values.
@@ -10,7 +10,8 @@
 #' @param paired a logical indicating whether you want a paired t-test.
 #' @param var.equal a logical variable indicating whether to treat the two variances as being equal. 
 #' If \code{TRUE} (default) then the pooled variance is used to estimate the variance otherwise the 
-#' Welch (or Satterthwaite) approximation to the degrees of freedom is used. The unequal variance case is not yet implented.
+#' Welch (or Satterthwaite) approximation to the degrees of freedom is used. The unequal variance case is
+#' implented using Gibbs sampling.
 #' @param conf.level confidence level of interval.
 #' @param prior a character string indicating which prior should be used for the means, must be one of
 #' \code{"jeffreys"} (default) for independent Jeffreys' priors on the unknown mean(s) and variance(s), 
@@ -27,6 +28,14 @@
 #' @param kappa if the joint conjugate prior is used then the user must specify the degrees of freedom
 #' for the inverse chi-squared distribution used for the unknown standard deviation. Usually the default
 #' of 1 will be sufficient. This parameter is not used if the user chooses a Jeffreys' prior.
+#' @param sigmaPrior If a two-sample t-test with unequal variances is desired then the user must choose between
+#' using an chi-squared prior ("chisq") or a gamma prior ("gamma") for the unknown population standard deviations.
+#' This parameter is only used if \code{var.equal} is set to \code{FALSE}.
+#' @param nIter Gibbs sampling is used when a two-sample t-test with unequal variances is desired.
+#' This parameter controls the sample size from the posterior distribution.
+#' @param nBurn Gibbs sampling is used when a two-sample t-test with unequal variances is desired.
+#' This parameter controls the number of iterations used to burn in the chains before the procedure 
+#' starts sampling in order to reduce correlation with the starting values. 
 #' @param formula a formula of the form \code{lhs ~ rhs} where lhs is a numeric variable giving the data values and rhs a factor with two 
 #' levels giving the corresponding groups.
 #' @param data an optional matrix or data frame (or similar: see \code{\link{model.frame}}) containing 
@@ -79,7 +88,8 @@ bayes.t.test = function(x,  ...){
 bayes.t.test.default = function(x, y = NULL, alternative = c("two.sided", "less", "greater"),
        mu = 0, paired = FALSE, var.equal = TRUE,
        conf.level = 0.95, prior = c("jeffreys", "joint.conj"), 
-       m = NULL, n0 = NULL, sig.med = NULL, kappa = 1, ...){
+       m = NULL, n0 = NULL, sig.med = NULL, kappa = 1, 
+       sigmaPrior = "chisq", nIter = 10000, nBurn = 1000, ...){
   
   prior = match.arg(prior)
   
@@ -102,6 +112,13 @@ bayes.t.test.default = function(x, y = NULL, alternative = c("two.sided", "less"
     stop("'conf.level' must be a single number between 0 and 1")
   
   param.x = NULL
+  
+  tstat = 0
+  df = 0
+  pval = 0 
+  cint = 0
+  estimate = 0
+  method = NULL
     
   if (!is.null(y)) {
     dname = paste(deparse(substitute(x)), "and", deparse(substitute(y)))
@@ -131,7 +148,8 @@ bayes.t.test.default = function(x, y = NULL, alternative = c("two.sided", "less"
   mx = mean(x)
   SSx = sum((x-mx)^2)
   vx = var(x)
-  estimate = 0
+ 
+  bolstadResult = NULL
    
   if (is.null(y)) { ## one sample or paired
     if (nx < 2) 
@@ -158,6 +176,17 @@ bayes.t.test.default = function(x, y = NULL, alternative = c("two.sided", "less"
       likelihood = dnorm(mx, param.x, se.post)
       std.x = (param.x - mpost) / se.post
       posterior = dt(std.x, df = df)
+      
+      bolstadResult = list(name = name, param.x = param.x, 
+                           prior = prior, likelihood = likelihood, posterior = posterior,
+                           mean = mpost,
+                           var = se.post^2,
+                           cdf = function(x)pt((x - mpost) / se.post, df = df),
+                           quantileFun = function(probs, ...){se.post * qt(probs, df = df, ...) + mpost})
+      class(bolstadResult) = 'Bolstad'
+      
+      tstat = (mpost - mu) / se.post
+      estimate = mpost
     }else{
       S0 = qchisq(0.5, kappa) * sig.med^2
       S1 = SSx + S0
@@ -168,6 +197,9 @@ bayes.t.test.default = function(x, y = NULL, alternative = c("two.sided", "less"
       mpost = (nx * mx + n0 * m) / npost
       se.post = sqrt(sigma.sq.B / kappa1)
       df = kappa1
+      
+      estimate = mpost
+      tstat = (mpost - mu) / se.post
       
       lb = min(mpost - 4 * se.post, m - 4 * sqrt(1 / n0))
       ub = max(mpost + 4 * se.post, m + 4 * sqrt(1 / n0))
@@ -206,16 +238,16 @@ bayes.t.test.default = function(x, y = NULL, alternative = c("two.sided", "less"
     SSp = sum((x - mx)^2) + sum((y - my)^2)
     
     method = paste(if (!var.equal) 
-      "Welch", "Two Sample t-test")
+      "Gibbs", "Two Sample t-test")
     
-    estimate = c(mx, my)
-    names(estimate) = c("mean of x", "mean of y")
+    estimate = c(mx, my) ## this may get changed elsewhere
+    names(estimate) = c("posterior mean of x", "posterior mean of y")
     
     lb = mx - my - 4 * sqrt(vx/nx + vy/ny)
     ub = mx - my + 4 * sqrt(vx/nx + vy/ny)
     param.x = seq(lb, ub, length = 1000)
     name = 'mu[1]-mu[2]'
-    
+
     if (var.equal) {
       if(prior == "jeffreys"){
         kappa1 = nx + ny -2
@@ -229,6 +261,20 @@ bayes.t.test.default = function(x, y = NULL, alternative = c("two.sided", "less"
         prior = 1 / diff(range(param.x))
         likelihood = dnorm(mx - my, param.x, se.post)
         posterior = dt((param.x - mpost)/se.post, df)
+        
+        bolstadResult = list(name = name, param.x = param.x, 
+                             prior = prior, likelihood = likelihood, posterior = posterior,
+                             mean = mpost,
+                             var = se.post^2,
+                             cdf = function(x)pt((x - mpost) / se.post, df = df),
+                             quantileFun = function(probs, ...){se.post * qt(probs, df = df, ...) + mpost})
+        class(bolstadResult) = 'Bolstad'
+        
+        estimate = c(mx, my)
+        names(estimate) = c("posterior mean of x", "posterior mean of y")
+        
+        tstat = (mpost - mu) / se.post
+        
       }else{
         kappa1 = kappa + nx + ny
         n1post = nx + n0[1]
@@ -245,22 +291,52 @@ bayes.t.test.default = function(x, y = NULL, alternative = c("two.sided", "less"
         prior = dnorm(param.x, m[1] - m[2], sqrt(sum(1/n0)))
         likelihood = dnorm(mx - my, param.x, se.post)
         posterior = dt((param.x - mpost)/se.post, df)
+        
+        bolstadResult = list(name = name, param.x = param.x, 
+                             prior = prior, likelihood = likelihood, posterior = posterior,
+                             mean = mpost,
+                             var = se.post^2,
+                             cdf = function(x)pt((x - mpost) / se.post, df = df),
+                             quantileFun = function(probs, ...){se.post * qt(probs, df = df, ...) + mpost})
+        class(bolstadResult) = 'Bolstad'
+        
+        estimate = c(m1post, m2post)
+        names(estimate) = c("posterior mean of x", "posterior mean of y")
+        
+        tstat = (mpost - mu)/se.post
       }
     }else {
-     
+      res = bayes.t.gibbs(x, y, nIter, nBurn, sigmaPrior)
+      se.post = sd(res$mu.diff)
+      
+      d = density(res$mu.diff, from = param.x[1], to = param.x[length(param.x)])
+      param.x = d$x
+      likelihood = dnorm(mx - my, param.x, se.post)
+      posterior = d$y
+      mpost = mean(res$mu.diff)
+      vpost = var(res$mu.diff)
+      
+      
+      bolstadResult = list(name = name, param.x = d$x, 
+                           prior = NULL, likelihood = likelihood, posterior = posterior,
+                           mean = mpost,
+                           var = vpost,
+                           cdf = function(x){r  = sintegral(param.x, posterior);
+                                             Fx = splinefun(r$x, r$y);
+                                             return(Fx(x))},
+                           quantileFun = function(probs, ...){quantile(res$mu.diff, probs = probs, ...)})
+      class(bolstadResult) = 'Bolstad'
+      
+      estimate = c(mean(res$mu.x), mean(res$mu.y))
+      names(estimate) = c("posterior mean of x", "posterior mean of y")
+      
+      tstat = mean(res$tstat)
+      se.post = sd(res$mu.diff)
+      snx = mean(res$sigma.sq.x / nx)
+      sny = mean(res$sigma.sq.y / ny)
+      df = (snx + sny)^2 / (snx^2 / (nx - 1) + sny^2 / (ny - 1))
     }
   }
-  
-  result = list(name = name, param.x = param.x, 
-                prior = prior, likelihood = likelihood, posterior = posterior,
-                mean = mpost,
-                var = se.post^2,
-                cdf = function(x)pt((x - mpost) / se.post, df = df),
-                quantileFun = function(probs, ...){se.post * qt(probs, df = df, ...) + mpost})
-  class(result) = 'Bolstad'
-  
-  tstat = (mpost - mu) / se.post
-  estimate = mpost
   
   if (alternative == "less") {
     pval = pt(tstat, df)
@@ -279,14 +355,14 @@ bayes.t.test.default = function(x, y = NULL, alternative = c("two.sided", "less"
   cint = mu + cint * se.post
   names(tstat) = "t"
   names(df) = "df"
-  #names(mu) = if (paired || !is.null(y)) 
-  #  "difference in means"
-  #else "mean"
-  #attr(cint, "conf.level") = conf.level
+  names(mu) = if (paired || !is.null(y)) 
+    "difference in means"
+  else "mean"
+  attr(cint, "conf.level") = conf.level
   rval = list(statistic = tstat, parameter = df, p.value = pval, 
                conf.int = cint, estimate = estimate, null.value = mu, 
                alternative = alternative, method = method, data.name = dname,
-              result = result)
+              result = bolstadResult)
   class(rval) = "htest"
   return(rval)
 }

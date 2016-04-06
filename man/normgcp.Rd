@@ -4,8 +4,8 @@
 \alias{normgcp}
 \title{Bayesian inference on a normal mean with a general continuous prior}
 \usage{
-normgcp(x, sigma.x = NULL, density = "uniform", params = NULL,
-  n.mu = 50, mu = NULL, mu.prior = NULL, plot = TRUE)
+normgcp(x, sigma.x = NULL, density = c("normal", "unform", "user"),
+  params = NULL, n.mu = 50, mu = NULL, mu.prior = NULL, plot = TRUE)
 }
 \arguments{
 \item{x}{a vector of observations from a normal distribution with unknown

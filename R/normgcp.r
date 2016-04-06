@@ -102,7 +102,7 @@
 #' ciApprox
 #' 
 #' @export normgcp
-normgcp = function(x, sigma.x = NULL, density = "uniform" ,
+normgcp = function(x, sigma.x = NULL, density = c("normal", "unform", "user") ,
                    params = NULL, n.mu = 50, mu = NULL,
                    mu.prior = NULL, plot = TRUE){
 
@@ -129,7 +129,7 @@ normgcp = function(x, sigma.x = NULL, density = "uniform" ,
     cat(paste("Known standard deviation :", signif(sigma.x, 4),"\n",sep=""))
   }
 
-  density = tolower(density)
+  density = match.arg(density)
 
   if(grepl('^n(orm(al)*)*$', density)){
     if(is.null(params) | length(params) < 1)

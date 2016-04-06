@@ -4,14 +4,15 @@
 \alias{bayes.t.test}
 \alias{bayes.t.test.default}
 \alias{bayes.t.test.formula}
-\title{Bayesian t-Test}
+\title{Bayesian t-test}
 \usage{
 bayes.t.test(x, ...)
 
 \method{bayes.t.test}{default}(x, y = NULL, alternative = c("two.sided",
   "less", "greater"), mu = 0, paired = FALSE, var.equal = TRUE,
   conf.level = 0.95, prior = c("jeffreys", "joint.conj"), m = NULL,
-  n0 = NULL, sig.med = NULL, kappa = 1, ...)
+  n0 = NULL, sig.med = NULL, kappa = 1, sigmaPrior = "chisq",
+  nIter = 10000, nBurn = 1000, ...)
 
 \method{bayes.t.test}{formula}(formula, data, subset, na.action, ...)
 }
@@ -32,7 +33,8 @@ letter.}
 
 \item{var.equal}{a logical variable indicating whether to treat the two variances as being equal. 
 If \code{TRUE} (default) then the pooled variance is used to estimate the variance otherwise the 
-Welch (or Satterthwaite) approximation to the degrees of freedom is used. The unequal variance case is not yet implented.}
+Welch (or Satterthwaite) approximation to the degrees of freedom is used. The unequal variance case is
+implented using Gibbs sampling.}
 
 \item{conf.level}{confidence level of interval.}
 
@@ -55,6 +57,17 @@ for the unknown standard deviation. This parameter is not used if the user choos
 \item{kappa}{if the joint conjugate prior is used then the user must specify the degrees of freedom
 for the inverse chi-squared distribution used for the unknown standard deviation. Usually the default
 of 1 will be sufficient. This parameter is not used if the user chooses a Jeffreys' prior.}
+
+\item{sigmaPrior}{If a two-sample t-test with unequal variances is desired then the user must choose between
+using an chi-squared prior ("chisq") or a gamma prior ("gamma") for the unknown population standard deviations.
+This parameter is only used if \code{var.equal} is set to \code{FALSE}.}
+
+\item{nIter}{Gibbs sampling is used when a two-sample t-test with unequal variances is desired.
+This parameter controls the sample size from the posterior distribution.}
+
+\item{nBurn}{Gibbs sampling is used when a two-sample t-test with unequal variances is desired.
+This parameter controls the number of iterations used to burn in the chains before the procedure 
+starts sampling in order to reduce correlation with the starting values.}
 
 \item{formula}{a formula of the form \code{lhs ~ rhs} where lhs is a numeric variable giving the data values and rhs a factor with two 
 levels giving the corresponding groups.}

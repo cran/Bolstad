@@ -116,10 +116,11 @@ normnp = function(x, m.x = 0 , s.x = 1, sigma.x = NULL, mu = NULL, n.mu = max(10
   names(qtls) = probs
 
   cat("\nProb.\tQuantile \n")
-  cat("------\t---------\n")
-  for(i in 1:length(probs))
-    cat(paste(round(probs[i],3),"\t",round(qtls[i],7),"\n",sep=""))
-  
+  cat("------\t----------\n")
+  for(i in 1:length(probs)){
+    cat(sprintf("%5.3f\t%10.7f\n", round(probs[i],3), round(qtls[i],7)))
+  }
+
   results = list(name = 'mu', param.x = mu, prior = mu.prior, likelihood = likelihood, posterior = posterior,
                  mean = post.mean, 
                  var = post.sd^2, 
