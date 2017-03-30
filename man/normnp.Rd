@@ -64,4 +64,3 @@ normnp(y,3,2,1)
 \code{\link{normdp}} \code{\link{normgcp}}
 }
 \keyword{misc}
-

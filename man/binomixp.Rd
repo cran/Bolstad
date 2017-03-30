@@ -79,4 +79,3 @@ polygon(results$pi,results$posterior,col="blue")
 \code{\link{binodp}} \code{\link{binogcp}} \code{\link{normmixp}}
 }
 \keyword{misc}
-

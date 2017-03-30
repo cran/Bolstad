@@ -19,4 +19,3 @@ The function to fit the model \code{\link{bayes.lm}}
 
 The function \code{\link{coef}} to extract the matrix of posterior means along with standard errors and t-statistics.
 }
-

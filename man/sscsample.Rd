@@ -4,8 +4,8 @@
 \alias{sscsample}
 \title{Simple, Stratified and Cluster Sampling}
 \usage{
-sscsample(size, n.samples, sample.type = "simple", x = NULL,
-  strata = NULL, cluster = NULL)
+sscsample(size, n.samples, sample.type = c("simple", "cluster", "stratified"),
+  x = NULL, strata = NULL, cluster = NULL)
 }
 \arguments{
 \item{size}{the desired size of the sample}
@@ -56,4 +56,3 @@ Tuebingen Fakultaet f. Informations- und Kognitionswissenschaften,
 Universitaet Tuebingen
 }
 \keyword{misc}
-

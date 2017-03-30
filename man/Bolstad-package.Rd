@@ -2,8 +2,8 @@
 % Please edit documentation in R/Bolstad-package.R
 \docType{package}
 \name{Bolstad-package}
-\alias{Bolstad}
 \alias{Bolstad-package}
+\alias{Bolstad}
 \title{Bolstad Functions}
 \description{
 A set of R functions and data sets for the book Introduction to Bayesian
@@ -16,13 +16,12 @@ the posterior distribution of the parameters of interest.
 \tabular{ll}{ Package: \tab Bolstad\cr Type: \tab Package\cr Version: \tab
 0.2-26\cr Date: \tab 2015-05-01\cr License: \tab GPL 2\cr }
 }
-\author{
-James Curran Maintainer: James Curran <j.curran@auckland.ac.nz> ~~
-The author and/or maintainer of the package ~~
-}
 \references{
 Bolstad, W.M. (2007), Introduction to Bayesian Statistics, John
 Wiley & Sons.
 }
+\author{
+James Curran Maintainer: James Curran <j.curran@auckland.ac.nz> ~~
+The author and/or maintainer of the package ~~
+}
 \keyword{package}
-

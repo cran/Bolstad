@@ -101,6 +101,7 @@ Performs one and two sample t-tests (in the Bayesian hypothesis testing framewor
 
 \item \code{formula}: Bayesian t-test
 }}
+
 \examples{
 bayes.t.test(1:10, y = c(7:20))      # P = .3.691e-01
 
@@ -128,4 +129,3 @@ bayes.t.test(extra ~ group, data = sleep)
 \author{
 R Core with Bayesian internals added by James Curran
 }
-

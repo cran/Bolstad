@@ -14,4 +14,3 @@ sd(x, ...)
 \description{
 Standard deviation generic
 }
-

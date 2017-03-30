@@ -36,4 +36,3 @@ mu.prior[mu > 0] = 1 / 3 - mu[mu > 0] / 9
 results = normgcp(x, 1, density = "user", mu = mu, mu.prior = mu.prior)
 mean(results)
 }
-

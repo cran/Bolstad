@@ -64,4 +64,3 @@ plot(b, overlay = FALSE, which = 1:3)
 James Curran
 }
 \keyword{plot}
-

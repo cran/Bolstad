@@ -67,4 +67,3 @@ poisdp(y.obs,mu=mu,mu.prior=mu.prior)
 \code{\link{poisgamp}} \code{\link{poisgcp}}
 }
 \keyword{misc}
-

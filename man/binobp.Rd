@@ -60,4 +60,3 @@ decomp(results)
 \code{\link{binodp}} \code{\link{binogcp}}
 }
 \keyword{misc}
-

@@ -101,4 +101,3 @@ bayes.lin.reg(O2,HR,"n","f",0,1,sigma=0.13,pred.x=c(100,110))
 
 }
 \keyword{misc}
-

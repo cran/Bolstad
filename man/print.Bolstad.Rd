@@ -21,10 +21,9 @@ This function provides a print summary method for the output of
 if x has both class \code{Bolstad} and \code{lm} then a print method 
 similar to \code{print.lm} is called, otherwise \code{print.default} is called
 }
-\author{
-James Curran
-}
 \seealso{
 \code{\link{bayes.lm}}
 }
-
+\author{
+James Curran
+}

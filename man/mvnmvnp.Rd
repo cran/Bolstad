@@ -34,4 +34,3 @@ Evaluates posterior density for \eqn{\mu}{mu}, the mean of a
 MVN distribution, with a MVN prior on \eqn{\mu}{mu}
 }
 \keyword{misc}
-

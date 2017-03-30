@@ -25,4 +25,3 @@ plot(income~ethnicity, data = sscsample.data)
 
 }
 \keyword{datasets}
-

@@ -14,4 +14,3 @@ var(x, ...)
 \description{
 Variance generic
 }
-

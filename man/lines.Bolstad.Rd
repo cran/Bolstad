@@ -15,4 +15,3 @@
 Allows simple addition of posterior distributions from other results to an
 existing plot
 }
-

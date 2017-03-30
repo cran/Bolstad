@@ -51,4 +51,3 @@ xdesign(corr = -0.6, size = 25, n.treatments = 5)
 
 }
 \keyword{misc}
-

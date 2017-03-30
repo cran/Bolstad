@@ -21,4 +21,3 @@ a linear interpolation function where the weights have been scaled so
 \description{
 Create prior default method
 }
-

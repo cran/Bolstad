@@ -65,4 +65,3 @@ normmixp(x, 1, c(3, 2), c(0, 100), 0.8)
 \code{\link{binomixp}} \code{\link{normdp}} \code{\link{normgcp}}
 }
 \keyword{misc}
-

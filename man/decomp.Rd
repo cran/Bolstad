@@ -37,4 +37,3 @@ decomp(results)
 James Curran
 }
 \keyword{plots}
-

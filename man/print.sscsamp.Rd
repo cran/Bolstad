@@ -18,10 +18,9 @@ from a fixed population using either simple random, stratified, or cluster
 sampling. This function provides the means of each sample plus the number of
 observations from each ethnicity stratum in the sample.
 }
-\author{
-James Curran
-}
 \seealso{
 \code{\link{sscsample}}
 }
-
+\author{
+James Curran
+}

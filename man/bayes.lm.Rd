@@ -118,4 +118,3 @@ summary(bayes.D9)
 
 }
 \keyword{misc}
-

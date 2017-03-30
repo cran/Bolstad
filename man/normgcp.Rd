@@ -122,4 +122,3 @@ ciApprox
 \code{\link{normdp}} \code{\link{normnp}}
 }
 \keyword{misc}
-

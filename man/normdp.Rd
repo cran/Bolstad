@@ -65,4 +65,3 @@ normdp(y,1,mu,mu.prior)
 \code{\link{normnp}} \code{\link{normgcp}}
 }
 \keyword{misc}
-

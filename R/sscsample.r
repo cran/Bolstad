@@ -38,7 +38,7 @@
 #' res$samples[,50]
 #' 
 #' @export
-sscsample  =  function (size, n.samples, sample.type = "simple",
+sscsample  =  function (size, n.samples, sample.type = c("simple", "cluster", "stratified"),
                         x = NULL, strata = NULL,
                         cluster = NULL){
     ## Written initially by:
@@ -98,6 +98,8 @@ sscsample  =  function (size, n.samples, sample.type = "simple",
         stop("The length of the cluster and data vectors must be equal")
 
     samples  =  matrix(0, nrow = size, ncol = n.samples)
+    
+    sample.type = match.arg(sample.type, c("simple", "cluster", "stratified"))
 
     if(sample.type == "stratified" | sample.type == 2){
         idx.vec  =  1:nx

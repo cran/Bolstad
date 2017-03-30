@@ -46,4 +46,3 @@ This data set was supplied by Gary Alt. Entertaining references
 are in Reader's Digest April, 1979, and Sports Afield September, 1981.
 }
 \keyword{datasets}
-

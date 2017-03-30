@@ -22,4 +22,3 @@ If \code{x} is an object of class \code{Bolstad} then the posterior
 \author{
 James Curran
 }
-

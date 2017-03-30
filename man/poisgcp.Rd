@@ -106,4 +106,3 @@ cat(paste("Approximate 95\% credible interval : ["
 \code{\link{poisdp}} \code{\link{poisgamp}}
 }
 \keyword{misc}
-

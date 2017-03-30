@@ -78,4 +78,3 @@ cat(paste("95\% credible interval for mu: [",round(ci[1],3), ",", round(ci[2],3)
 \code{\link{poisdp}} \code{\link{poisgcp}}
 }
 \keyword{misc}
-

@@ -22,7 +22,7 @@ Bayesian inference, and \eqn{x} is the data.}
 Posterior standard deviation
 }
 \examples{
-## The useful of this method is really highlighted when we have a general 
+## The usefulness of this method is really highlighted when we have a general 
 ## continuous prior. In this example we are interested in the posterior
 ## standard deviation of an normal mean. Our prior is triangular over [-3, 3]
 set.seed(123)
@@ -40,4 +40,3 @@ sd(results)
 \author{
 James M. Curran
 }
-

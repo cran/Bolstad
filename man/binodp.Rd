@@ -75,4 +75,3 @@ legend("topleft", bty = "n", cex = 0.7,
 \code{\link{binobp}} \code{\link{binogcp}}
 }
 \keyword{misc}
-

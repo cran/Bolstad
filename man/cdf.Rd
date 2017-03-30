@@ -28,7 +28,7 @@ which the posterior is specified.
 \itemize{
 \item \code{Bolstad}: Cumulative distribution function for posterior density
 }}
+
 \author{
 James Curran
 }
-

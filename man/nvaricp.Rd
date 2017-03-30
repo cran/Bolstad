@@ -56,4 +56,3 @@ results = nvaricp(y,200,29.11,1)
 quantile(results, probs = c(0.025, 0.975))
 }
 \keyword{misc}
-

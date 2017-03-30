@@ -92,4 +92,3 @@ cat(paste("Approximate 95\% credible interval : ["
 \code{\link{binobp}} \code{\link{binodp}}
 }
 \keyword{misc}
-

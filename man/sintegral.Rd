@@ -62,4 +62,3 @@ integrate(function(x){x^2-1},1,2)
 
 }
 \keyword{misc}
-
