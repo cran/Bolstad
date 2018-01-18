@@ -9,6 +9,8 @@
 #' @param rate the rate parameter of the \eqn{gamma} prior. Note that the scale
 #' is \eqn{1 / rate}
 #' @param scale the scale parameter of the \eqn{gamma} prior
+#' @param alpha the width of the credible interval is controlled by the
+#' parameter alpha.
 #' @param plot if \code{TRUE} then a plot showing the prior and the posterior
 #' will be produced.
 #' @param suppressOutput if \code{TRUE} then none of the output is printed to
@@ -61,6 +63,7 @@
 #' 
 #' @export poisgamp
 poisgamp = function(y, shape, rate = 1, scale = 1 / rate,
+                    alpha = 0.05,
                     plot = TRUE, suppressOutput = FALSE){
   n = length(y)
   y.sum = sum(y)
@@ -105,14 +108,16 @@ poisgamp = function(y, shape, rate = 1, scale = 1 / rate,
     likelihood = apply(likelihood, 2, prod)
     posterior = dgamma(mu, r1, v1)
 
-    k3 = qgamma(c(0.005,0.995), r1, v1)
+    k3 = qgamma(c(alpha * 0.5 , 1 - alpha * 0.5), r1, v1)
 
     if(!suppressOutput){
       cat("Summary statistics for posterior\n")
       cat("--------------------------------\n")
       cat(paste("Shape parameter r:\t", r1,"\n"))
       cat(paste("Rate parameter v:\t",v1,"\n"))
-      cat(paste("99% credible interval for mu:\t[",round(k3[1],2), ",",round(k3[2],2), "]\n"))
+      cat(sprintf("%d%% credible interval for mu:\t[%.2f, %.2f]\n",
+                  round(100 * (1 - alpha)),
+                  k3[1], k3[2]))
     }
     
     if(plot){
@@ -129,7 +134,7 @@ poisgamp = function(y, shape, rate = 1, scale = 1 / rate,
     r1 = r+y.sum
     v1 = v+n
     v1.inv = 1/v1
-    k3 = qgamma(c(0.005,0.995),r1,v1)
+    k3 = qgamma(c(alpha * 0.5 , 1 - alpha * 0.5),r1,v1)
     k4 = k3[2]/1000
     mu = seq(0,k3[2],by = k4)
 
@@ -140,7 +145,9 @@ poisgamp = function(y, shape, rate = 1, scale = 1 / rate,
       cat("--------------------------------\n")
       cat(paste("Shape parameter r:\t", r1,"\n"))
       cat(paste("Rate parameter v:\t",v1,"\n"))
-      cat(paste("99% credible interval :\t[",round(k3[1],2),", ",round(k3[2],2), "]\n"))
+      cat(sprintf("%d%% credible interval for mu:\t[%.2f, %.2f]\n",
+                  round(100 * (1 - alpha)),
+                  k3[1], k3[2]))
     }
     
     prior = mu^(r-1)

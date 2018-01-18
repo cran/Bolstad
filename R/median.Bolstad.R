@@ -2,7 +2,7 @@
 #' 
 #' @param x an object.
 #' @param na.rm Ideally if \code{TRUE} then missing values will be removed, but not currently used.
-#' @param ... [>=R3.40 only] Not currently used.
+#' @param ... [>=R3.4.0 only] Not currently used.
 #' @details If \code{x} is an object of class \code{Bolstad} then the posterior 
 #'   median of the parameter of interest will be calculated.
 #' @author James Curran

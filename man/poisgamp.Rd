@@ -4,7 +4,7 @@
 \alias{poisgamp}
 \title{Poisson sampling with a gamma prior}
 \usage{
-poisgamp(y, shape, rate = 1, scale = 1/rate, plot = TRUE,
+poisgamp(y, shape, rate = 1, scale = 1/rate, alpha = 0.05, plot = TRUE,
   suppressOutput = FALSE)
 }
 \arguments{
@@ -16,6 +16,9 @@ poisgamp(y, shape, rate = 1, scale = 1/rate, plot = TRUE,
 is \eqn{1 / rate}}
 
 \item{scale}{the scale parameter of the \eqn{gamma} prior}
+
+\item{alpha}{the width of the credible interval is controlled by the
+parameter alpha.}
 
 \item{plot}{if \code{TRUE} then a plot showing the prior and the posterior
 will be produced.}

@@ -1,6 +1,6 @@
 Package: Bolstad
-Version: 0.2-34
-Date: 2017-03-28
+Version: 0.2-35
+Date: 2018-01-18
 Title: Functions for Elementary Bayesian Inference
 Authors@R: person("James", "Curran", email = "j.curran@auckland.ac.nz",
                   role = c("aut", "cre"))
@@ -11,8 +11,8 @@ Depends: R (>= 3.2.0)
 Imports: mvtnorm
 RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2017-03-30 00:22:51 UTC; jcur002
+Packaged: 2018-01-18 03:37:25 UTC; jcur002
 Author: James Curran [aut, cre]
 Maintainer: James Curran <j.curran@auckland.ac.nz>
 Repository: CRAN
-Date/Publication: 2017-03-30 11:17:16 UTC
+Date/Publication: 2018-01-18 04:39:54 UTC
