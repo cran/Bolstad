@@ -184,7 +184,7 @@ normgcp = function(x, sigma.x = NULL, density = c("normal", "unform", "user") ,
   ## Numerically integrate the denominator
   ## First calculate the height of the function to be integrated
 
-  f.x.mu = likelihood*mu.prior
+  f.x.mu = likelihood * mu.prior
 
   ## Now get a linear approximation so that we don't have to worry about
   ## the number of points specified by the user

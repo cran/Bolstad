@@ -108,7 +108,26 @@ binogcp = function(x, n, density = c("uniform", "beta", "exp", "normal",  "user"
   
   density = match.arg(density)
 
-  if(density == "beta"){
+  if(density == "user" || !is.null(pi.prior)){
+    if(density != "user"){
+      warning("The density is 'user' because you have specified values or a function for pi.prior")
+    }
+    
+    if(is.function(pi.prior)){
+      auc = integrate(pi.prior, 0, 1)
+      normConst = if(abs(auc$value - 1) > 3 * auc$abs.error){
+        auc$value
+      }else{
+        1
+      }
+      
+      pi.prior = pi.prior(pi) / normConst
+      
+      if(normConst != 1){
+        warning("Prior didn't integrate to one so it has been normalised.")
+      }
+    }
+  }else if(density == "beta"){
     if(length(params) < 2){
       warning("Beta prior requires two shape parameters. Default value Beta(1, 1) = Uniform is being used")
       a = 1
@@ -148,7 +167,7 @@ binogcp = function(x, n, density = c("uniform", "beta", "exp", "normal",  "user"
         stop("Maximum must be greater than minimum for a uniform prior")
       pi.prior = dunif(pi, minx, maxx)
     }
-  }else if (density != "user"){
+  }else{
     stop(paste("Unrecognized density :", density))
   }
 

@@ -1,4 +1,4 @@
-f9e3eda8cebb4d80eeaed367e734ef26 *DESCRIPTION
+38f947fe108f1bb5055b6bdb4d063ae8 *DESCRIPTION
 9ba560343627ba0612d8360c04bf311e *NAMESPACE
 5de161a50332482516f9145db05752fe *R/Bolstad-package.R
 e87620345fbdfa7be1cd64dc049d5553 *R/IQR.R
@@ -9,7 +9,7 @@ fc278212ce55c571b3803ef13bf213a1 *R/bayes.lm.R
 70f8cfd99e086a7157d3b03042f87a24 *R/bayes.t.test.R
 0d12e266ef04de194fa9ed6221b36de2 *R/binobp.r
 16ecede5df02adb343800e21c2808d03 *R/binodp.r
-8b4eb89dbff93c4b3a937035e04e3786 *R/binogcp.r
+523dd9e5d9a5c9e6b80b350195101485 *R/binogcp.r
 372bd82deac357d002e3ca1583eae72e *R/binomixp.r
 e72ee5c7abcd37692e58c5740591afa2 *R/cdf.R
 98b9a72484c9ea13055bfe6ebbaa472e *R/createPrior.R
@@ -21,14 +21,14 @@ e72ee5c7abcd37692e58c5740591afa2 *R/cdf.R
 919267f2826cfc72a1d9bd1a5a8b1f64 *R/median.Bolstad.R
 324a372346444c5029458bcc7034ad5c *R/mvnmvnp.R
 656a3d5f8d789b271aa3c9346b7fe11c *R/normdp.r
-28a3760b918f4f1d650bc77ec7193ec4 *R/normgcp.r
+60e1d2c2a8a2ebfda69dcc72a60c73bf *R/normgcp.r
 c1e19f4a7412b9a2d63d9504d7215b61 *R/normmixp.r
 714956156f0b117cee48292b238ab5c4 *R/normnp.r
 00f02da53c830eafbf5b1b1c182995fc *R/nvaricp.r
 1cd3b20010bcec73f8467e5931edb918 *R/plot.Bolstad.r
 a3befaa6294be9d46a79b57c8a6ec9b1 *R/poisdp.r
-0cef01499d7b6fd56c5430845f9908d9 *R/poisgamp.r
-c2fece96f5b25ab1e7a784300faa54aa *R/poisgcp.r
+7b31af31cc1c75c275ae9949d065e6d4 *R/poisgamp.R
+2ae2a89b70bf3e245c5b45c91b9fcdec *R/poisgcp.r
 7a5e2f369f0ba21ae216db90b60f0f05 *R/print.Bolstad.R
 a907e55ad23abace6d364cfa71f4b1c5 *R/print.sintegral.R
 773a4c3c41890a7b47f4b3f6d03ca804 *R/print.sscamp.R
@@ -71,8 +71,8 @@ b86818dee5e036fc76e8d9d3785d81f1 *man/normdp.Rd
 24126f79911340cd8b4f79bbe6bc2e84 *man/nvaricp.Rd
 38bb61dfd5b39922767d5ebdf7a3c19d *man/plot.Bolstad.Rd
 c4ea0295c928c405f7501251bcf531c0 *man/poisdp.Rd
-805b00ea9d66f38ec59c9818db25253f *man/poisgamp.Rd
-a39581f5524ce3c24d16d0d9e62b57f3 *man/poisgcp.Rd
+87033d52e42446a571993abfaec88063 *man/poisgamp.Rd
+554a9ebe761495ea61a7c4dd6c32b768 *man/poisgcp.Rd
 001dcddd8e60a8d15c0e4f3d80f76fb0 *man/print.Bolstad.Rd
 d566b4b5f37edabdae4c129beb5a54bc *man/print.sscsamp.Rd
 0a7311d6356157593f3ff82c4c170a36 *man/quantile.Bolstad.Rd
