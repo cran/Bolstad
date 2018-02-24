@@ -79,8 +79,8 @@
 #' 
 #' @export bayes.lin.reg
 
-bayes.lin.reg = function(y, x, slope.prior = "flat", 
-                        intcpt.prior = "flat", 
+bayes.lin.reg = function(y, x, slope.prior = c("flat", "normal"),
+                        intcpt.prior = c("flat", "normal"), 
                         mb0 = 0, sb0 = 0, ma0 = 0, sa0 = 0, 
                         sigma = NULL, alpha = 0.05, plot.data = FALSE, 
                         pred.x = NULL) {
@@ -95,25 +95,16 @@ bayes.lin.reg = function(y, x, slope.prior = "flat",
     stop("Error: the std. deviation of the resisuals, sigma, must be greater than or equal to zero")
   }
 
-  patn = "n((orm)*al)*"
-  patf = "f(lat)*"
-  pat = paste0("(", patn, "|", patf, ")")
+  intcpt.prior = match.arg(intcpt.prior, c("flat", "normal"))
+  slope.prior = match.arg(slope.prior, c("flat", "normal"))
   
-  if(!grepl(pat, slope.prior))
+  if(!grepl("^(flat|normal)$", slope.prior))
     stop("The slope prior must be one of \"normal\" or \"flat\"")
   
-  if(grepl(patn, slope.prior))
-    slope.prior = "normal"
-  else if(grepl(patf, slope.prior))
-    slope.prior = "flat"
-
-  if(!grepl(pat, intcpt.prior))
+  
+  if(!grepl("^(flat|normal)$", intcpt.prior))
     stop("The intercept prior must be one of \"normal\" or \"flat\"")
   
-  if(grepl(patn, intcpt.prior))
-    intcpt.prior = "normal"
-  else if(grepl(patf, intcpt.prior))
-    intcpt.prior = "flat"
 
   if(slope.prior == "normal" && sb0 <= 0)
     stop("Error: the prior std. devation sb0 must be greater than zero")
@@ -160,10 +151,10 @@ bayes.lin.reg = function(y, x, slope.prior = "flat",
   
   d = as.data.frame(cbind(y, x))
   
+  
   if (slope.prior == "flat") {
     prior.prec.b = 0
     mb0 = 0
-    sb0 = 1 # ???
     bnd.mult.b = 4
   } else { 
     prior.prec.b = 1 / sb0^2
@@ -173,14 +164,11 @@ bayes.lin.reg = function(y, x, slope.prior = "flat",
   if (intcpt.prior == "flat") {
     prior.prec.a = 0
     ma0 = 0
-    sa0 = 1 # ???
     bnd.mult.a = 4
   } else {
     prior.prec.a = 1 / sa0^2
     bnd.mult.a = 3
   }
-  
-  mdl = bayes.lm(y ~ x, data = d, model = FALSE, prior = list(b0 = c(ma0, mb0), V0 = diag(c(sa0^2, sb0^2))))
   
   ################
   # SLOPE 
@@ -190,9 +178,9 @@ bayes.lin.reg = function(y, x, slope.prior = "flat",
   sd.ls = sqrt(1 / prec.ls)
   post.prec.b = prior.prec.b + prec.ls
 
-  post.var.b = mdl$post.var[2, 2]
+  post.var.b = 1 / post.prec.b
   post.sd.b = sqrt(post.var.b)
-  post.mean.b = mdl$post.mean[2]
+  post.mean.b = (prior.prec.b * mb0 + SSx / sigma^2 * b.ls) / post.prec.b
   
   lb = post.mean.b - bnd.mult.b * post.sd.b
   ub = post.mean.b + bnd.mult.b * post.sd.b
@@ -236,9 +224,9 @@ bayes.lin.reg = function(y, x, slope.prior = "flat",
   sd.ls = sqrt(1 / prec.ls)
   post.prec.a = prior.prec.a + prec.ls
   
-  post.var.a = mdl$post.var[1, 1]
+  post.var.a = 1 / post.prec.a
   post.sd.a = sqrt(post.var.a)
-  post.mean.a = mdl$post.mean[1]
+  post.mean.a = (prior.prec.a * ma0 + n / sigma^2 * Ax.bar) / post.prec.a
   
   lb = post.mean.a - bnd.mult.a * post.sd.a
   ub = post.mean.a + bnd.mult.a * post.sd.a

@@ -1,9 +1,9 @@
-38f947fe108f1bb5055b6bdb4d063ae8 *DESCRIPTION
+28f043f646fa9927b7ef1bb53457e1f2 *DESCRIPTION
 9ba560343627ba0612d8360c04bf311e *NAMESPACE
-5de161a50332482516f9145db05752fe *R/Bolstad-package.R
+cf7ece8cce5ede5c0ceeb9ad317a1c85 *R/Bolstad-package.R
 e87620345fbdfa7be1cd64dc049d5553 *R/IQR.R
 aaae5b779f8e7cf992e2f2b21a429791 *R/as.data.frame.Bolstad.R
-f0a1b1172c59fcd18ce9fd9d1e798f0f *R/bayes.lin.reg.r
+978252fd54cfe5125f560dfb2014e187 *R/bayes.lin.reg.r
 fc278212ce55c571b3803ef13bf213a1 *R/bayes.lm.R
 1a6d22c0507d03186c32c72c0a0596a8 *R/bayes.t.gibbs.R
 70f8cfd99e086a7157d3b03042f87a24 *R/bayes.t.test.R
@@ -43,13 +43,14 @@ bab3d3f0f8c92bd06c8abf40d0703b04 *R/sysdata.rda
 ccc6e0767d74f2cf69380ef520209dc4 *R/var.R
 6d382186ad7021a2998d275c17ddc832 *R/xdesign.r
 3f6117127138502f62d74ce8d0573a43 *data/bears.rda
+833e0d7b0b31093fb6d92d0611b92b6e *data/moisture.df.rda
 092aee13410e93043b47ad1f508ad103 *data/slug.rda
 947323af63e4bdc4389a87f1d5fcabbb *data/sscsample.data.rda
 0b822cedf8295975a6bd237edee6bda7 *inst/CITATION
 0d9a8d9e2cec414f1f7234b701ff0207 *man/Bolstad-package.Rd
 34aa5f34e4cb52e422cc3af2b1f8af7f *man/IQR.Rd
 8769f1d0f85514c2d1332f2bd196113b *man/as.data.frame.Bolstad.Rd
-07831c9c9f276fa775c9cffe37d029b0 *man/bayes.lin.reg.Rd
+af8b5c5c2f69809b227d01ad86b925be *man/bayes.lin.reg.Rd
 793a62535c3dc0859ebd68cd8d2e2696 *man/bayes.lm.Rd
 8de09e9c722fc770d340a96542d70b7d *man/bayes.t.test.Rd
 07ab0490d72e690cf919481c9e797d0e *man/bears.Rd
@@ -63,6 +64,7 @@ fa5ac05aa82cb7408ca245a65857e296 *man/binomixp.Rd
 c7e03212bcbacf7b88d3c16882461de5 *man/decomp.Rd
 c2c60a636bce538874474aae8976a38b *man/lines.Bolstad.Rd
 6f518ca6c6644bc0ffc135ab7d69b22e *man/mean.Bolstad.Rd
+63709b72f9536e74aab5771a01cab759 *man/moisture.df.Rd
 c47114ef144f1dd8cc47ca3b82d17aeb *man/mvnmvnp.Rd
 b86818dee5e036fc76e8d9d3785d81f1 *man/normdp.Rd
 83919fc6b09d5ac8d5e85672b295e222 *man/normgcp.Rd

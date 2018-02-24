@@ -4,9 +4,10 @@
 \alias{bayes.lin.reg}
 \title{Bayesian inference for simple linear regression}
 \usage{
-bayes.lin.reg(y, x, slope.prior = "flat", intcpt.prior = "flat", mb0 = 0,
-  sb0 = 0, ma0 = 0, sa0 = 0, sigma = NULL, alpha = 0.05,
-  plot.data = FALSE, pred.x = NULL)
+bayes.lin.reg(y, x, slope.prior = c("flat", "normal"),
+  intcpt.prior = c("flat", "normal"), mb0 = 0, sb0 = 0, ma0 = 0,
+  sa0 = 0, sigma = NULL, alpha = 0.05, plot.data = FALSE,
+  pred.x = NULL)
 }
 \arguments{
 \item{y}{the vector of responses.}
