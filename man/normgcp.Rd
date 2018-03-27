@@ -4,7 +4,7 @@
 \alias{normgcp}
 \title{Bayesian inference on a normal mean with a general continuous prior}
 \usage{
-normgcp(x, sigma.x = NULL, density = c("normal", "unform", "user"),
+normgcp(x, sigma.x = NULL, density = c("uniform", "normal", "flat", "user"),
   params = NULL, n.mu = 50, mu = NULL, mu.prior = NULL, plot = TRUE)
 }
 \arguments{

@@ -102,14 +102,14 @@
 #' ciApprox
 #' 
 #' @export normgcp
-normgcp = function(x, sigma.x = NULL, density = c("normal", "unform", "user") ,
+normgcp = function(x, sigma.x = NULL, density = c("uniform", "normal", "flat", "user") ,
                    params = NULL, n.mu = 50, mu = NULL,
                    mu.prior = NULL, plot = TRUE){
 
   ## x - the vector of observations
   ## sigma.x - the population standard deviation
   ## density - distributional form of the prior density
-  ## can be one of : normal, unform, or user
+  ## can be one of : flat, normal, unform, or user
   ## by default a continuous uniform prior is used
   ## mu - vector of possible values of the population mean
   ## mu.prior - the associated prior probability mass
@@ -131,70 +131,96 @@ normgcp = function(x, sigma.x = NULL, density = c("normal", "unform", "user") ,
 
   density = match.arg(density)
 
-  if(grepl('^n(orm(al)*)*$', density)){
-    if(is.null(params) | length(params) < 1)
-      stop("You must supply a mean for a normal prior")
-    mx = params[1]
-
-    if(length(params) == 2)  ## user has supplied sd as well
-      s.x = params[2]
-    else
-      s.x = sigma.x
-
-    mu = seq(mx - 3.5 * s.x, mx + 3.5 * s.x, length = n.mu)
-    mu.prior = dnorm(mu,mx,s.x)
-  }else if(grepl('^u(nif(orm)*)*$', density)){
-    if(is.null(params)){
-      ## set params to mean+/-3.5sd by default
-      params = c(mean.x - 3.5 * sigma.x, mean.x + 3.5 * sigma.x)
+  if(density == 'flat'){
+    if(is.null(mu)){
+      bds = qnorm(mean.x, sigma.x, c(0.005, 0.995))
+      mu = seq(from = bds[1], to = bds[2], length = n.mu)
     }
-    if(length(params)<2)
-      stop("You must supply a minimum and a maximum to use a uniform prior")
-    minx = params[1]
-    maxx = params[2]
-    if(maxx <= minx)
-      stop("The maximum must be greater than the minimum for a uniform prior")
-    mu = seq(minx, maxx, length = n.mu)
-    mu.prior = dunif(mu, minx, maxx)
-  }else{
-    ## user specified prior
-    if(is.null(mu) | is.null(mu.prior))
-      stop("If you wish to use a non-uniform continuous prior then you must supply a mean vector, mu, and an associated density vector, mu.prior")
     
-    if(is.function(mu.prior))
-      mu.prior = mu.prior(mu)
+    height = dnorm(qnorm(0.975, mean.x, sigma.x), mean.x, sigma.x)
+    mu.prior = rep(height, length(mu))
+    
+    
+    likelihood = posterior = dnorm(mu, mean.x, sigma.x) ## flat prior has posterior mean equal to sample mean, 
+                                           ## and posterior variance equal to the observation variance 
+    
+    if(plot){
+      plot(mu, posterior, ylim = c(0, 1.1 * max(posterior, mu.prior)), type = "l",
+           lty = 1,col="blue",
+           xlab = expression(mu), ylab = expression(Probabilty(mu)))
+      abline(h = height, lty = 2,  col = "red")
+      
+      legend("topleft", bty = "n", cex = 0.7, 
+             lty = 1:2, col = c("blue", "red"),
+             legend = c("Posterior", "Prior"))
+    }
+    
+  }else{
+    if(density == 'normal'){
+      if(is.null(params) | length(params) < 1)
+        stop("You must supply a mean for a normal prior")
+      mx = params[1]
+  
+      if(length(params) == 2)  ## user has supplied sd as well
+        s.x = params[2]
+      else
+        s.x = sigma.x
+  
+      mu = seq(mx - 3.5 * s.x, mx + 3.5 * s.x, length = n.mu)
+      mu.prior = dnorm(mu,mx,s.x)
+    }else if(density == 'uniform'){
+      if(is.null(params)){
+        ## set params to mean+/-3.5sd by default
+        params = c(mean.x - 3.5 * sigma.x, mean.x + 3.5 * sigma.x)
+      }
+      if(length(params)<2)
+        stop("You must supply a minimum and a maximum to use a uniform prior")
+      minx = params[1]
+      maxx = params[2]
+      if(maxx <= minx)
+        stop("The maximum must be greater than the minimum for a uniform prior")
+      mu = seq(minx, maxx, length = n.mu)
+      mu.prior = dunif(mu, minx, maxx)
+    }else{
+      ## user specified prior
+      if(is.null(mu) | is.null(mu.prior))
+        stop("If you wish to use a non-uniform continuous prior then you must supply a mean vector, mu, and an associated density vector, mu.prior")
+      
+      if(is.function(mu.prior))
+        mu.prior = mu.prior(mu)
+    }
+  
+    if(any(mu.prior< 0))
+      stop("Prior densities must be >=0")
+  
+    crude.int = sum(diff(mu) * mu.prior[-1])
+    if(round(crude.int, 3) != 1){
+      warning("The prior probabilities did not sum to 1, therefore the prior has been normalized")
+      mu.prior = mu.prior / crude.int
+      print(crude.int)
+    }
+  
+    n.mu = length(mu)
+    mx = mean(x)
+    nx = length(x)
+    snx = sigma.x^2/nx
+    likelihood = exp(-0.5*(mx-mu)^2/snx)
+  
+    ## Numerically integrate the denominator
+    ## First calculate the height of the function to be integrated
+  
+    f.x.mu = likelihood * mu.prior
+  
+    ## Now get a linear approximation so that we don't have to worry about
+    ## the number of points specified by the user
+  
+    ap = approx(mu,f.x.mu,n=513)
+    integral = sum(ap$y[2*(1:256)-1]+4*ap$y[2*(1:256)]+ap$y[2*(1:256)+1])
+    integral = (ap$x[2]-ap$x[1])*integral/3
+  
+    posterior = likelihood*mu.prior/integral
   }
-
-  if(any(mu.prior< 0))
-    stop("Prior densities must be >=0")
-
-  crude.int = sum(diff(mu) * mu.prior[-1])
-  if(round(crude.int, 3) != 1){
-    warning("The prior probabilities did not sum to 1, therefore the prior has been normalized")
-    mu.prior = mu.prior / crude.int
-    print(crude.int)
-  }
-
-  n.mu = length(mu)
-  mx = mean(x)
-  nx = length(x)
-  snx = sigma.x^2/nx
-  likelihood = exp(-0.5*(mx-mu)^2/snx)
-
-  ## Numerically integrate the denominator
-  ## First calculate the height of the function to be integrated
-
-  f.x.mu = likelihood * mu.prior
-
-  ## Now get a linear approximation so that we don't have to worry about
-  ## the number of points specified by the user
-
-  ap = approx(mu,f.x.mu,n=513)
-  integral = sum(ap$y[2*(1:256)-1]+4*ap$y[2*(1:256)]+ap$y[2*(1:256)+1])
-  integral = (ap$x[2]-ap$x[1])*integral/3
-
-  posterior = likelihood*mu.prior/integral
-
+  
   if(plot){
     plot(mu, posterior, ylim = c(0, 1.1 * max(posterior, mu.prior)), type = "l",
          lty = 1,col="blue",

@@ -42,7 +42,7 @@
 #' 
 #' 
 #' @export binobp
-binobp = function(x, n, a = 1, b = 1, pi = seq(0.01, 0.999, by = 0.001), plot = TRUE){
+binobp = function(x, n, a = 1, b = 1, pi = seq(0, 1, by = 0.001), plot = TRUE){
   
   ## n - the number of trials in the binomial
   ## x - the number of observed successes
@@ -62,12 +62,15 @@ binobp = function(x, n, a = 1, b = 1, pi = seq(0.01, 0.999, by = 0.001), plot = 
   posterior = dbeta(pi, a + x, b + n - x)
   
   if(plot){
-    plot(posterior ~ pi, ylim = c(0, 1.1 * max(posterior, prior)), type="l",
+    finite = is.finite(posterior)
+    ymax = 1.1 * max(posterior[is.finite(posterior)], prior[is.finite(prior)])
+    plot(posterior[finite] ~ pi[finite], ylim = c(0, ymax), type="l",
          lty = 1,
          xlab = expression(pi),
          ylab = "Density",
          col = "blue")
-    lines(prior ~ pi, lty = 2, col = "red")
+    finite = is.finite(prior)
+    lines(prior[finite] ~ pi[finite], lty = 2, col = "red")
     ## left = min(pi) + diff(range(pi)) * 0.05
     legend("topleft", bty = "n", lty = 1:2, legend = c("Posterior","Prior"),
            col = c("blue","red"), cex = 0.7)

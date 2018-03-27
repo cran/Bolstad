@@ -4,8 +4,7 @@
 \alias{binobp}
 \title{Binomial sampling with a beta prior}
 \usage{
-binobp(x, n, a = 1, b = 1, pi = seq(0.01, 0.999, by = 0.001),
-  plot = TRUE)
+binobp(x, n, a = 1, b = 1, pi = seq(0, 1, by = 0.001), plot = TRUE)
 }
 \arguments{
 \item{x}{the number of observed successes in the binomial experiment.}

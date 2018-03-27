@@ -7,7 +7,9 @@
 \method{createPrior}{default}(x, wt, ...)
 }
 \arguments{
-\item{x}{a vector of x values at which the prior is to be specified (the support of the prior).}
+\item{x}{a vector of x values at which the prior is to be specified (the support of the prior). This should contain
+unique values in ascending order. The function will sort values if x is unsorted with a warning, and will halt if x contains any
+duplicates or negative lag 1 differences.}
 
 \item{wt}{a vector of weights corresponding to the weight of the prior at the
 given x values.}
