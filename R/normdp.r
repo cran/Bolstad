@@ -104,7 +104,7 @@ normdp = function(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50, plot
   mx = sum(mu * posterior)
   vx = sum((mu - mx)^2 * posterior)
   
-  results = list(name = 'mu', param.x = mu.prior, 
+  results = list(name = 'mu', param.x = mu, 
                  prior = mu.prior, 
                  likelihood = likelihood, posterior = posterior,
                  mean = mx, var = vx,

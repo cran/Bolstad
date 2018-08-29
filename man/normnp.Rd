@@ -4,8 +4,8 @@
 \alias{normnp}
 \title{Bayesian inference on a normal mean with a normal prior}
 \usage{
-normnp(x, m.x = 0, s.x = 1, sigma.x = NULL, mu = NULL, n.mu = max(100,
-  length(mu)), plot = TRUE)
+normnp(x, m.x = 0, s.x = 1, sigma.x = NULL, mu = NULL,
+  n.mu = max(100, length(mu)), plot = TRUE)
 }
 \arguments{
 \item{x}{a vector of observations from a normal distribution with unknown

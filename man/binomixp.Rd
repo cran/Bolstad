@@ -4,7 +4,8 @@
 \alias{binomixp}
 \title{Binomial sampling with a beta mixture prior}
 \usage{
-binomixp(x, n, alpha0 = c(1, 1), alpha1 = c(1, 1), p = 0.5, plot = TRUE)
+binomixp(x, n, alpha0 = c(1, 1), alpha1 = c(1, 1), p = 0.5,
+  plot = TRUE)
 }
 \arguments{
 \item{x}{the number of observed successes in the binomial experiment.}

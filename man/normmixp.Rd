@@ -4,8 +4,8 @@
 \alias{normmixp}
 \title{Bayesian inference on a normal mean with a mixture of normal priors}
 \usage{
-normmixp(x, sigma.x, prior0, prior1, p = 0.5, mu = NULL, n.mu = max(100,
-  length(mu)), plot = TRUE)
+normmixp(x, sigma.x, prior0, prior1, p = 0.5, mu = NULL,
+  n.mu = max(100, length(mu)), plot = TRUE)
 }
 \arguments{
 \item{x}{a vector of observations from a normal distribution with unknown

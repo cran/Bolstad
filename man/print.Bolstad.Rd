@@ -4,7 +4,8 @@
 \alias{print.Bolstad}
 \title{Print method for objects of class \code{Bolstad}}
 \usage{
-\method{print}{Bolstad}(x, digits = max(3L, getOption("digits") - 3L), ...)
+\method{print}{Bolstad}(x, digits = max(3L, getOption("digits") - 3L),
+  ...)
 }
 \arguments{
 \item{x}{an object of class \code{Bolstad}}

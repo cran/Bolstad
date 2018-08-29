@@ -4,8 +4,8 @@
 \alias{poisgamp}
 \title{Poisson sampling with a gamma prior}
 \usage{
-poisgamp(y, shape, rate = 1, scale = 1/rate, alpha = 0.05, plot = TRUE,
-  suppressOutput = FALSE)
+poisgamp(y, shape, rate = 1, scale = 1/rate, alpha = 0.05,
+  plot = TRUE, suppressOutput = FALSE)
 }
 \arguments{
 \item{y}{a random sample from a Poisson distribution.}

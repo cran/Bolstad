@@ -4,8 +4,8 @@
 \alias{xdesign}
 \title{Monte Carlo study of randomized and blocked designs}
 \usage{
-xdesign(x = NULL, y = NULL, corr = 0.8, size = 20, n.treatments = 4,
-  n.rep = 500)
+xdesign(x = NULL, y = NULL, corr = 0.8, size = 20,
+  n.treatments = 4, n.rep = 500)
 }
 \arguments{
 \item{x}{a set of lurking values which are correlated with the response}
