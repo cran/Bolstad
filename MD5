@@ -1,4 +1,4 @@
-369df3ea6ef57909cdc5758c8d5d6b9f *DESCRIPTION
+10d482fbe4cb3cfa1599923d25228f44 *DESCRIPTION
 9ba560343627ba0612d8360c04bf311e *NAMESPACE
 cf7ece8cce5ede5c0ceeb9ad317a1c85 *R/Bolstad-package.R
 e87620345fbdfa7be1cd64dc049d5553 *R/IQR.R
@@ -21,7 +21,7 @@ a97081452777d11bc8a7b03de9ce068a *R/createPrior.default.R
 919267f2826cfc72a1d9bd1a5a8b1f64 *R/median.Bolstad.R
 324a372346444c5029458bcc7034ad5c *R/mvnmvnp.R
 4a9951d6260ee4217fe9d61a6c772d6a *R/normdp.r
-3ddd111e8903112016411d0dad515218 *R/normgcp.r
+3963670332fb2a630e522fe9415d3d2e *R/normgcp.r
 c1e19f4a7412b9a2d63d9504d7215b61 *R/normmixp.r
 714956156f0b117cee48292b238ab5c4 *R/normnp.r
 00f02da53c830eafbf5b1b1c182995fc *R/nvaricp.r
