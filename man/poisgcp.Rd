@@ -4,9 +4,17 @@
 \alias{poisgcp}
 \title{Poisson sampling with a general continuous prior}
 \usage{
-poisgcp(y, density = c("normal", "gamma", "user"), params = c(0, 1),
-  n.mu = 100, mu = NULL, mu.prior = NULL, print.sum.stat = FALSE,
-  alpha = 0.05, plot = TRUE, suppressOutput = FALSE)
+poisgcp(
+  y,
+  density = c("normal", "gamma", "user"),
+  params = c(0, 1),
+  n.mu = 100,
+  mu = NULL,
+  mu.prior = NULL,
+  print.sum.stat = FALSE,
+  alpha = 0.05,
+  ...
+)
 }
 \arguments{
 \item{y}{A random sample of one or more observations from a Poisson
@@ -36,11 +44,7 @@ credible interval is controlled by the parameter alpha.}
 \item{alpha}{The width of the credible interval is controlled by the
 parameter alpha.}
 
-\item{plot}{if \code{TRUE} then a plot showing the prior and the posterior
-will be produced.}
-
-\item{suppressOutput}{if \code{TRUE} then none of the output is printed to
-console}
+\item{\dots}{additional arguments that are passed to \code{Bolstad.control}}
 }
 \value{
 A list will be returned with the following components: \item{mu}{the
@@ -84,7 +88,7 @@ plot(cdf,type="l",xlab=expression(mu[0])
 lcb = cdf$x[with(cdf,which.max(x[y<=0.025]))]
 ucb = cdf$x[with(cdf,which.max(x[y<=0.975]))]
 cat(paste("Approximate 95\% credible interval : ["
-	,round(lcb,4)," ",round(ucb,4),"]\\n",sep=""))
+	,round(lcb,4)," ",round(ucb,4),"]\n",sep=""))
 
 ## find the posterior mean, variance and std. deviation
 ## using Simpson's rule and the output from the previous example
@@ -101,7 +105,7 @@ lb = post.mean-qnorm(0.975)*post.sd
 ub = post.mean+qnorm(0.975)*post.sd
 
 cat(paste("Approximate 95\% credible interval : ["
-	,round(lb,4)," ",round(ub,4),"]\\n",sep=""))
+	,round(lb,4)," ",round(ub,4),"]\n",sep=""))
 
 # NOTE: All the examples given above can now be done trivially in this package
 
@@ -114,7 +118,7 @@ curve(cdf,type="l",xlab=expression(mu[0])
 ## use the quantile function to find the 95\% credible region.
 ci = quantile(results, c(0.025, 0.975))
 cat(paste0("Approximate 95\% credible interval : ["
-	,round(ci[1],4)," ",round(ci[2],4),"]\\n"))
+	,round(ci[1],4)," ",round(ci[2],4),"]\n"))
 
 ## find the posterior mean, variance and std. deviation
 ## using the output from the previous example
@@ -128,7 +132,7 @@ post.sd = sd(results)
 ci = post.mean + c(-1, 1) * qnorm(0.975) * post.sd
 
 cat(paste("Approximate 95\% credible interval : ["
-	,round(ci[1],4)," ",round(ci[2],4),"]\\n",sep=""))
+	,round(ci[1],4)," ",round(ci[2],4),"]\n",sep=""))
 
 ## Example 10.1 Dianna's prior
 # Firstly we need to write a function that replicates Diana's prior

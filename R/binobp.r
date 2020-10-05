@@ -9,9 +9,8 @@
 #' @param n the number of trials in the binomial experiment.
 #' @param a parameter for the beta prior - must be greater than zero
 #' @param b parameter for the beta prior - must be greater than zero
-#' @param pi A rannge of values for the prior to be calculated over.
-#' @param plot if \code{TRUE} then a plot showing the prior and the posterior
-#' will be produced.
+#' @param pi A range of values for the prior to be calculated over.
+#' @param \dots additional arguments that are passed to \code{Bolstad.control}
 #' @return An object of class 'Bolstad' is returned. This is a list with the
 #' following components: \item{prior}{the prior density of \eqn{\pi}{pi}, i.e.
 #' the \eqn{beta(a,b)} density} \item{likelihood}{the likelihood of \eqn{x}
@@ -42,7 +41,7 @@
 #' 
 #' 
 #' @export binobp
-binobp = function(x, n, a = 1, b = 1, pi = seq(0, 1, by = 0.001), plot = TRUE){
+binobp = function(x, n, a = 1, b = 1, pi = seq(0, 1, by = 0.001), ...){
   
   ## n - the number of trials in the binomial
   ## x - the number of observed successes
@@ -61,7 +60,7 @@ binobp = function(x, n, a = 1, b = 1, pi = seq(0, 1, by = 0.001), plot = TRUE){
   likelihood = dbinom(x, n, prob = pi)
   posterior = dbeta(pi, a + x, b + n - x)
   
-  if(plot){
+  if(Bolstad.control(...)$plot){
     finite = is.finite(posterior)
     ymax = 1.1 * max(posterior[is.finite(posterior)], prior[is.finite(prior)])
     plot(posterior[finite] ~ pi[finite], ylim = c(0, ymax), type="l",
@@ -80,18 +79,24 @@ binobp = function(x, n, a = 1, b = 1, pi = seq(0, 1, by = 0.001), plot = TRUE){
   v1 = m1 * (1 - m1) / (a + b + n + 1)
   s1 = sqrt(v1)
   
-  cat(paste("Posterior Mean           : ",round(m1,7),"\n"))
-  cat(paste("Posterior Variance       : ",round(v1,7),"\n"))
-  cat(paste("Posterior Std. Deviation : ",round(s1,7),"\n"))
+  quiet = Bolstad.control(...)$quiet
+  
+  if(!quiet){
+    cat(paste("Posterior Mean           : ",round(m1,7),"\n"))
+    cat(paste("Posterior Variance       : ",round(v1,7),"\n"))
+    cat(paste("Posterior Std. Deviation : ",round(s1,7),"\n"))
+  }
   
   probs = c(0.005,0.01,0.025,0.05,0.5,0.95,0.975,0.99,0.995)
   qtls = qbeta(probs,a+x,b+n-x)
   names(qtls) = probs
   
-  cat("\nProb.\tQuantile \n")
-  cat("------\t---------\n")
-  for(i in 1:length(probs)){
-    cat(sprintf("%5.3f\t%9.7f\n", round(probs[i],3),round(qtls[i],7)))
+  if(!quiet){
+    cat("\nProb.\tQuantile \n")
+    cat("------\t---------\n")
+    for(i in 1:length(probs)){
+      cat(sprintf("%5.3f\t%9.7f\n", round(probs[i],3),round(qtls[i],7)))
+    }
   }
   
   

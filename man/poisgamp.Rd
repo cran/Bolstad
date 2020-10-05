@@ -4,8 +4,7 @@
 \alias{poisgamp}
 \title{Poisson sampling with a gamma prior}
 \usage{
-poisgamp(y, shape, rate = 1, scale = 1/rate, alpha = 0.05,
-  plot = TRUE, suppressOutput = FALSE)
+poisgamp(y, shape, rate = 1, scale = 1/rate, alpha = 0.05, ...)
 }
 \arguments{
 \item{y}{a random sample from a Poisson distribution.}
@@ -20,11 +19,7 @@ is \eqn{1 / rate}}
 \item{alpha}{the width of the credible interval is controlled by the
 parameter alpha.}
 
-\item{plot}{if \code{TRUE} then a plot showing the prior and the posterior
-will be produced.}
-
-\item{suppressOutput}{if \code{TRUE} then none of the output is printed to
-console}
+\item{\dots}{additional arguments that are passed to \code{Bolstad.control}}
 }
 \value{
 An object of class 'Bolstad' is returned. This is a list with the
@@ -65,7 +60,7 @@ poisgamp(y,6,3)
 y = c(3,4,4,3,3,4,2,3,1,7)
 results = poisgamp(y,6,3)
 ci = qgamma(c(0.025,0.975),results$shape, results$rate)
-cat(paste("95\% credible interval for mu: [",round(ci[1],3), ",", round(ci[2],3)),"]\\n")
+cat(paste("95\% credible interval for mu: [",round(ci[1],3), ",", round(ci[2],3)),"]\n")
 
 ## In this example we have a random sample from a Poisson distribution
 ## with an unknown mean. We will use a gamma(6,3) prior to obtain the
@@ -74,7 +69,7 @@ cat(paste("95\% credible interval for mu: [",round(ci[1],3), ",", round(ci[2],3)
 y = c(3,4,4,3,3,4,2,3,1,7)
 results = poisgamp(y, 6, 3)
 ci = quantile(results, c(0.025, 0.975))
-cat(paste("95\% credible interval for mu: [",round(ci[1],3), ",", round(ci[2],3)),"]\\n")
+cat(paste("95\% credible interval for mu: [",round(ci[1],3), ",", round(ci[2],3)),"]\n")
 
 
 }

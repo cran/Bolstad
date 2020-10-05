@@ -4,9 +4,16 @@
 \alias{binogcp}
 \title{Binomial sampling with a general continuous prior}
 \usage{
-binogcp(x, n, density = c("uniform", "beta", "exp", "normal", "user"),
-  params = c(0, 1), n.pi = 1000, pi = NULL, pi.prior = NULL,
-  plot = TRUE)
+binogcp(
+  x,
+  n,
+  density = c("uniform", "beta", "exp", "normal", "user"),
+  params = c(0, 1),
+  n.pi = 1000,
+  pi = NULL,
+  pi.prior = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{the number of observed successes in the binomial experiment.}
@@ -28,8 +35,7 @@ single trial. This must be set if density = "user".}
 \item{pi.prior}{the associated prior probability mass. This must be set if
 density = "user".}
 
-\item{plot}{if \code{TRUE} then a plot showing the prior and the posterior
-will be produced.}
+\item{\dots}{additional arguments that are passed to \code{Bolstad.control}}
 }
 \value{
 A list will be returned with the following components:
@@ -71,7 +77,7 @@ plot(myCdf, type = "l", xlab = expression(pi[0]),
 ## use the quantile function to find the 95\% credible region.
 qtls = quantile(results, probs = c(0.025, 0.975))
 cat(paste("Approximate 95\% credible interval : ["
-	, round(qtls[1], 4), " ", round(qtls, 4), "]\\n", sep = ""))
+	, round(qtls[1], 4), " ", round(qtls, 4), "]\n", sep = ""))
 
 ## find the posterior mean, variance and std. deviation
 ## using the output from the previous example
@@ -85,7 +91,7 @@ lb = post.mean - qnorm(0.975) * post.sd
 ub = post.mean + qnorm(0.975) * post.sd
 
 cat(paste("Approximate 95\% credible interval : ["
-	, round(lb, 4), " ", round(ub, 4), "]\\n", sep = ""))
+	, round(lb, 4), " ", round(ub, 4), "]\n", sep = ""))
 
 }
 \seealso{

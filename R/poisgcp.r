@@ -24,10 +24,7 @@
 #' credible interval is controlled by the parameter alpha.
 #' @param alpha The width of the credible interval is controlled by the
 #' parameter alpha.
-#' @param plot if \code{TRUE} then a plot showing the prior and the posterior
-#' will be produced.
-#' @param suppressOutput if \code{TRUE} then none of the output is printed to
-#' console
+#' @param \dots additional arguments that are passed to \code{Bolstad.control}
 #' @return A list will be returned with the following components: \item{mu}{the
 #' vector of possible \eqn{\mu}{mu} values used in the prior}
 #' \item{mu.prior}{the associated probability mass for the values in
@@ -139,8 +136,7 @@ poisgcp = function(y,
                    mu.prior = NULL,
                    print.sum.stat = FALSE,
                    alpha = 0.05,
-                   plot = TRUE,
-                   suppressOutput = FALSE) {
+                   ...) {
   n = length(y)
   y.sum = sum(y)
   y.bar = mean(y)
@@ -206,11 +202,12 @@ poisgcp = function(y,
     ub = max(qnorm(1 - 1 / n.mu, mx, sx), mx + 3.5 * sx)
     
     if (lb < 0) {
-      cat("The normal prior has negative values.")
-      cat("Whilst this is true for all normal distributions, you can sneak\n")
-      cat("around it by using a large positive mean relative to the \n")
-      cat("std. deviation.\n")
-      stop("Error")
+      msg = paste0("Error: ",
+                   paste0("The normal prior has negative values. ",
+                          "Whilst this is true for all normal distributions, you can sneak ",
+                          "around it by using a large positive mean relative to the  ",
+                          "std. deviation."))
+      stop(msg)
     }
     
     mu = seq(lb, ub, length = n.mu)
@@ -240,7 +237,8 @@ poisgcp = function(y,
   if (sum(mu < 0) > 0)
     stop("Error: mu cannot contain negative values")
   
-  if (!suppressOutput) {
+  quiet = Bolstad.control(...)$quiet
+  if (!quiet) {
     cat("Summary statistics for data\n")
     cat("---------------------------\n")
     cat(paste("Number of observations:\t", n, "\n"))
@@ -259,6 +257,7 @@ poisgcp = function(y,
     posterior.mean = integrate(x.fx, min(mu), max(mu))$value
     xmusq.fx = approxfun(mu, (mu - posterior.mean) ^ 2 * posterior)
     posterior.var = integrate(xmusq.fx, min(mu), max(mu))$value
+    
     cat("\nPosterior distribution summary statistics\n")
     cat("-----------------------------------------\n")
     cat(paste("Post. mean:\t", round(posterior.mean, 3), "\n"))
@@ -284,7 +283,7 @@ poisgcp = function(y,
     ))
   }
   
-  if (plot) {
+  if (Bolstad.control(...)$plot) {
     y.max = max(mu.prior, posterior)
     plot(
       mu,

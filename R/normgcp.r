@@ -19,8 +19,7 @@
 #' @param mu a vector of possibilities for the probability of success in a
 #' single trial. Must be set if density="user"
 #' @param mu.prior the associated prior density. Must be set if density="user"
-#' @param plot if \code{TRUE} then a plot showing the prior and the posterior
-#' will be produced.
+#' @param \dots additional arguments that are passed to \code{Bolstad.control}
 #' @return A list will be returned with the following components:
 #' \item{likelihood}{the scaled likelihood function for \eqn{\mu}{mu} given
 #' \eqn{x} and \eqn{\sigma_x}{sigma.x}} \item{posterior}{the posterior
@@ -104,7 +103,7 @@
 #' @export normgcp
 normgcp = function(x, sigma.x = NULL, density = c("uniform", "normal", "flat", "user") ,
                    params = NULL, n.mu = 50, mu = NULL,
-                   mu.prior = NULL, plot = TRUE){
+                   mu.prior = NULL, ...){
 
   ## x - the vector of observations
   ## sigma.x - the population standard deviation
@@ -123,10 +122,14 @@ normgcp = function(x, sigma.x = NULL, density = c("uniform", "normal", "flat", "
 
   if(is.null(sigma.x)){
     sigma.x = sd(x - mean.x)
-    cat(paste("Standard deviation of the residuals :",
-              signif(sigma.x,4),"\n", sep = ""))
+    if(!Bolstad.control(...)$quiet){
+      cat(paste("Standard deviation of the residuals :",
+                signif(sigma.x,4),"\n", sep = ""))
+    }
   }else{
-    cat(paste("Known standard deviation :", signif(sigma.x, 4),"\n",sep=""))
+    if(!Bolstad.control(...)$quiet){
+      cat(paste("Known standard deviation :", signif(sigma.x, 4),"\n",sep=""))
+    }
   }
 
   density = match.arg(density)
@@ -144,7 +147,7 @@ normgcp = function(x, sigma.x = NULL, density = c("uniform", "normal", "flat", "
     likelihood = posterior = dnorm(mu, mean.x, sigma.x) ## flat prior has posterior mean equal to sample mean, 
                                            ## and posterior variance equal to the observation variance 
     
-    if(plot){
+    if(Bolstad.control(...)$plot){
       plot(mu, posterior, ylim = c(0, 1.1 * max(posterior, mu.prior)), type = "l",
            lty = 1,col="blue",
            xlab = expression(mu), ylab = expression(Probabilty(mu)))
@@ -221,7 +224,7 @@ normgcp = function(x, sigma.x = NULL, density = c("uniform", "normal", "flat", "
     posterior = likelihood*mu.prior/integral
   }
   
-  if(plot){
+  if(Bolstad.control(...)$plot){
     plot(mu, posterior, ylim = c(0, 1.1 * max(posterior, mu.prior)), type = "l",
          lty = 1,col="blue",
          xlab = expression(mu), ylab = expression(Probabilty(mu)))

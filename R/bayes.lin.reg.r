@@ -43,14 +43,16 @@
 #' vector predicted values corresponding to pred.x. If pred.x is NULL then this
 #' is not returned} \item{pred.se}{The standard errors of the predicted values
 #' in pred.y. If pred.x is NULL then this is not returned}
+#' @param \dots additional arguments that are passed to \code{Bolstad.control}
 #' @keywords misc
 #' @examples
 #' 
 #' ## generate some data from a known model, where the true value of the
 #' ## intercept alpha is 2, the true value of the slope beta is 3, and the
 #' ## errors come from a normal(0,1) distribution
+#' set.seed(123)
 #' x = rnorm(50)
-#' y = 22+3*x+rnorm(50)
+#' y = 2 + 3*x + rnorm(50)
 #' 
 #' ## use the function with a flat prior for the slope beta and a
 #' ## flat prior for the intercept, alpha_xbar.
@@ -83,7 +85,8 @@ bayes.lin.reg = function(y, x, slope.prior = c("flat", "normal"),
                         intcpt.prior = c("flat", "normal"), 
                         mb0 = 0, sb0 = 0, ma0 = 0, sa0 = 0, 
                         sigma = NULL, alpha = 0.05, plot.data = FALSE, 
-                        pred.x = NULL) {
+                        pred.x = NULL,
+                        ...) {
 
   if(sum(is.na(y)) > 0 || sum(is.na(x)) > 0)
     stop("Error: x and y may not contain missing values")
@@ -131,14 +134,19 @@ bayes.lin.reg = function(y, x, slope.prior = c("flat", "normal"),
 
   A0 = y.bar - b.ls * x.bar
   Ax.bar = y.bar
-
+  
+  quiet = Bolstad.control(...)$quiet
+  drawPlot = Bolstad.control(...)$plot
+  
   sigma.known = TRUE
   if(is.null(sigma)){
     sigma.known = FALSE
     sigma = sqrt(sum((y - (Ax.bar + b.ls * (x - x.bar)))^2)/ (n - 2))
-    cat(paste("Standard deviation of residuals: ", signif(sigma, 3), "\n"))
+    if(!quiet){cat(paste("Standard deviation of residuals: ", signif(sigma, 3), "\n"))}
   } else {
-    cat(paste("Known standard deviation: ", signif(sigma, 3), "\n"))
+    if(!quiet){
+      cat(paste("Known standard deviation: ", signif(sigma, 3), "\n"))
+    }
   }
 
   SSx = n * (x2.bar - x.bar^2)
@@ -198,21 +206,22 @@ bayes.lin.reg = function(y, x, slope.prior = c("flat", "normal"),
   likelihood.b = dnorm(beta, b.ls, sd.ls)
   posterior.b = dnorm(beta, post.mean.b, post.sd.b)
   
-  old.par = par(mfrow = c(2, 2))
-
-  y.max = max(c(prior.b, likelihood.b, posterior.b))
-  plot(beta, prior.b, type = "l", col = "black", lty = 1, 
-       ylim = c(0, 1.1 * y.max), xlab = expression(beta), 
-       ylab = "", 
-       main = expression(paste("Prior, likelihood and posterior for ", beta, 
-           sep = "")), 
-       sub = "(slope)")
-  lines(beta, likelihood.b, lty = 2, col = "red")
-  lines(beta, posterior.b, lty = 3, col = "blue")
-  legend("topleft", bty = "n", cex = 0.7, 
-         lty = 1:3, col = c("black", "red", "blue"), 
-         legend = c("Prior", "Likelihood", "Posterior"))
-
+  if(drawPlot){
+    old.par = par(mfrow = c(2, 2))
+  
+    y.max = max(c(prior.b, likelihood.b, posterior.b))
+    plot(beta, prior.b, type = "l", col = "black", lty = 1, 
+         ylim = c(0, 1.1 * y.max), xlab = expression(beta), 
+         ylab = "", 
+         main = expression(paste("Prior, likelihood and posterior for ", beta, 
+             sep = "")), 
+         sub = "(slope)")
+    lines(beta, likelihood.b, lty = 2, col = "red")
+    lines(beta, posterior.b, lty = 3, col = "blue")
+    legend("topleft", bty = "n", cex = 0.7, 
+           lty = 1:3, col = c("black", "red", "blue"), 
+           legend = c("Prior", "Likelihood", "Posterior"))
+  }
   ####################################################################################
   
   alpha.xbar = rep(0, 1001)
@@ -244,23 +253,28 @@ bayes.lin.reg = function(y, x, slope.prior = c("flat", "normal"),
   likelihood.a = dnorm(alpha.xbar, y.bar, sd.ls)
   posterior.a = dnorm(alpha.xbar, post.mean.a, post.sd.a)
 
-  cat(sprintf("%-11s %-14s %-24s\n", " ", "Posterior Mean", "Posterior Std. Deviation"))
-  cat(sprintf("%-11s %-14s %-24s\n", " ", "--------------", "------------------------"))
-  cat(sprintf("Intercept:  %-14.6g %-24.6g\n", signif(post.mean.a, 4), signif(post.sd.a, 5)))
-  cat(sprintf("Slope:      %-14.6g %-24.6g\n", signif(post.mean.b, 4), signif(post.sd.b, 5)))
-
+  if(!quiet){
+    cat(sprintf("%-11s %-14s %-24s\n", " ", "Posterior Mean", "Posterior Std. Deviation"))
+    cat(sprintf("%-11s %-14s %-24s\n", " ", "--------------", "------------------------"))
+    cat(sprintf("Intercept:  %-14.6g %-24.6g\n", signif(post.mean.a, 4), signif(post.sd.a, 5)))
+    cat(sprintf("Slope:      %-14.6g %-24.6g\n", signif(post.mean.b, 4), signif(post.sd.b, 5)))
+  }
+  
   y.max = max(c(prior.a, likelihood.a, posterior.a))
-  plot(alpha.xbar, prior.a, type = "l", col = "black", lty = 1, 
-       ylim = c(0, 1.1 * y.max), xlab = expression(alpha), 
-       ylab = "", 
-       main = expression(paste("Prior, likelihood and posterior for ", alpha[bar(x)], 
-           sep = "")), 
-       sub = "(intercept)")
-  lines(alpha.xbar, likelihood.a, lty = 2, col = "red")
-  lines(alpha.xbar, posterior.a, lty = 3, col = "blue")
-  legend("topleft", cex = 0.7, lty = 1:3, col = c("black", "red", "blue"), 
-         legend = c("Prior", "Likelihood", "Posterior"), bty = "n")
-
+  
+  if(drawPlot){
+    plot(alpha.xbar, prior.a, type = "l", col = "black", lty = 1, 
+         ylim = c(0, 1.1 * y.max), xlab = expression(alpha), 
+         ylab = "", 
+         main = expression(paste("Prior, likelihood and posterior for ", alpha[bar(x)], 
+             sep = "")), 
+         sub = "(intercept)")
+    lines(alpha.xbar, likelihood.a, lty = 2, col = "red")
+    lines(alpha.xbar, posterior.a, lty = 3, col = "blue")
+    legend("topleft", cex = 0.7, lty = 1:3, col = c("black", "red", "blue"), 
+           legend = c("Prior", "Likelihood", "Posterior"), bty = "n")
+  }
+  
   if(sigma.known){
     s.e = sqrt(x2.bar - x.bar^2)
     x.lwr = x.bar - 3 * s.e
@@ -288,29 +302,31 @@ bayes.lin.reg = function(y, x, slope.prior = c("flat", "normal"),
   y.max = max(pred.ub)
   y.min = min(pred.lb)
 
-
-  if(plot.data){
-    plot(y~x, main = paste("Predicitions with ", round(100 * (1 - alpha))
-               ,"% bounds", sep = ""), xlab = "x", ylab = "y", ylim = 1.1 * c(y.min, y.max))
-    lines(x.values, pred.y, lty = 1, col = "black")
-  } else{
-    plot(x.values, pred.y, type = "l", lty = 1, col = "black", 
-         main = paste("Predicitions with ", round(100 * (1 - alpha)), 
-           "% bounds", sep = ""), xlab = "x", ylab = "y", 
-         ylim = 1.1 * c(y.min, y.max))
+  if(drawPlot){
+    if(plot.data){
+      plot(y~x, main = paste("Predicitions with ", round(100 * (1 - alpha))
+                 ,"% bounds", sep = ""), xlab = "x", ylab = "y", ylim = 1.1 * c(y.min, y.max))
+      lines(x.values, pred.y, lty = 1, col = "black")
+    } else if (drawPlot && !plot.data){
+      plot(x.values, pred.y, type = "l", lty = 1, col = "black", 
+           main = paste("Predicitions with ", round(100 * (1 - alpha)), 
+             "% bounds", sep = ""), xlab = "x", ylab = "y", 
+           ylim = 1.1 * c(y.min, y.max))
+    }
+  
+    lines(x.values, pred.lb, lty = 2, col = "red")
+    lines(x.values, pred.ub, lty = 3, col = "blue")
+  
+    legend("topleft", lty = 1:3, col = c("black", "red", "blue"), 
+           legend = c("Predicted value", 
+             paste(round(100 * (1 - alpha)), "% lower bound", sep = ""), 
+             paste(round(100 * (1 - alpha)), "% upper bound", sep = "")), 
+           cex = 0.7, bty = "n")
   }
-
-  lines(x.values, pred.lb, lty = 2, col = "red")
-  lines(x.values, pred.ub, lty = 3, col = "blue")
-
-  legend("topleft", lty = 1:3, col = c("black", "red", "blue"), 
-         legend = c("Predicted value", 
-           paste(round(100 * (1 - alpha)), "% lower bound", sep = ""), 
-           paste(round(100 * (1 - alpha)), "% upper bound", sep = "")), 
-         cex = 0.7, bty = "n")
-
+  
   pred.y = NULL
   pred.se = NULL
+  
   if(!is.null(pred.x)){
     pred.y = post.mean.a + post.mean.b * (pred.x - x.bar)
     pred.se = sqrt(post.var.a + (pred.x - x.bar)^2 * post.var.b + sigma^2)
@@ -318,17 +334,23 @@ bayes.lin.reg = function(y, x, slope.prior = c("flat", "normal"),
     fmt = "%-8.4g  %-12.4g %-11.5g\n"
     fmtS = "%-6s  %-12s %-11s\n"
     
-    cat(sprintf(fmtS, "x", "Predicted y", "SE"))
-    cat(sprintf(fmtS, "------", "-----------", "-----------"))
-    n.pred.x = length(pred.x)
-    for(i in 1:n.pred.x){
-      cat(sprintf(fmt, signif(predicted.values[i, 1], 4), 
-                       signif(predicted.values[i, 2], 4), 
-                       signif(predicted.values[i, 3], 5)))
+    if(!quiet){
+      cat(sprintf(fmtS, "x", "Predicted y", "SE"))
+      cat(sprintf(fmtS, "------", "-----------", "-----------"))
+    
+      n.pred.x = length(pred.x)
+      for(i in 1:n.pred.x){
+        cat(sprintf(fmt, signif(predicted.values[i, 1], 4), 
+                         signif(predicted.values[i, 2], 4), 
+                         signif(predicted.values[i, 3], 5)))
+      }
     }
   }
 
-  par(old.par)
+  if(drawPlot){
+    par(old.par)
+  }
+  
   interceptResults = list(name = 'alpha[0]',
                           param.x = alpha.xbar,
                           prior = prior.a, likelihood = likelihood.a, posterior = posterior.a,

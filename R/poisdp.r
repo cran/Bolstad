@@ -8,8 +8,7 @@
 #' @param mu a vector of possibilities for the mean rate of occurance of an
 #' event over a finite period of space or time.
 #' @param mu.prior the associated prior probability mass.
-#' @param plot if \code{TRUE} then a plot showing the prior and the posterior
-#' will be produced.
+#' @param \dots additional arguments that are passed to \code{Bolstad.control}
 #' @return A list will be returned with the following components:
 #' 
 #' \item{likelihood}{the scaled likelihood function for \eqn{\mu}{mu} given
@@ -52,7 +51,7 @@
 #' 
 #' 
 #' @export poisdp
-poisdp = function(y.obs, mu, mu.prior, plot = TRUE){
+poisdp = function(y.obs, mu, mu.prior, ...){
   if(length(y.obs) == 0 || is.null(y.obs))
     stop("Error: y.obs must contain at least one value")
 
@@ -143,7 +142,7 @@ poisdp = function(y.obs, mu, mu.prior, plot = TRUE){
     print(results)
   }
 
-  if(plot){
+  if(Bolstad.control(...)$plot){
     plot.data = rbind(mu.prior,posterior)
     if(length(mu.prior)<=10){
       colnames(plot.data) = mu

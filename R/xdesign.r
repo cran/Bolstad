@@ -11,6 +11,7 @@
 #' @param size the size of the treatment groups
 #' @param n.treatments the number of treatments
 #' @param n.rep the number of Monte Carlo replicates
+#' @param \dots additional parameters which are passed to \code{Bolstad.control}
 #' @return If the ouput of xdesign is assigned to a variable, then a list is
 #' returned with the following components: \item{block.means}{a vector of the
 #' means of the lurking variable from each replicate of the simulation stored
@@ -36,7 +37,7 @@
 #' 
 #' @export xdesign
 xdesign = function(x = NULL, y = NULL, corr = 0.8, size = 20,
-                   n.treatments = 4, n.rep = 500){
+                   n.treatments = 4, n.rep = 500, ...){
 
     if(is.null(x)){ ## simulate some data
         nx = size*n.treatments
@@ -58,43 +59,48 @@ xdesign = function(x = NULL, y = NULL, corr = 0.8, size = 20,
 
     if(n.rep < 10)
         stop("Must have at least 10 Monte Carlo replicates")
+    
+    quiet = Bolstad.control(...)$quiet
 
-    cat("Variable\tN\tMean\tMedian\tTrMean\tStDev\tSE Mean\n")
-    cat(paste("X\t",length(x),
-              round(mean(x),3),
-              round(median(x),3),
-              round(mean(x,trim=0.1),3),
-              round(sd(x),3),
-              round(sd(x)/sqrt(length(x)),3),sep="\t"))
-    cat("\n")
-    cat(paste("Y\t",length(y),
-              round(mean(y),3),
-              round(median(y),3),
-              round(mean(y,trim=0.1),3),
-              round(sd(y),3),
-              round(sd(y)/sqrt(length(y)),3),sep="\t"))
-    cat("\n\n")
-
-    qx = quantile(x,c(0.25,0.75))
-    qy = quantile(y,c(0.25,0.75))
-
-    cat("Variable\tMinimum\tMaximum\tQ1\tQ3\n")
-    cat(paste("X\t",round(min(x),3)
-              ,round(max(x),3)
-              ,round(qx[1],3)
-              ,round(qx[2],3),sep="\t"))
-    cat("\n")
-    cat(paste("Y\t",round(min(y),3)
-              ,round(max(y),3)
-              ,round(qy[1],3)
-              ,round(qy[2],3),sep="\t"))
-
-    cat("\n\n")
-
-    cat("The Pearson correlation between X and Y is: ");
-    cat(paste(round(cor(x,y),3),"\n\n"))
-
-    plot(x, y)
+    if(!quiet){
+        cat("Variable\tN\tMean\tMedian\tTrMean\tStDev\tSE Mean\n")
+        cat(paste("X\t",length(x),
+                  round(mean(x),3),
+                  round(median(x),3),
+                  round(mean(x,trim=0.1),3),
+                  round(sd(x),3),
+                  round(sd(x)/sqrt(length(x)),3),sep="\t"))
+        cat("\n")
+        cat(paste("Y\t",length(y),
+                  round(mean(y),3),
+                  round(median(y),3),
+                  round(mean(y,trim=0.1),3),
+                  round(sd(y),3),
+                  round(sd(y)/sqrt(length(y)),3),sep="\t"))
+        cat("\n\n")
+    
+        qx = quantile(x,c(0.25,0.75))
+        qy = quantile(y,c(0.25,0.75))
+    
+        cat("Variable\tMinimum\tMaximum\tQ1\tQ3\n")
+        cat(paste("X\t",round(min(x),3)
+                  ,round(max(x),3)
+                  ,round(qx[1],3)
+                  ,round(qx[2],3),sep="\t"))
+        cat("\n")
+        cat(paste("Y\t",round(min(y),3)
+                  ,round(max(y),3)
+                  ,round(qy[1],3)
+                  ,round(qy[2],3),sep="\t"))
+    
+        cat("\n\n")
+    
+        cat("The Pearson correlation between X and Y is: ");
+        cat(paste(round(cor(x,y),3),"\n\n"))
+    }
+    
+    if(Bolstad.control(...)$plot)
+        plot(x, y)
 
     ssx = rep(0,n.rep)
     ssy = rep(0,n.rep)
@@ -167,67 +173,71 @@ xdesign = function(x = NULL, y = NULL, corr = 0.8, size = 20,
     ind = rep(1:2,c(length(treat.var0),length(treat.var1)))
     ind = n.treatments*(ind-1)+index
 
-    par(ask=interactive())
-
-    rng = range(block.var)
-    y.lims = max(abs(c(rng[1]-0.1*diff(rng),rng[2]+0.1*diff(rng))))
-    y.lims = c(-y.lims,y.lims)
-
-    boxplot(block.var~ind,
-            main="Boxplots of Lurking/Blocking variable group means",
-            sub="Lurking variable in completely randomized design\nBlocking variable in randomized block design",
-            col=rep(c("blue","red"), rep(n.treatments,2)),
-            ylim = y.lims)
-    legend("topright", bty = "n", cex = 0.7, 
-           legend = c("Completely randomized design",
-                      "Randomized block design"),
-           fill = c("blue","red"))
-
-    rng = range(treat.var)
-    y.lims = max(abs(c(rng[1]-0.1*diff(rng),rng[2]+0.1*diff(rng))))
-    y.lims = c(-y.lims,y.lims)
-    boxplot(treat.var~ind
-            ,main="Boxplots of treatment group means"
-            ,col=rep(c("blue","red"),rep(n.treatments,2))
-            ,ylim=y.lims)
-    legend("topright", cex = 0.7, bty = "n",
-           legend=c("Completely randomized design",
-                    "Randomized block design"),
-           fill = c("blue","red"))
-
-    x = treat.var[ind<=n.treatments]
-    y = treat.var[ind>n.treatments]
-    cat("Variable\tN\tMean\tMedian\tTrMean\tStDev\tSE Mean\n")
-    cat(paste("Randomized",length(x),
-              round(mean(x),3),
-              round(median(x),3),
-              round(mean(x,trim=0.1),3),
-              round(sd(x),3),
-              round(sd(x)/sqrt(length(x)),3),sep="\t"))
-    cat("\n")
-    cat(paste("Blocked\t",length(y),
-              round(mean(y),3),
-              round(median(y),3),
-              round(mean(y,trim=0.1),3),
-              round(sd(y),3),
-              round(sd(y)/sqrt(length(y)),3),sep="\t"))
-    cat("\n\n")
-
-    qx = quantile(x,c(0.25,0.75))
-    qy = quantile(y,c(0.25,0.75))
-
-    cat("Variable\tMinimum\tMaximum\tQ1\tQ3\n")
-    cat(paste("Randomized",round(min(x),3)
-              ,round(max(x),3)
-              ,round(qx[1],3)
-              ,round(qx[2],3),sep="\t"))
-    cat("\n")
-    cat(paste("Blocked\t",round(min(y),3)
-              ,round(max(y),3)
-              ,round(qy[1],3)
-              ,round(qy[2],3),sep="\t"))
-
-    cat("\n\n")
-
+    if(Bolstad.control(...)$plot){
+        par(ask=interactive())
+    
+        rng = range(block.var)
+        y.lims = max(abs(c(rng[1]-0.1*diff(rng),rng[2]+0.1*diff(rng))))
+        y.lims = c(-y.lims,y.lims)
+    
+        boxplot(block.var~ind,
+                main="Boxplots of Lurking/Blocking variable group means",
+                sub="Lurking variable in completely randomized design\nBlocking variable in randomized block design",
+                col=rep(c("blue","red"), rep(n.treatments,2)),
+                ylim = y.lims)
+        legend("topright", bty = "n", cex = 0.7, 
+               legend = c("Completely randomized design",
+                          "Randomized block design"),
+               fill = c("blue","red"))
+    
+        rng = range(treat.var)
+        y.lims = max(abs(c(rng[1]-0.1*diff(rng),rng[2]+0.1*diff(rng))))
+        y.lims = c(-y.lims,y.lims)
+        boxplot(treat.var~ind
+                ,main="Boxplots of treatment group means"
+                ,col=rep(c("blue","red"),rep(n.treatments,2))
+                ,ylim=y.lims)
+        legend("topright", cex = 0.7, bty = "n",
+               legend=c("Completely randomized design",
+                        "Randomized block design"),
+               fill = c("blue","red"))
+    
+        if(!quiet){
+            x = treat.var[ind<=n.treatments]
+            y = treat.var[ind>n.treatments]
+            cat("Variable\tN\tMean\tMedian\tTrMean\tStDev\tSE Mean\n")
+            cat(paste("Randomized",length(x),
+                      round(mean(x),3),
+                      round(median(x),3),
+                      round(mean(x,trim=0.1),3),
+                      round(sd(x),3),
+                      round(sd(x)/sqrt(length(x)),3),sep="\t"))
+            cat("\n")
+            cat(paste("Blocked\t",length(y),
+                      round(mean(y),3),
+                      round(median(y),3),
+                      round(mean(y,trim=0.1),3),
+                      round(sd(y),3),
+                      round(sd(y)/sqrt(length(y)),3),sep="\t"))
+            cat("\n\n")
+        
+            qx = quantile(x,c(0.25,0.75))
+            qy = quantile(y,c(0.25,0.75))
+        
+            cat("Variable\tMinimum\tMaximum\tQ1\tQ3\n")
+            cat(paste("Randomized",round(min(x),3)
+                      ,round(max(x),3)
+                      ,round(qx[1],3)
+                      ,round(qx[2],3),sep="\t"))
+            cat("\n")
+            cat(paste("Blocked\t",round(min(y),3)
+                      ,round(max(y),3)
+                      ,round(qy[1],3)
+                      ,round(qy[2],3),sep="\t"))
+        
+            cat("\n\n")
+        }
+    }
+    
     invisible(list(block.means=block.var,treat.means=treat.var,ind=ind))
 }

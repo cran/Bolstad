@@ -11,12 +11,7 @@
 #' @param mu the known population mean of the random sample.
 #' @param S0 the prior scaling factor.
 #' @param kappa the degrees of freedom of the prior.
-#' @param plot if \code{TRUE} then a plot showing the prior and the posterior
-#' will be produced.
-#' @param \dots this allows the arguments \code{cred.int} (which is logical), and 
-#' \code{alpha} (numerical between 0 and 1 exclusive) to be specified for compatibility
-#' with previous versions. A warning will be issued about these arguments being 
-#' deprecated which is why there are no examples using them.
+#' @param \dots additional arguments that are passed to \code{Bolstad.control}
 #' @return A list will be returned with the following components:
 #' 
 #' \item{sigma}{the vaules of \eqn{\sigma}{sigma} for which the prior,
@@ -41,17 +36,17 @@
 #' results = nvaricp(y,200,29.11,1)
 #' quantile(results, probs = c(0.025, 0.975))
 #' @export nvaricp
-nvaricp = function(y, mu, S0, kappa, plot = TRUE, ...){
+nvaricp = function(y, mu, S0, kappa, ...){
   
-  dots = list(...)
-  cred.int = dots[[pmatch("cred.int", names(dots))]]
-  alpha = dots[[pmatch("alpha", names(dots))]]
-  
-  if(is.null(cred.int))
-    cred.int = FALSE
-  
-  if(is.null(alpha))
-    alpha = 0.05
+  # dots = list(...)
+  # cred.int = dots[[pmatch("cred.int", names(dots))]]
+  # alpha = dots[[pmatch("alpha", names(dots))]]
+  # 
+  # if(is.null(cred.int))
+  #   cred.int = FALSE
+  # 
+  # if(is.null(alpha))
+  #   alpha = 0.05
   
   n = length(y)
   SST = sum((y-mu)^2)
@@ -87,7 +82,7 @@ nvaricp = function(y, mu, S0, kappa, plot = TRUE, ...){
     k2 = S1/k1
     k3 = sqrt(k2)
 
-    if(plot){
+    if(Bolstad.control(...)$plot){
       plot(sigma, prior, type = "l", col = "blue", ylim = c(0, 1.1 * y.max), xlim = c(0,k3),
            main = expression(paste("Shape of Inverse ", chi^2," and posterior for ", sigma, sep = "")),
            xlab = expression(sigma),
@@ -124,7 +119,7 @@ nvaricp = function(y, mu, S0, kappa, plot = TRUE, ...){
     k3 = sqrt(k2)
     k4 = 1.2*max(posterior)
 
-    if(plot){
+    if(Bolstad.control(...)$plot){
       plot(sigma, prior, type = "l",col = "blue", ylim = c(0,k4), main = expression(paste("Shape of prior and posterior for ", sigma, sep = "")), xlab = expression(sigma),ylab = "Density")
       lines(sigma, posterior, col = "red")
       legend("topleft", lty = 1, lwd = 2, col = c("blue","red"), legend = c("Prior", "Posterior"), bty = "n")
@@ -159,7 +154,7 @@ nvaricp = function(y, mu, S0, kappa, plot = TRUE, ...){
     k3 = sqrt(k2)
     k4 = 1.2*max(posterior)
 
-    if(plot){
+    if(Bolstad.control(...)$plot){
       plot(sigma, prior, type = "l",col = "blue", xlim = c(0,k3),ylim = c(0,k4),
            main = expression(paste("Shape of prior and posterior for ", sigma, sep = "")),
            xlab = expression(sigma),ylab = "Density")
@@ -168,34 +163,36 @@ nvaricp = function(y, mu, S0, kappa, plot = TRUE, ...){
     }
   }
 
-  cat(paste("S1: ",signif(S1,4)," kappa1 :", signif(kappa1,3),"\n",sep = ""))
-
-  if(cred.int){
-    msg = paste0("This argument is deprecated and will not be supported in future releases.",
-                 "\nPlease use the quantile function instead.\n")
-    warning(msg)
-    
-    if(kappa1<2)
-      cat("Unable to calculate credible interval for sigma if kappa1<= 2\n")
-    else{
-      sigmahat.post.mean = sqrt(S1/(kappa1-2))
-      cat(paste("Estimate of sigma using posterior mean: ",
-                signif(sigmahat.post.mean,4),"\n",sep = ""))
-    }
-
-    q50 = qchisq(p = 0.5, df = kappa1)
-    sigmahat.post.median = sqrt(S1/q50)
-    cat(paste("Estimate of sigma using posterior median: ",
-              signif(sigmahat.post.median,4),"\n",sep = ""))
-
-    ci = sqrt(S1 / qchisq(p = 1 - c(alpha * 0.5, 1 - alpha * 0.5), df = kappa1))
-    ciStr = sprintf("%d%% credible interval for sigma: [%4g, %4g]\n", round(100 * (1 - alpha)), signif(ci[1], 4), signif(ci[2], 4))
-    cat(ciStr)
-    
-    if(plot)
-      abline(v = ci, col = "blue", lty = 3)
-
+  if(!Bolstad.control(...)$quiet){
+    cat(paste("S1: ",signif(S1,4)," kappa1 :", signif(kappa1,3),"\n",sep = ""))
   }
+
+  # if(cred.int){
+  #   msg = paste0("This argument is deprecated and will not be supported in future releases.",
+  #                "\nPlease use the quantile function instead.\n")
+  #   warning(msg)
+  #   
+  #   if(kappa1<2)
+  #     cat("Unable to calculate credible interval for sigma if kappa1<= 2\n")
+  #   else{
+  #     sigmahat.post.mean = sqrt(S1/(kappa1-2))
+  #     cat(paste("Estimate of sigma using posterior mean: ",
+  #               signif(sigmahat.post.mean,4),"\n",sep = ""))
+  #   }
+  # 
+  #   q50 = qchisq(p = 0.5, df = kappa1)
+  #   sigmahat.post.median = sqrt(S1/q50)
+  #   cat(paste("Estimate of sigma using posterior median: ",
+  #             signif(sigmahat.post.median,4),"\n",sep = ""))
+  # 
+  #   ci = sqrt(S1 / qchisq(p = 1 - c(alpha * 0.5, 1 - alpha * 0.5), df = kappa1))
+  #   ciStr = sprintf("%d%% credible interval for sigma: [%4g, %4g]\n", round(100 * (1 - alpha)), signif(ci[1], 4), signif(ci[2], 4))
+  #   cat(ciStr)
+  #   
+  #   if(Bolstad.control(...)$plot)
+  #     abline(v = ci, col = "blue", lty = 3)
+  # 
+  # }
 
 
   results = list(param.x = sigma, prior = prior, likelihood = likelihood,

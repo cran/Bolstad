@@ -1,4 +1,6 @@
-#' Median generic
+#' @title Median generic
+#' 
+#' Compute the posterior median of the posterior distribution
 #' 
 #' @param x an object.
 #' @param na.rm Ideally if \code{TRUE} then missing values will be removed, but not currently used.

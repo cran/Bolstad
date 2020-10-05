@@ -4,7 +4,7 @@
 \alias{poisdp}
 \title{Poisson sampling with a discrete prior}
 \usage{
-poisdp(y.obs, mu, mu.prior, plot = TRUE)
+poisdp(y.obs, mu, mu.prior, ...)
 }
 \arguments{
 \item{y.obs}{a random sample from a Poisson distribution.}
@@ -14,8 +14,7 @@ event over a finite period of space or time.}
 
 \item{mu.prior}{the associated prior probability mass.}
 
-\item{plot}{if \code{TRUE} then a plot showing the prior and the posterior
-will be produced.}
+\item{\dots}{additional arguments that are passed to \code{Bolstad.control}}
 }
 \value{
 A list will be returned with the following components:

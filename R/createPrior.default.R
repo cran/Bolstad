@@ -31,8 +31,10 @@ createPrior.default = function(x, wt, ...){
   fx = approxfun(x, wt, yleft = 0, yright = 0, rule = 2)
   A = integrate(fx, x[1], x[length(x)])$value
   if(A != 1){
-    cat("Normalizing prior. Normalizing constant: ")
-    cat(A, "\n")
+    if(!Bolstad.control(...)$quiet){
+      cat("Normalizing prior. Normalizing constant: ")
+      cat(A, "\n")
+    }
     fx = approxfun(x, wt/A, yleft = 0, yright = 0, rule = 2)
   }
   

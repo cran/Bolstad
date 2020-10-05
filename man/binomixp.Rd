@@ -4,8 +4,7 @@
 \alias{binomixp}
 \title{Binomial sampling with a beta mixture prior}
 \usage{
-binomixp(x, n, alpha0 = c(1, 1), alpha1 = c(1, 1), p = 0.5,
-  plot = TRUE)
+binomixp(x, n, alpha0 = c(1, 1), alpha1 = c(1, 1), p = 0.5, ...)
 }
 \arguments{
 \item{x}{the number of observed successes in the binomial experiment.}
@@ -25,8 +24,7 @@ is the prior is \eqn{pimes beta(a_0,b_0)+(1-p)imes
 beta(a_1,b_1)}{p*beta(a0,b0)+(1-p)*beta(a1,b1)}. \eqn{p} is set to 0.5 by
 default}
 
-\item{plot}{if \code{TRUE} then a plot showing the prior and the posterior
-will be produced}
+\item{\dots}{additional arguments that are passed to \code{Bolstad.control}}
 }
 \value{
 A list will be returned with the following components: \item{pi}{the

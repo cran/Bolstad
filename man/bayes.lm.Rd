@@ -4,8 +4,18 @@
 \alias{bayes.lm}
 \title{Bayesian inference for multiple linear regression}
 \usage{
-bayes.lm(formula, data, subset, na.action, model = TRUE, x = FALSE,
-  y = FALSE, center = TRUE, prior = NULL, sigma = FALSE)
+bayes.lm(
+  formula,
+  data,
+  subset,
+  na.action,
+  model = TRUE,
+  x = FALSE,
+  y = FALSE,
+  center = TRUE,
+  prior = NULL,
+  sigma = FALSE
+)
 }
 \arguments{
 \item{formula}{an object of class \code{\link[stats]{formula}} (or one that can be coerced to that class): a symbolic 

@@ -4,7 +4,7 @@
 \alias{binobp}
 \title{Binomial sampling with a beta prior}
 \usage{
-binobp(x, n, a = 1, b = 1, pi = seq(0, 1, by = 0.001), plot = TRUE)
+binobp(x, n, a = 1, b = 1, pi = seq(0, 1, by = 0.001), ...)
 }
 \arguments{
 \item{x}{the number of observed successes in the binomial experiment.}
@@ -15,10 +15,9 @@ binobp(x, n, a = 1, b = 1, pi = seq(0, 1, by = 0.001), plot = TRUE)
 
 \item{b}{parameter for the beta prior - must be greater than zero}
 
-\item{pi}{A rannge of values for the prior to be calculated over.}
+\item{pi}{A range of values for the prior to be calculated over.}
 
-\item{plot}{if \code{TRUE} then a plot showing the prior and the posterior
-will be produced.}
+\item{\dots}{additional arguments that are passed to \code{Bolstad.control}}
 }
 \value{
 An object of class 'Bolstad' is returned. This is a list with the

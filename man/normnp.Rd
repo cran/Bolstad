@@ -4,8 +4,15 @@
 \alias{normnp}
 \title{Bayesian inference on a normal mean with a normal prior}
 \usage{
-normnp(x, m.x = 0, s.x = 1, sigma.x = NULL, mu = NULL,
-  n.mu = max(100, length(mu)), plot = TRUE)
+normnp(
+  x,
+  m.x = 0,
+  s.x = 1,
+  sigma.x = NULL,
+  mu = NULL,
+  n.mu = max(100, length(mu)),
+  ...
+)
 }
 \arguments{
 \item{x}{a vector of observations from a normal distribution with unknown
@@ -24,8 +31,7 @@ then a set of values centered on the sample mean is used.}
 
 \item{n.mu}{the number of possible \eqn{\mu}{mu} values in the prior}
 
-\item{plot}{if \code{TRUE} then a plot showing the prior and the posterior
-will be produced.}
+\item{\dots}{optional control arguments. See \code{\link{Bolstad.control}}}
 }
 \value{
 A list will be returned with the following components: \item{mu}{the

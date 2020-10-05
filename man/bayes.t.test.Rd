@@ -8,12 +8,24 @@
 \usage{
 bayes.t.test(x, ...)
 
-\method{bayes.t.test}{default}(x, y = NULL,
-  alternative = c("two.sided", "less", "greater"), mu = 0,
-  paired = FALSE, var.equal = TRUE, conf.level = 0.95,
-  prior = c("jeffreys", "joint.conj"), m = NULL, n0 = NULL,
-  sig.med = NULL, kappa = 1, sigmaPrior = "chisq", nIter = 10000,
-  nBurn = 1000, ...)
+\method{bayes.t.test}{default}(
+  x,
+  y = NULL,
+  alternative = c("two.sided", "less", "greater"),
+  mu = 0,
+  paired = FALSE,
+  var.equal = TRUE,
+  conf.level = 0.95,
+  prior = c("jeffreys", "joint.conj"),
+  m = NULL,
+  n0 = NULL,
+  sig.med = NULL,
+  kappa = 1,
+  sigmaPrior = "chisq",
+  nIter = 10000,
+  nBurn = 1000,
+  ...
+)
 
 \method{bayes.t.test}{formula}(formula, data, subset, na.action, ...)
 }

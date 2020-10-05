@@ -5,7 +5,7 @@
 \title{Bayesian inference for a normal standard deviation with a scaled inverse
 chi-squared distribution}
 \usage{
-nvaricp(y, mu, S0, kappa, plot = TRUE, ...)
+nvaricp(y, mu, S0, kappa, ...)
 }
 \arguments{
 \item{y}{a random sample from a
@@ -17,13 +17,7 @@ nvaricp(y, mu, S0, kappa, plot = TRUE, ...)
 
 \item{kappa}{the degrees of freedom of the prior.}
 
-\item{plot}{if \code{TRUE} then a plot showing the prior and the posterior
-will be produced.}
-
-\item{\dots}{this allows the arguments \code{cred.int} (which is logical), and 
-\code{alpha} (numerical between 0 and 1 exclusive) to be specified for compatibility
-with previous versions. A warning will be issued about these arguments being 
-deprecated which is why there are no examples using them.}
+\item{\dots}{additional arguments that are passed to \code{Bolstad.control}}
 }
 \value{
 A list will be returned with the following components:

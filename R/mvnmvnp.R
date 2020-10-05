@@ -15,6 +15,7 @@
 #' this value is NULL, which it is by default, then the sample covariance is used. NOTE:
 #'  if this is the case then the cdf and quantile functions should really be multivariate
 #'  t, but they are not - in which case the results are only (approximately) valid for large samples. 
+#' @param \dots any other values to be passed to Bolstad.control
 #' @return A list will be returned with the following components: 
 #' \item{mean}{the posterior mean of the MVN posterior distribution}
 #' \item{var}{the posterior variance-covariance matrix of the MVN posterior distribution}
@@ -22,7 +23,7 @@
 #' \item{quantile}{a function that will find quantiles from the posterior given input probabilities. This function calls \code{mvtnorm::qmvnorm}.}
 #' @keywords misc
 #' @export 
-mvnmvnp = function(y, m0 = 0, V0 = 1, Sigma = NULL){
+mvnmvnp = function(y, m0 = 0, V0 = 1, Sigma = NULL, ...){
   
   yBar = matrix(colMeans(y), ncol = 1)
   k = ncol(y)
@@ -48,19 +49,25 @@ mvnmvnp = function(y, m0 = 0, V0 = 1, Sigma = NULL){
     }
   }
   
-  cat("The prior mean is:\n\n")
-  cat(paste0(m0, collapse = " "))
-  cat("\n\n")
-  cat("The prior variance is:\n\n")
-  print(V0)
-  cat("\n\n")
+  quiet = Bolstad.control(...)$quiet
+  
+  if(!quiet){
+    cat("The prior mean is:\n\n")
+    cat(paste0(m0, collapse = " "))
+    cat("\n\n")
+    cat("The prior variance is:\n\n")
+    print(V0)
+    cat("\n\n")
+  }
   
   
   n = nrow(y)
   
   if(is.null(Sigma)){
     Sigma = cov(y)
-    cat("Using the sample variance for Sigma\n")
+    if(!quiet){
+      cat("Using the sample variance for Sigma\n")
+    }
   }
   
   Sigma.inv = solve(Sigma)
@@ -70,11 +77,13 @@ mvnmvnp = function(y, m0 = 0, V0 = 1, Sigma = NULL){
   post.var = solve(post.precision)
   post.mean = post.var %*% prior.precision %*% m0 + n * post.var %*% Sigma.inv %*% yBar
   
-  cat("The posterior mean is:\n\n")
-  cat(paste0(post.mean, collapse = " "))
-  cat("\n\n")
-  cat("The posterior variance is:\n\n")
-  print(post.var)
+  if(!quiet){
+    cat("The posterior mean is:\n\n")
+    cat(paste0(post.mean, collapse = " "))
+    cat("\n\n")
+    cat("The posterior variance is:\n\n")
+    print(post.var)
+  }
   
   results = list(parameter = 'mu',
                  mean = post.mean, 

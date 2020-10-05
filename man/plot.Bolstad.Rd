@@ -4,11 +4,20 @@
 \alias{plot.Bolstad}
 \title{Plot method for objects of type Bolstad}
 \usage{
-\method{plot}{Bolstad}(x, overlay = TRUE, which = c(1, 3),
-  densCols = c("red", "green", "blue")[which], legendLoc = "topleft",
-  scaleLike = FALSE, xlab = eval(expression(x$name)), ylab = "",
-  main = "Shape of prior and posterior", ylim = c(0, max(cbind(x$prior,
-  x$likelihood, x$posterior)[, which]) * 1.1), cex = 0.7, ...)
+\method{plot}{Bolstad}(
+  x,
+  overlay = TRUE,
+  which = c(1, 3),
+  densCols = c("red", "green", "blue")[which],
+  legendLoc = "topleft",
+  scaleLike = FALSE,
+  xlab = eval(expression(x$name)),
+  ylab = "",
+  main = "Shape of prior and posterior",
+  ylim = c(0, max(cbind(x$prior, x$likelihood, x$posterior)[, which]) * 1.1),
+  cex = 0.7,
+  ...
+)
 }
 \arguments{
 \item{x}{A S3 object of class Bolstad}

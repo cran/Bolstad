@@ -4,7 +4,8 @@
 \name{bears}
 \alias{bears}
 \title{bears}
-\format{A data frame with 143 observations on the following 12 variables.
+\format{
+A data frame with 143 observations on the following 12 variables.
 \itemize{ \item{ID. Indentification number}
 \item{Age. Bear's age, in months. Note, wild bears are always born
 in January, so an expert can estimate the bear's age without directly asking
@@ -20,7 +21,8 @@ bear, in pounds } \item{Obs.No. Observation number for this bear.
 For example, the bear with ID = 41 (Bertha) was measured on four occasions,
 in the months coded 7, 8, 11, and 5. The value of Obs.No goes from 1 to 4
 for these observations. } \item{Name. The names of the bears given
-to them by the researchers} }}
+to them by the researchers} }
+}
 \source{
 This data is in the example data set Bears.MTW distributed with
 Minitab

@@ -4,10 +4,21 @@
 \alias{bayes.lin.reg}
 \title{Bayesian inference for simple linear regression}
 \usage{
-bayes.lin.reg(y, x, slope.prior = c("flat", "normal"),
-  intcpt.prior = c("flat", "normal"), mb0 = 0, sb0 = 0, ma0 = 0,
-  sa0 = 0, sigma = NULL, alpha = 0.05, plot.data = FALSE,
-  pred.x = NULL)
+bayes.lin.reg(
+  y,
+  x,
+  slope.prior = c("flat", "normal"),
+  intcpt.prior = c("flat", "normal"),
+  mb0 = 0,
+  sb0 = 0,
+  ma0 = 0,
+  sa0 = 0,
+  sigma = NULL,
+  alpha = 0.05,
+  plot.data = FALSE,
+  pred.x = NULL,
+  ...
+)
 }
 \arguments{
 \item{y}{the vector of responses.}
@@ -46,6 +57,8 @@ line superimposed on the data.}
 
 \item{pred.x}{a vector of x values for which the predicted y values are
 obtained and the std. errors of prediction}
+
+\item{\dots}{additional arguments that are passed to \code{Bolstad.control}}
 }
 \value{
 A list will be returned with the following components:
@@ -72,8 +85,9 @@ observation errors are, \eqn{\epsilon_i}{epsilon_i}, independent
 ## generate some data from a known model, where the true value of the
 ## intercept alpha is 2, the true value of the slope beta is 3, and the
 ## errors come from a normal(0,1) distribution
+set.seed(123)
 x = rnorm(50)
-y = 22+3*x+rnorm(50)
+y = 2 + 3*x + rnorm(50)
 
 ## use the function with a flat prior for the slope beta and a
 ## flat prior for the intercept, alpha_xbar.

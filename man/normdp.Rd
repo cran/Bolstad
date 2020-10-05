@@ -4,8 +4,7 @@
 \alias{normdp}
 \title{Bayesian inference on a normal mean with a discrete prior}
 \usage{
-normdp(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50,
-  plot = TRUE)
+normdp(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50, ...)
 }
 \arguments{
 \item{x}{a vector of observations from a normal distribution with unknown
@@ -20,8 +19,7 @@ single trial. If mu is NULL then a uniform prior is used.}
 
 \item{n.mu}{the number of possible \eqn{\mu}{mu} values in the prior}
 
-\item{plot}{if \code{TRUE} then a plot showing the prior and the posterior
-will be produced.}
+\item{\dots}{additional arguments that are passed to \code{Bolstad.control}}
 }
 \value{
 A list will be returned with the following components: \item{mu}{the

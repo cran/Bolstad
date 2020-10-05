@@ -12,10 +12,7 @@
 #' \eqn{\pi}{pi} will be used.
 #' @param pi.prior the associated prior probability mass.
 #' @param n.pi the number of possible \eqn{\pi}{pi} values in the prior
-#' @param plot if \code{TRUE} then a plot showing the prior and the posterior
-#' will be produced
-#' @param suppressOutput if \code{TRUE} then none of the output is printed to
-#' console
+#' @param \dots additional arguments that are passed to \code{Bolstad.control}
 #' @return A list will be returned with the following components: \item{pi}{the
 #' vector of possible \eqn{\pi}{pi} values used in the prior}
 #' \item{pi.prior}{the associated probability mass for the values in
@@ -57,7 +54,7 @@
 #' 
 #' @export binodp
 binodp = function(x, n, pi = NULL, pi.prior = NULL, n.pi = 10, 
-                  plot = TRUE, suppressOutput = FALSE){
+                  ...){
 
   ## n - the number of trials in the binomial
   ## x - the number of observed successes
@@ -99,14 +96,26 @@ binodp = function(x, n, pi = NULL, pi.prior = NULL, n.pi = 10,
   lp = likelihood * pi.prior
   posterior = lp / sum(lp)
 
-  if(plot){
-    plot(pi, posterior,ylim = c(0, 1.1 * max(posterior, pi.prior)),pch=20
-       ,col="blue",
-       xlab = expression(pi), ylab = expression(Probabilty(pi)))
-    points(pi,pi.prior,pch=20,col="red")
-
-    legend("topleft", bty = "n", fill = c("blue", "red"),
-           legend = c("Posterior", "Prior"), cex = 0.7)
+  if(Bolstad.control(...)$plot) {
+    plot(
+      pi,
+      posterior,
+      ylim = c(0, 1.1 * max(posterior, pi.prior)),
+      pch = 20
+      ,
+      col = "blue",
+      xlab = expression(pi),
+      ylab = expression(Probabilty(pi))
+    )
+    points(pi, pi.prior, pch = 20, col = "red")
+    
+    legend(
+      "topleft",
+      bty = "n",
+      fill = c("blue", "red"),
+      legend = c("Posterior", "Prior"),
+      cex = 0.7
+    )
   }
   ## calculate the Conditional distribution
 
@@ -127,7 +136,8 @@ binodp = function(x, n, pi = NULL, pi.prior = NULL, n.pi = 10,
   f.marg = matrix(1,nrow=1,ncol=n.pi)%*%f.joint
   
   
-  if(!suppressOutput){
+  quiet = Bolstad.control(...)$quiet
+  if(!quiet){
     cat("Conditional distribution of x given pi and  n:\n\n")
     print(round(f.cond,4))
   

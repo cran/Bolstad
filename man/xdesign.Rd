@@ -4,8 +4,15 @@
 \alias{xdesign}
 \title{Monte Carlo study of randomized and blocked designs}
 \usage{
-xdesign(x = NULL, y = NULL, corr = 0.8, size = 20,
-  n.treatments = 4, n.rep = 500)
+xdesign(
+  x = NULL,
+  y = NULL,
+  corr = 0.8,
+  size = 20,
+  n.treatments = 4,
+  n.rep = 500,
+  ...
+)
 }
 \arguments{
 \item{x}{a set of lurking values which are correlated with the response}
@@ -19,6 +26,8 @@ xdesign(x = NULL, y = NULL, corr = 0.8, size = 20,
 \item{n.treatments}{the number of treatments}
 
 \item{n.rep}{the number of Monte Carlo replicates}
+
+\item{\dots}{additional parameters which are passed to \code{Bolstad.control}}
 }
 \value{
 If the ouput of xdesign is assigned to a variable, then a list is

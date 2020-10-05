@@ -17,8 +17,7 @@
 #' single trial. This must be set if density = "user".
 #' @param pi.prior the associated prior probability mass. This must be set if
 #' density = "user".
-#' @param plot if \code{TRUE} then a plot showing the prior and the posterior
-#' will be produced.
+#' @param \dots additional arguments that are passed to \code{Bolstad.control}
 #' @return A list will be returned with the following components:
 #' \item{likelihood}{the scaled likelihood function for \eqn{\pi}{pi} given
 #' \eqn{x} and \eqn{n}} \item{posterior}{the posterior probability of
@@ -73,7 +72,7 @@
 #' @export binogcp
 binogcp = function(x, n, density = c("uniform", "beta", "exp", "normal",  "user"), 
                    params = c(0, 1), n.pi = 1000, 
-                   pi = NULL, pi.prior = NULL, plot = TRUE){
+                   pi = NULL, pi.prior = NULL, ...){
 
   ## n - the number of trials in the binomial
   ## x - the number of observed successes
@@ -187,7 +186,7 @@ binogcp = function(x, n, density = c("uniform", "beta", "exp", "normal",  "user"
 
   posterior = likelihood * pi.prior / integral
 
-  if(plot){
+  if(Bolstad.control(...)$plot){
     plot(pi, posterior, ylim = c(0, 1.1 * max(posterior, pi.prior)), lty = 1, type = "l", col = "blue", 
          xlab = expression(pi), ylab = "Density")
     lines(pi, pi.prior, lty = 2, col = "red")

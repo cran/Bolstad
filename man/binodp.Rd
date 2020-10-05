@@ -4,8 +4,7 @@
 \alias{binodp}
 \title{Binomial sampling with a discrete prior}
 \usage{
-binodp(x, n, pi = NULL, pi.prior = NULL, n.pi = 10, plot = TRUE,
-  suppressOutput = FALSE)
+binodp(x, n, pi = NULL, pi.prior = NULL, n.pi = 10, ...)
 }
 \arguments{
 \item{x}{the number of observed successes in the binomial experiment.}
@@ -20,11 +19,7 @@ single trial. if \code{pi} is \code{NULL} then a discrete uniform prior for
 
 \item{n.pi}{the number of possible \eqn{\pi}{pi} values in the prior}
 
-\item{plot}{if \code{TRUE} then a plot showing the prior and the posterior
-will be produced}
-
-\item{suppressOutput}{if \code{TRUE} then none of the output is printed to
-console}
+\item{\dots}{additional arguments that are passed to \code{Bolstad.control}}
 }
 \value{
 A list will be returned with the following components: \item{pi}{the

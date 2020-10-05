@@ -4,9 +4,16 @@
 \alias{normgcp}
 \title{Bayesian inference on a normal mean with a general continuous prior}
 \usage{
-normgcp(x, sigma.x = NULL, density = c("uniform", "normal", "flat",
-  "user"), params = NULL, n.mu = 50, mu = NULL, mu.prior = NULL,
-  plot = TRUE)
+normgcp(
+  x,
+  sigma.x = NULL,
+  density = c("uniform", "normal", "flat", "user"),
+  params = NULL,
+  n.mu = 50,
+  mu = NULL,
+  mu.prior = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{a vector of observations from a normal distribution with unknown
@@ -31,8 +38,7 @@ single trial. Must be set if density="user"}
 
 \item{mu.prior}{the associated prior density. Must be set if density="user"}
 
-\item{plot}{if \code{TRUE} then a plot showing the prior and the posterior
-will be produced.}
+\item{\dots}{additional arguments that are passed to \code{Bolstad.control}}
 }
 \value{
 A list will be returned with the following components:
@@ -75,7 +81,7 @@ plot(cdf,type="l",xlab=expression(mu[0])
 lcb = cdf$x[with(cdf,which.max(x[y<=0.025]))]
 ucb = cdf$x[with(cdf,which.max(x[y<=0.975]))]
 cat(paste("Approximate 95\% credible interval : ["
-           ,round(lcb,4)," ",round(ucb,4),"]\\n",sep=""))
+           ,round(lcb,4)," ",round(ucb,4),"]\n",sep=""))
 
 ## use the CDF from the previous example to find the posterior mean
 ## and std. deviation
@@ -93,7 +99,7 @@ ub = post.mean+qnorm(0.975)*post.sd
 
 
 cat(paste("Approximate 95\% credible interval : ["
-   ,round(lb,4)," ",round(ub,4),"]\\n",sep=""))
+   ,round(lb,4)," ",round(ub,4),"]\n",sep=""))
 
 ## repeat the last example but use the new summary functions for the posterior
 results = normgcp(x, 1, density = "user", mu = mu, mu.prior = mu.prior)

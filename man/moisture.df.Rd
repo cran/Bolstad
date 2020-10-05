@@ -4,12 +4,14 @@
 \name{moisture.df}
 \alias{moisture.df}
 \title{Moisture data}
-\format{A data frame with 25 observations on the following 6 variables.
+\format{
+A data frame with 25 observations on the following 6 variables.
 \itemize{ \item{batch. the batch number of the measurement}
 \item{proc.level. the in-process moisture level} \item{final.level. natural
 the final moisture level of the batch} \item{ls.fit the least squares fitted value
 of final.level given proc.level} \item{residiual. the least squares residual}
-\item{residiual.sq. the squaredvleast squares residual}}}
+\item{residiual.sq. the squaredvleast squares residual}}
+}
 \description{
 Moisture level at two stages in a food manufacturing process, in-process and final.
 These data are given in Example 14.1

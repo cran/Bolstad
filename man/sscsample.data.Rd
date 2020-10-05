@@ -5,11 +5,13 @@
 \alias{sscsample.data}
 \title{Data for simple random sampling, stratified sampling, and clusting sampling
 experiments}
-\format{A data frame with 100 observations on the following 3 variables.
+\format{
+A data frame with 100 observations on the following 3 variables.
 \itemize{ \item{income. Simulated income in $10,000}
 \item{ethnicity. A numerical vector indicating the ethnic group of
 the observation} \item{neighborhood. A numeric vector indicating the
-neighborhood of the observation} }}
+neighborhood of the observation} }
+}
 \description{
 A simulated population made up of 100 individuals. The individuals come from
 three ethnic groups with population proportions of 40\%, 40\%, and 20\%,

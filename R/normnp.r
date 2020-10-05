@@ -14,8 +14,7 @@
 #' @param mu a vector of prior possibilities for the true mean. If this is \code{null},
 #' then a set of values centered on the sample mean is used.
 #' @param n.mu the number of possible \eqn{\mu}{mu} values in the prior
-#' @param plot if \code{TRUE} then a plot showing the prior and the posterior
-#' will be produced.
+#' @param \dots optional control arguments. See \code{\link{Bolstad.control}}
 #' @return A list will be returned with the following components: \item{mu}{the
 #' vector of possible \eqn{\mu}{mu} values used in the prior}
 #' \item{mu.prior}{the associated probability mass for the values in
@@ -46,19 +45,25 @@
 #' 
 #' @export normnp
 normnp = function(x, m.x = 0 , s.x = 1, sigma.x = NULL, mu = NULL, n.mu = max(100, length(mu)), 
-                  plot = TRUE){
+                  ...){
 
   mean.x = mean(x)
   n.x = length(x)
+  
+  quiet = Bolstad.control(...)$quiet
 
   if(is.null(sigma.x)){
     sigma.x = sd(x - mean.x)
-    cat(paste("Standard deviation of the residuals :",signif(sigma.x,4),"\n",sep=""))
+    if(!quiet){
+      cat(paste("Standard deviation of the residuals :",signif(sigma.x,4),"\n",sep=""))
+    }
   }else{
     if(sigma.x > 0){
-      cat(paste("Known standard deviation :",signif(sigma.x,4),"\n",sep=""))
+      if(!quiet){
+        cat(paste("Known standard deviation :",signif(sigma.x,4),"\n",sep=""))
+      }
     }else{
-      stop("Standard deviation sigma.x must be greate than zero")
+      stop("Standard deviation sigma.x must be greater than zero")
     }
   }
 
@@ -95,12 +100,14 @@ normnp = function(x, m.x = 0 , s.x = 1, sigma.x = NULL, mu = NULL, n.mu = max(10
   post.sd = sqrt(1/post.precision)
   post.mean = (prior.precision/post.precision*m.x)+((n.x/sigma.x^2)/post.precision*mean.x)
 
-  cat(paste("Posterior mean           : ",round(post.mean,7),"\n",sep=""))
-  cat(paste("Posterior std. deviation : ",round(post.sd,7),"\n",sep=""))
+  if(!quiet){
+    cat(paste("Posterior mean           : ",round(post.mean,7),"\n",sep=""))
+    cat(paste("Posterior std. deviation : ",round(post.sd,7),"\n",sep=""))
+  }
 
   posterior = dnorm(mu,post.mean,post.sd)
 
-  if(plot){
+  if(Bolstad.control(...)$plot){
     plot(mu,posterior,ylim=c(0,1.1*max(posterior,mu.prior)),type="l",
          lty=1,col="blue",
          xlab=expression(mu),ylab=expression(Probabilty(mu)),
@@ -115,10 +122,12 @@ normnp = function(x, m.x = 0 , s.x = 1, sigma.x = NULL, mu = NULL, n.mu = max(10
   qtls = qnorm(probs,post.mean,post.sd)
   names(qtls) = probs
 
-  cat("\nProb.\tQuantile \n")
-  cat("------\t----------\n")
-  for(i in 1:length(probs)){
-    cat(sprintf("%5.3f\t%10.7f\n", round(probs[i],3), round(qtls[i],7)))
+  if(!quiet){
+    cat("\nProb.\tQuantile \n")
+    cat("------\t----------\n")
+    for(i in 1:length(probs)){
+      cat(sprintf("%5.3f\t%10.7f\n", round(probs[i],3), round(qtls[i],7)))
+    }
   }
 
   results = list(name = 'mu', param.x = mu, prior = mu.prior, likelihood = likelihood, posterior = posterior,

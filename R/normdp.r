@@ -11,8 +11,7 @@
 #' single trial. If mu is NULL then a uniform prior is used.
 #' @param mu.prior the associated prior probability mass.
 #' @param n.mu the number of possible \eqn{\mu}{mu} values in the prior
-#' @param plot if \code{TRUE} then a plot showing the prior and the posterior
-#' will be produced.
+#' @param \dots additional arguments that are passed to \code{Bolstad.control}
 #' @return A list will be returned with the following components: \item{mu}{the
 #' vector of possible \eqn{\mu}{mu} values used in the prior}
 #' \item{mu.prior}{the associated probability mass for the values in
@@ -47,7 +46,7 @@
 #' normdp(y,1,mu,mu.prior)
 #' 
 #' @export normdp
-normdp = function(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50, plot = TRUE){
+normdp = function(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50, ...){
 
   ## x - the vector of observations
   ## sigma.x - the population standard deviation
@@ -66,14 +65,19 @@ normdp = function(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50, plot
   }
 
   mx = mean(x)
+  quiet = Bolstad.control(...)$quiet
 
   if(is.null(sigma.x)){
     sigma.x = sd(x-mx)
-    cat(paste("Standard deviation of the residuals :"
-              ,signif(sigma.x,4),"\n",sep=""))
+    if(!quiet){
+      cat(paste("Standard deviation of the residuals :"
+                ,signif(sigma.x,4),"\n",sep=""))
+    }
   }else{
     if(sigma.x>0){
-      cat(paste("Known standard deviation :",signif(sigma.x,4),"\n",sep=""))
+      if(!quiet){
+        cat(paste("Known standard deviation :",signif(sigma.x,4),"\n",sep=""))
+      }
     }else{
       stop("The standard deviation must be greater than zero")
     }
@@ -93,7 +97,7 @@ normdp = function(x, sigma.x = NULL, mu = NULL, mu.prior = NULL, n.mu = 50, plot
   likelihood = exp(-0.5*(mx-mu)^2/snx)
   posterior = likelihood*mu.prior/sum(likelihood*mu.prior)
 
-  if(plot){
+  if(Bolstad.control(...)$plot){
     plot(mu,posterior,ylim=c(0,1.1*max(posterior,mu.prior)),pch = 20, col = "blue",
          xlab=expression(mu),ylab=expression(Probabilty(mu)))
     points(mu, mu.prior, pch = 20, col = "red")

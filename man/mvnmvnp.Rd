@@ -4,7 +4,7 @@
 \alias{mvnmvnp}
 \title{Bayesian inference on a mutlivariate normal (MVN) mean with a multivariate normal (MVN) prior}
 \usage{
-mvnmvnp(y, m0 = 0, V0 = 1, Sigma = NULL)
+mvnmvnp(y, m0 = 0, V0 = 1, Sigma = NULL, ...)
 }
 \arguments{
 \item{y}{a vector of observations from a MVN distribution with unknown
@@ -21,6 +21,8 @@ so the prior is \eqn{n_0\times \mathbf{I}_k}{n0 * I} where \eqn{\mathbf{I}_k}{I}
 this value is NULL, which it is by default, then the sample covariance is used. NOTE:
  if this is the case then the cdf and quantile functions should really be multivariate
  t, but they are not - in which case the results are only (approximately) valid for large samples.}
+
+\item{\dots}{any other values to be passed to Bolstad.control}
 }
 \value{
 A list will be returned with the following components: 
