@@ -110,11 +110,11 @@ Performs one and two sample t-tests (in the Bayesian hypothesis testing framewor
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: Bayesian t-test
+\item \code{bayes.t.test(default)}: Bayesian t-test
 
-\item \code{formula}: Bayesian t-test
+\item \code{bayes.t.test(formula)}: Bayesian t-test
+
 }}
-
 \examples{
 bayes.t.test(1:10, y = c(7:20))      # P = .3.691e-01
 

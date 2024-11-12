@@ -1,4 +1,4 @@
-#' @title Median generic
+#' Median generic
 #' 
 #' Compute the posterior median of the posterior distribution
 #' 
@@ -9,13 +9,17 @@
 #'   median of the parameter of interest will be calculated.
 #' @author James Curran
 #' @method median Bolstad
-if(is.na(match("...", names(formals(median))))) {
-  median.Bolstad = function(x, na.rm = FALSE) {
-    return(quantile(x, probs = 0.5))
-  }
-}else{
-  median.Bolstad = function(x, na.rm = FALSE, ...) {
-    return(quantile(x, probs = 0.5))
-  }
+median.Bolstad = function(x, na.rm = FALSE, ...) {
+  return(quantile(x, probs = 0.5))
 }
+
+# if(is.na(match("...", names(formals(median))))) {
+#   median.Bolstad = function(x, na.rm = FALSE) {
+#     return(quantile(x, probs = 0.5))
+#   }
+# }else{
+#   median.Bolstad = function(x, na.rm = FALSE, ...) {
+#     return(quantile(x, probs = 0.5))
+#   }
+# }
 

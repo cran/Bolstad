@@ -25,7 +25,7 @@
 #' 
 #' @export decomp
 decomp = function(x, ...){
-  if(class(x) != "Bolstad")
+  if(!is(x, "Bolstad"))
     stop("This function only works for objects of class Bolstad")
   
   oPar = par(mfrow = c(3, 1), mar = c(1, 1, 1, 1))

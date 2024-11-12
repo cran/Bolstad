@@ -1,10 +1,9 @@
 citHeader("To cite package 'Bolstad' in publications use:")
 year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date, perl = TRUE)
 vers <- paste("R package version", meta$Version)
-citEntry(entry = "Manual",
+bibentry("Manual",
 title = "Bolstad: Bolstad functions",
-author = personList(as.person("James Curran"),
-as.person("William Bolstad")),
+author = c(as.person("James Curran"), as.person("William Bolstad")),
 year = year,
 note = vers,
 textVersion =

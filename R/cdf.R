@@ -9,6 +9,7 @@
 #' @return either the exact cdf of the posterior if a conjugate prior has been
 #'   used, or a a \code{stats::splinefun} which will compute the lower
 #'   tail probability of the parameter for any valid input.
+#' @importFrom methods is
 #' @author James Curran
 #' @export 
 cdf = function(x, ...){
@@ -19,7 +20,7 @@ cdf = function(x, ...){
 #' @export 
 #' 
 cdf.Bolstad = function(x, ...){
-  if(class(x) != "Bolstad")
+  if(!is(x, "Bolstad"))
     stop("x must be an object of class Bolstad")
   
   if(any(grepl("cdf", names(x))))

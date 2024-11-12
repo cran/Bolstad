@@ -26,9 +26,9 @@ which the posterior is specified.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{Bolstad}: Cumulative distribution function for posterior density
-}}
+\item \code{cdf(Bolstad)}: Cumulative distribution function for posterior density
 
+}}
 \author{
 James Curran
 }

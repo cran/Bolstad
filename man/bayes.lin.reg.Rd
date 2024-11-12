@@ -74,11 +74,10 @@ in pred.y. If pred.x is NULL then this is not returned}
 This function is used to find the posterior distribution of the simple
 linear regression slope variable \eqn{\beta}{beta} when we have a random
 sample of ordered pairs \eqn{(x_{i}, y_{i})} from the simple linear
-regression model: \deqn{ }{y_i = alpha_xbar + beta*x_i+epsilon_i}\deqn{
-y_{i} = \alpha_{\bar{x}} + \beta x_{i}+\epsilon_{i} }{y_i = alpha_xbar +
-beta*x_i+epsilon_i}\deqn{ }{y_i = alpha_xbar + beta*x_i+epsilon_i} where the
-observation errors are, \eqn{\epsilon_i}{epsilon_i}, independent
-\eqn{normal(0,\sigma^{2})}{normal(0,sigma^2)} with known variance.
+regression model: 
+\deqn{y_{i} = \alpha_{\bar{x}} + \beta x_{i}+\epsilon_{i}} where the
+observation errors are, \eqn{\epsilon_i}, independent
+\eqn{normal(0,\sigma^{2})} with known variance.
 }
 \examples{
 

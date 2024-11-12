@@ -14,6 +14,7 @@
 #' intergral, and \code{cdf} - a list containing elements x and y which give a
 #' numeric specification of the cdf.
 #' @keywords misc
+#' @importFrom methods is
 #' @examples
 #' 
 #' ## integrate the normal density from -3 to 3
@@ -57,7 +58,7 @@ sintegral = function(x, fx, n.pts = max(256, length(x))){
   ##    - or a function
   ## n.pts - the number of points to be used in the integration
   
-  if(class(fx) == "function")
+  if(is(fx, "function"))
     fx = fx(x)
   
   n.x = length(x)
